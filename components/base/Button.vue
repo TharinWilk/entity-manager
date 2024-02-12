@@ -43,7 +43,7 @@ const size = computed(() => {
   place-items: center;
   padding: calc(var(--size) / 4);
 
-  box-shadow: 0px 0px calc(var(--size) / 8) 0px var(--surface-shadow);
+  box-shadow: 0px 0px 2px 0px var(--surface-shadow-light);
   border-radius: 0.5rem;
 
   background-color: var(--surface-default);
@@ -61,13 +61,16 @@ const size = computed(() => {
   }
 
   &:hover {
-    box-shadow: 0px 0px calc(var(--size) / 4) 0px var(--surface-shadow);
+    scale: 1;
+    /* box-shadow: 0px 0.0625em calc(var(--size) / 4) 0px var(--surface-shadow); */
+    box-shadow: 0px 2px 4px 0px var(--surface-shadow-light),
+      0px -2px 4px 0px var(--surface-shadow-dark);
   }
 
   &:active {
     transition: 75ms;
     scale: 0.96;
-    box-shadow: 0px 0px calc(var(--size) / 8) 0px var(--surface-shadow);
+    box-shadow: 0px 0px 2px 0px var(--surface-shadow-light);
   }
 }
 </style>

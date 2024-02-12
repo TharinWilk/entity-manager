@@ -3,13 +3,14 @@
     <h1 class="primary">Hello</h1>
     <h1 class="secondary">Hello</h1>
     <h1 class="test">Hello</h1>
-    <div style="width: 100%; display: grid; place-items: center">
+    <div style="width: 100%; display: grid; place-items: center; gap: 0.5rem">
       <BaseButton size="xs">
         <span class="sr-only">Add</span>
         <Icon name="mdi:plus" size="24" color="white"></Icon>
       </BaseButton>
 
       <BaseButton>Hello</BaseButton>
+      <BaseButton size="lg">Hello</BaseButton>
     </div>
   </div>
 </template>

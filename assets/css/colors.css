@@ -25,7 +25,8 @@
   --surface-light-brightened: hsl(var(--brand-hue) 2% 96%);
 
   /* Dark Shadows */
-  --shadow-dark: color-mix(in oklab, var(--surface-dark-default) 50%, white);
+  --shadow-dark: color-mix(in oklab, var(--surface-dark-default) 50%, black);
+  --shadow-light: color-mix(in oklab, var(--surface-dark-default) 50%, white);
 
   /* Light Shadows */
 
@@ -54,6 +55,7 @@
     --surface-default: var(--surface-dark-primary);
     --surface-darkened: var(--surface-dark-darkened);
     --surface-brightened: var(--surface-dark-brightened);
-    --surface-shadow: var(--shadow-dark);
+    --surface-shadow-dark: var(--shadow-dark);
+    --surface-shadow-light: var(--shadow-light);
   }
 }
