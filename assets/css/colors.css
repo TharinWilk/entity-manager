@@ -25,10 +25,28 @@
   --surface-light-brightened: hsl(var(--brand-hue) 2% 96%);
 
   /* Dark Shadows */
-  --shadow-dark: color-mix(in oklab, var(--surface-dark-default) 50%, black);
-  --shadow-light: color-mix(in oklab, var(--surface-dark-default) 50%, white);
+  --shadow-dark-darkened: color-mix(
+    in oklab,
+    var(--surface-dark-default) 30%,
+    black
+  );
+  --shadow-dark-lightened: color-mix(
+    in oklab,
+    var(--surface-dark-default) 70%,
+    white
+  );
 
   /* Light Shadows */
+  --shadow-light-darkened: color-mix(
+    in oklab,
+    var(--surface-light-default) 80%,
+    black
+  );
+  --shadow-light-lightened: color-mix(
+    in oklab,
+    var(--surface-light-default) 20%,
+    white
+  );
 
   /* Base Color Scheme */
   color-scheme: light;
@@ -40,8 +58,8 @@
   --surface-default: var(--surface-light-default);
   --surface-darkened: var(--surface-light-darkened);
   --surface-brightened: var(--surface-light-brightened);
-  /* --surface-shadow: var(--shadow-light);
-  --shadow-strength: var(--shadow-strength-light); */
+  --surface-shadow-top: var(--shadow-light-lightened);
+  --surface-shadow-bottom: var(--shadow-light-darkened);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -55,7 +73,7 @@
     --surface-default: var(--surface-dark-primary);
     --surface-darkened: var(--surface-dark-darkened);
     --surface-brightened: var(--surface-dark-brightened);
-    --surface-shadow-dark: var(--shadow-dark);
-    --surface-shadow-light: var(--shadow-light);
+    --surface-shadow-top: var(--shadow-dark-darkened);
+    --surface-shadow-bottom: var(--shadow-dark-lightened);
   }
 }
