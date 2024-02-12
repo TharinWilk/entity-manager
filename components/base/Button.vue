@@ -62,7 +62,6 @@ const size = computed(() => {
 
   &:hover {
     scale: 1;
-    /* box-shadow: 0px 0.0625em calc(var(--size) / 4) 0px var(--surface-shadow); */
     box-shadow: 0px 2px 4px 0px var(--surface-shadow-bottom),
       0px -2px 4px 0px var(--surface-shadow-top);
   }
