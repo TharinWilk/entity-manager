@@ -1,0 +1,59 @@
+:root {
+  /* Brand Color Deconstructed */
+  --brand-hue: 155;
+  --brand-saturation: 100%;
+  --brand-lightness: 50%;
+
+  /* Dark Text Colors*/
+  --text-dark-primary: hsl(var(--brand-hue) 10% 93%);
+  --text-dark-secondary: hsl(var(--brand-hue) 5% 75%);
+  --text-dark-accent: hsl(var(--brand-hue) 95% 40%);
+
+  /* Light Text Colors */
+  --text-light-primary: hsl(var(--brand-hue) var(--brand-saturation) 10%);
+  --text-light-secondary: hsl(var(--brand-hue) 7.5% 30%);
+  --text-light-accent: hsl(var(--brand-hue) 95% 20%);
+
+  /* Dark Surface Colors */
+  --surface-dark-default: hsl(var(--brand-hue) 10% 10%);
+  --surface-dark-darkened: hsl(var(--brand-hue) 10% 5%);
+  --surface-dark-brightened: hsl(var(--brand-hue) 5% 20%);
+
+  /* Light Surface Colors */
+  --surface-light-default: hsl(var(--brand-hue) 2% 93%);
+  --surface-light-darkened: hsl(var(--brand-hue) 4% 85%);
+  --surface-light-brightened: hsl(var(--brand-hue) 2% 96%);
+
+  /* Dark Shadows */
+  --shadow-dark: color-mix(in oklab, var(--surface-dark-default) 50%, white);
+
+  /* Light Shadows */
+
+  /* Base Color Scheme */
+  color-scheme: light;
+
+  --text-primary: var(--text-light-primary);
+  --text-secondary: var(--text-light-secondary);
+  --text-accent: var(--text-light-accent);
+
+  --surface-default: var(--surface-light-default);
+  --surface-darkened: var(--surface-light-darkened);
+  --surface-brightened: var(--surface-light-brightened);
+  /* --surface-shadow: var(--shadow-light);
+  --shadow-strength: var(--shadow-strength-light); */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --text-primary: var(--text-dark-primary);
+    --text-secondary: var(--text-dark-secondary);
+    --text-accent: var(--text-dark-accent);
+
+    --surface-default: var(--surface-dark-primary);
+    --surface-darkened: var(--surface-dark-darkened);
+    --surface-brightened: var(--surface-dark-brightened);
+    --surface-shadow: var(--shadow-dark);
+  }
+}
