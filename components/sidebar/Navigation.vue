@@ -1,0 +1,46 @@
+<script setup lang="ts">
+const iconColor = computed(() => {
+  const prefersDarkMode = window.matchMedia(
+    "(prefers-color-scheme: dark)"
+  ).matches;
+
+  return prefersDarkMode ? "white" : "black";
+});
+</script>
+
+<template>
+  <section class="sidebar-nav">
+    <BaseButton size="xs">
+      <span class="sr-only">Add</span>
+      <ClientOnly>
+        <Icon name="mdi:plus" size="24" :color="iconColor" />
+      </ClientOnly>
+    </BaseButton>
+    <BaseButton size="xs">
+      <span class="sr-only">Add</span>
+      <ClientOnly>
+        <Icon name="mdi:house" size="24" :color="iconColor" />
+      </ClientOnly>
+      <nuxt-link to="/" />
+    </BaseButton>
+  </section>
+</template>
+
+<style>
+.sidebar-nav {
+  --border-color: var(--surface-darkened);
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0.75rem;
+
+  border-right: 1px solid var(--border-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  .sidebar-nav {
+    --border-color: var(--surface-lightened);
+  }
+}
+</style>

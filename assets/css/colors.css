@@ -17,12 +17,12 @@
   /* Dark Surface Colors */
   --surface-dark-default: hsl(var(--brand-hue) 10% 10%);
   --surface-dark-darkened: hsl(var(--brand-hue) 10% 5%);
-  --surface-dark-brightened: hsl(var(--brand-hue) 5% 20%);
+  --surface-dark-lightened: hsl(var(--brand-hue) 5% 20%);
 
   /* Light Surface Colors */
   --surface-light-default: hsl(var(--brand-hue) 2% 93%);
   --surface-light-darkened: hsl(var(--brand-hue) 4% 85%);
-  --surface-light-brightened: hsl(var(--brand-hue) 2% 96%);
+  --surface-light-lightened: hsl(var(--brand-hue) 2% 96%);
 
   /* Dark Shadows */
   --shadow-dark-darkened: color-mix(
@@ -57,7 +57,7 @@
 
   --surface-default: var(--surface-light-default);
   --surface-darkened: var(--surface-light-darkened);
-  --surface-brightened: var(--surface-light-brightened);
+  --surface-lightened: var(--surface-light-lightened);
   --surface-shadow-top: var(--shadow-light-lightened);
   --surface-shadow-bottom: var(--shadow-light-darkened);
 }
@@ -72,7 +72,7 @@
 
     --surface-default: var(--surface-dark-primary);
     --surface-darkened: var(--surface-dark-darkened);
-    --surface-brightened: var(--surface-dark-brightened);
+    --surface-lightened: var(--surface-dark-lightened);
     --surface-shadow-top: var(--shadow-dark-darkened);
     --surface-shadow-bottom: var(--shadow-dark-lightened);
   }
