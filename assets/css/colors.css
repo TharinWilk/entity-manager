@@ -70,7 +70,7 @@
     --text-secondary: var(--text-dark-secondary);
     --text-accent: var(--text-dark-accent);
 
-    --surface-default: var(--surface-dark-primary);
+    --surface-default: var(--surface-dark-default);
     --surface-darkened: var(--surface-dark-darkened);
     --surface-lightened: var(--surface-dark-lightened);
     --surface-shadow-top: var(--shadow-dark-darkened);

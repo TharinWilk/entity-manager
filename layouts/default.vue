@@ -1,6 +1,4 @@
-<script setup lang="ts">
-const isOpen = ref(true);
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div
@@ -15,20 +13,17 @@ const isOpen = ref(true);
 
     <!-- Aside -->
     <aside
-      class="grid grid-cols-[auto_auto] col-span-1 col-start-1 row-start-1 row-span-3"
+      ref="drawer"
+      class="relative flex col-span-1 col-start-1 row-start-1 row-span-3"
     >
       <SidebarNavigation class="w-fit" />
 
-      <SidebarDrawer
-        :class="isOpen ? 'grid-cols-[1fr]' : 'grid-cols-[0fr]'"
-        class="grid duration-500 border-r border-[var(--surface-lightened)] text-2xl"
-      />
+      <SidebarDrawer />
     </aside>
 
     <!-- Main -->
     <div>
       <slot />
-      <button @click="isOpen = !isOpen">Click</button>
     </div>
 
     <!-- Footer -->
