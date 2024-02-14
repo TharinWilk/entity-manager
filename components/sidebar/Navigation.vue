@@ -1,5 +1,8 @@
 <script setup lang="ts">
 const iconColor = computed(() => {
+  // Return if on window present - CSR Only
+  if (!window) return;
+
   const prefersDarkMode = window.matchMedia(
     "(prefers-color-scheme: dark)"
   ).matches;
@@ -12,15 +15,11 @@ const iconColor = computed(() => {
   <section class="sidebar-nav">
     <BaseButton size="xs">
       <span class="sr-only">Add</span>
-      <ClientOnly>
-        <Icon name="mdi:plus" size="24" :color="iconColor" />
-      </ClientOnly>
+      <Icon name="mdi:plus" size="24" :color="iconColor" />
     </BaseButton>
     <BaseButton size="xs">
       <span class="sr-only">Add</span>
-      <ClientOnly>
-        <Icon name="mdi:house" size="24" :color="iconColor" />
-      </ClientOnly>
+      <Icon name="mdi:house" size="24" :color="iconColor" />
       <nuxt-link to="/" />
     </BaseButton>
   </section>

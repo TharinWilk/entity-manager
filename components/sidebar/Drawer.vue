@@ -1,7 +1,11 @@
 <script setup lang="ts"></script>
 
 <template>
-  <section class="p-2">Drawer</section>
+  <section>
+    <div class="overflow-hidden">
+      <p class="p-10">Drawer</p>
+    </div>
+  </section>
 </template>
 
 <style></style>
