@@ -1,13 +1,8 @@
 <script setup lang="ts">
-const iconColor = computed(() => {
-  // Return if on window present - CSR Only
-  if (!window) return;
+const { userPreference } = useUserTheme();
 
-  const prefersDarkMode = window.matchMedia(
-    "(prefers-color-scheme: dark)"
-  ).matches;
-
-  return prefersDarkMode ? "white" : "black";
+const themePreference = computed(() => {
+  return userPreference.value === "dark" ? "black" : "white";
 });
 </script>
 
@@ -15,11 +10,11 @@ const iconColor = computed(() => {
   <section class="sidebar-nav">
     <BaseButton size="xs">
       <span class="sr-only">Add</span>
-      <Icon name="mdi:plus" size="24" :color="iconColor" />
+      <Icon name="mdi:plus" size="24" :color="themePreference" />
     </BaseButton>
     <BaseButton size="xs">
       <span class="sr-only">Add</span>
-      <Icon name="mdi:house" size="24" :color="iconColor" />
+      <Icon name="mdi:house" size="24" :color="themePreference" />
       <nuxt-link to="/" />
     </BaseButton>
   </section>

@@ -5,11 +5,7 @@
     class="grid grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto] min-h-screen duration-[300ms]"
   >
     <!-- Header -->
-    <header
-      class="text-2xl text-center border-b border-[var(--surface-lightened)] duration-[300ms]"
-    >
-      Header
-    </header>
+    <Header />
 
     <!-- Aside -->
     <aside
