@@ -1,20 +1,16 @@
 <script setup lang="ts">
-const { userPreference } = useUserTheme();
-
-const themePreference = computed(() => {
-  return userPreference.value === "dark" ? "black" : "white";
-});
+const { themeColor } = useTheme();
 </script>
 
 <template>
   <section class="sidebar-nav">
     <BaseButton size="xs">
       <span class="sr-only">Add</span>
-      <Icon name="mdi:plus" size="24" :color="themePreference" />
+      <Icon name="mdi:plus" size="24" :color="themeColor" />
     </BaseButton>
     <BaseButton size="xs">
       <span class="sr-only">Add</span>
-      <Icon name="mdi:house" size="24" :color="themePreference" />
+      <Icon name="mdi:house" size="24" :color="themeColor" />
       <nuxt-link to="/" />
     </BaseButton>
   </section>
