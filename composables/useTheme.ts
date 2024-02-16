@@ -6,7 +6,7 @@
  * Functionality
  *  - theme: Ref that contains the current theme.
  *
- *  - themeColor: Computed that returns text / icon colors,
+ *  - themeColor: Computed that returns text / icon color reference,
  *    "white" for dark theme or "black" for light theme.
  *
  *  - userPreference: Computed that checks the user's
@@ -27,7 +27,7 @@ export const useTheme = () => {
   const theme = ref("light");
 
   const themeColor = computed(() => {
-    return theme.value === "dark" ? "white" : "black";
+    return theme.value === "dark" ? ref("white") : ref("black");
   });
 
   const userPreference = computed(() => {
