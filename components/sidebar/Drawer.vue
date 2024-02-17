@@ -9,9 +9,9 @@ const { themeColor } = useTheme();
     :class="
       isOpen
         ? 'md:grid-cols-[1fr] translate-x-0'
-        : 'md:grid-cols-[0fr] -translate-x-full'
+        : 'md:grid-cols-[0fr] -translate-x-full md:translate-x-0'
     "
-    class="sidebar-drawer motion-safe:duration-500 flex md:grid -z-10 absolute md:relative left-full bg-[var(--surface-default)]"
+    class="sidebar-drawer motion-safe:duration-500 flex md:grid -z-10 absolute md:relative left-full md:left-auto bg-[var(--surface-default)]"
   >
     <div class="overflow-hidden">
       <p class="p-10">Drawer</p>
