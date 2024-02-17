@@ -14,7 +14,9 @@ const { themeColor } = useTheme();
     class="sidebar-drawer motion-safe:duration-500 flex md:grid -z-10 absolute md:relative left-full md:left-auto bg-[var(--surface-default)]"
   >
     <div class="overflow-hidden">
-      <p class="p-10">Drawer</p>
+      <div class="p-4">
+        <BaseInput placeholder="Search" />
+      </div>
     </div>
   </section>
 
@@ -36,8 +38,6 @@ const { themeColor } = useTheme();
 .sidebar-drawer {
   --border-color: var(--surface-darkened);
 
-  /* position: relative; */
-  /* display: grid; */
   height: 100%;
   gap: 1rem;
 

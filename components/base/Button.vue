@@ -52,8 +52,8 @@ const size = computed(() => {
     outline-offset 200ms linear;
 
   &:focus-visible {
-    outline-color: var(--surface-shadow-bottom);
     outline-offset: 2px;
+    outline: 3px solid var(--surface-shadow-bottom);
   }
 
   &:focus-visible:active {

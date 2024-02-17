@@ -22,7 +22,7 @@
     </div>
 
     <!-- Footer -->
-    <Footer />
+    <Footer class="hidden" />
   </div>
 </template>
 

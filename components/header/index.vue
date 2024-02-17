@@ -3,7 +3,7 @@ const { toggleTheme, themeColor } = useTheme();
 </script>
 
 <template>
-  <header class="header text-2xl text-center p-2 border-color flex justify-end">
+  <header class="header text-2xl text-center p-3 border-color flex justify-end">
     <BaseButton size="xs" class="w-8 h-8" @click="toggleTheme">
       <Icon name="mdi:sun-moon-stars" :color="themeColor" size="24" />
     </BaseButton>
