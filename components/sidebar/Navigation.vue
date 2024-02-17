@@ -25,6 +25,7 @@ const { theme, themeColor } = useTheme();
   gap: 1rem;
   padding: 1rem 0.75rem;
 
+  background-color: var(--surface-default);
   border-right: 1px solid var(--border-color);
 }
 

@@ -9,8 +9,7 @@
 
     <!-- Aside -->
     <aside
-      ref="drawer"
-      class="relative flex col-span-1 col-start-1 row-start-1 row-span-3"
+      class="relative isolate flex col-span-1 col-start-1 row-start-1 row-span-3"
     >
       <SidebarNavigation class="w-fit" />
 

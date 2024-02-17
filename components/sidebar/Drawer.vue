@@ -6,8 +6,12 @@ const { themeColor } = useTheme();
 
 <template>
   <section
-    :class="isOpen ? 'grid-cols-[1fr]' : 'grid-cols-[0fr]'"
-    class="sidebar-drawer motion-safe:duration-500"
+    :class="
+      isOpen
+        ? 'md:grid-cols-[1fr] translate-x-0'
+        : 'md:grid-cols-[0fr] -translate-x-full'
+    "
+    class="sidebar-drawer motion-safe:duration-500 flex md:grid -z-10 absolute md:relative left-full bg-[var(--surface-default)]"
   >
     <div class="overflow-hidden">
       <p class="p-10">Drawer</p>
@@ -32,14 +36,14 @@ const { themeColor } = useTheme();
 .sidebar-drawer {
   --border-color: var(--surface-darkened);
 
-  position: relative;
-  display: grid;
+  /* position: relative; */
+  /* display: grid; */
   height: 100%;
   gap: 1rem;
 
   border-right: 1px solid var(--border-color);
 
-  transition: grid-template-columns 500ms;
+  transition: grid-template-columns 500ms, transform 500ms;
 }
 
 [data-theme="light"] .sidebar-drawer {
