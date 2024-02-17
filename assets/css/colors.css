@@ -77,3 +77,31 @@
     --surface-shadow-bottom: var(--shadow-dark-lightened);
   }
 }
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --text-primary: var(--text-light-primary);
+  --text-secondary: var(--text-light-secondary);
+  --text-accent: var(--text-light-accent);
+
+  --surface-default: var(--surface-light-default);
+  --surface-darkened: var(--surface-light-darkened);
+  --surface-lightened: var(--surface-light-lightened);
+  --surface-shadow-top: var(--shadow-light-lightened);
+  --surface-shadow-bottom: var(--shadow-light-darkened);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --text-primary: var(--text-dark-primary);
+  --text-secondary: var(--text-dark-secondary);
+  --text-accent: var(--text-dark-accent);
+
+  --surface-default: var(--surface-dark-default);
+  --surface-darkened: var(--surface-dark-darkened);
+  --surface-lightened: var(--surface-dark-lightened);
+  --surface-shadow-top: var(--shadow-dark-darkened);
+  --surface-shadow-bottom: var(--shadow-dark-lightened);
+}

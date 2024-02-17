@@ -1,31 +1,22 @@
 <script setup lang="ts">
-const iconColor = computed(() => {
-  // Return if on window present - CSR Only
-  if (!window) return;
-
-  const prefersDarkMode = window.matchMedia(
-    "(prefers-color-scheme: dark)"
-  ).matches;
-
-  return prefersDarkMode ? "white" : "black";
-});
+const { theme, themeColor } = useTheme();
 </script>
 
 <template>
-  <section class="sidebar-nav">
+  <section class="sidebar-nav border-color">
     <BaseButton size="xs">
       <span class="sr-only">Add</span>
-      <Icon name="mdi:plus" size="24" :color="iconColor" />
+      <Icon name="mdi:plus" size="24" :color="themeColor" />
     </BaseButton>
     <BaseButton size="xs">
       <span class="sr-only">Add</span>
-      <Icon name="mdi:house" size="24" :color="iconColor" />
+      <Icon name="mdi:house" size="24" :color="themeColor" />
       <nuxt-link to="/" />
     </BaseButton>
   </section>
 </template>
 
-<style>
+<style scoped>
 .sidebar-nav {
   --border-color: var(--surface-darkened);
 
@@ -37,9 +28,11 @@ const iconColor = computed(() => {
   border-right: 1px solid var(--border-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  .sidebar-nav {
-    --border-color: var(--surface-lightened);
-  }
+[data-theme="light"] .border-color {
+  --border-color: var(--surface-darkened);
+}
+
+[data-theme="dark"] .border-color {
+  --border-color: var(--surface-dark-lightened);
 }
 </style>

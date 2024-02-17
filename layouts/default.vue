@@ -5,11 +5,7 @@
     class="grid grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto] min-h-screen duration-[300ms]"
   >
     <!-- Header -->
-    <header
-      class="text-2xl text-center border-b border-[var(--surface-lightened)] duration-[300ms]"
-    >
-      Header
-    </header>
+    <Header />
 
     <!-- Aside -->
     <aside
@@ -27,11 +23,7 @@
     </div>
 
     <!-- Footer -->
-    <footer
-      class="p-2 text-center text-2xl border-t border-[var(--surface-lightened)]"
-    >
-      Footer
-    </footer>
+    <Footer />
   </div>
 </template>
 
