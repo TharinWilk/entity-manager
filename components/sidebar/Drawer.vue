@@ -2,6 +2,17 @@
 const isOpen = ref(true);
 
 const { themeColor } = useTheme();
+
+const items = ref(["Weapons", "Items", "Characters", "Locations", "Spells"]);
+
+const search = ref("");
+
+const filteredSearchResults = computed(() => {
+  const searchTerm = search.value.toLowerCase();
+  return items.value.filter((item) => {
+    return item.toLowerCase().includes(searchTerm);
+  });
+});
 </script>
 
 <template>
@@ -14,8 +25,21 @@ const { themeColor } = useTheme();
     class="sidebar-drawer motion-safe:duration-500 flex md:grid -z-10 absolute md:relative left-full md:left-auto bg-[var(--surface-default)]"
   >
     <div class="overflow-hidden">
-      <div class="p-4">
-        <BaseInput placeholder="Search" />
+      <div class="grid p-4 gap-4">
+        <BaseInput placeholder="Search" :disabled="!isOpen" v-model="search" />
+
+        <transition-group
+          tag="ul"
+          class="relative grid gap-4 w-full"
+          name="fade"
+          appear
+        >
+          <li v-for="item in filteredSearchResults" :key="item" class="w-full">
+            <BaseButton size="xs" class="text-base w-full" :disabled="!isOpen">
+              {{ item }}
+            </BaseButton>
+          </li>
+        </transition-group>
       </div>
     </div>
   </section>
@@ -52,5 +76,21 @@ const { themeColor } = useTheme();
 
 [data-theme="dark"] .sidebar-drawer {
   --border-color: var(--surface-dark-lightened);
+}
+
+.fade-move,
+.fade-enter-active,
+.fade-leave-active {
+  transition: 500ms ease all;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.fade-leave-active {
+  position: absolute;
 }
 </style>

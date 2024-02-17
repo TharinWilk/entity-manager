@@ -1,7 +1,22 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineProps({
+  modelValue: {
+    type: [String, Number, Boolean, Array, Object],
+  },
+});
+
+const emits = defineEmits(["update:modelValue"]);
+</script>
 
 <template>
-  <input type="text" class="base-input" />
+  <input
+    type="text"
+    class="base-input"
+    :value="modelValue"
+    @input="
+      $emit('update:modelValue', ($event.target as HTMLInputElement)?.value)
+    "
+  />
 </template>
 
 <style scoped>
