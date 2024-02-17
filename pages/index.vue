@@ -30,7 +30,7 @@ function toggleAccordion(panelToActivate: any) {
 
 <template>
   <main class="grid place-items-center gap-10">
-    <h1 class="text-white text-4xl">Main Content</h1>
+    <h1 class="text-4xl">Main Content</h1>
 
     <div class="accordion-panel">
       <h2 id="panel1-title">

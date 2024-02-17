@@ -20,7 +20,7 @@
  *  - toggleTheme: A function that toggles the theme value and sets
  *    the local storage value.
  *
- * @returns themeColor, userPreference, toggleTheme
+ * @returns theme, themeColor, userPreference, toggleTheme
  */
 
 export const useTheme = () => {
@@ -56,6 +56,7 @@ export const useTheme = () => {
   };
 
   return {
+    theme,
     themeColor,
     userPreference,
     toggleTheme,

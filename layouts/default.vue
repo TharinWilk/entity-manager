@@ -23,11 +23,7 @@
     </div>
 
     <!-- Footer -->
-    <footer
-      class="p-2 text-center text-2xl border-t border-[var(--surface-lightened)]"
-    >
-      Footer
-    </footer>
+    <Footer />
   </div>
 </template>
 

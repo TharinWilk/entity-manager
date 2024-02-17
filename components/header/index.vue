@@ -3,13 +3,25 @@ const { toggleTheme, themeColor } = useTheme();
 </script>
 
 <template>
-  <header
-    class="text-2xl text-center p-2 border-b border-[var(--surface-lightened)]"
-  >
+  <header class="header text-2xl text-center p-2 border-color flex justify-end">
     <BaseButton size="xs" class="w-8 h-8" @click="toggleTheme">
       <Icon name="mdi:sun-moon-stars" :color="themeColor" size="24" />
     </BaseButton>
   </header>
 </template>
 
-<style></style>
+<style scoped>
+.header {
+  --border-color: var(--surface-darkened);
+
+  border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .header {
+  --border-color: var(--surface-darkened);
+}
+
+[data-theme="dark"] .header {
+  --border-color: var(--surface-dark-lightened);
+}
+</style>

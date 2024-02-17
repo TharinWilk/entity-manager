@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const { themeColor } = useTheme();
+const { theme, themeColor } = useTheme();
 </script>
 
 <template>
-  <section class="sidebar-nav">
+  <section class="sidebar-nav border-color">
     <BaseButton size="xs">
       <span class="sr-only">Add</span>
       <Icon name="mdi:plus" size="24" :color="themeColor" />
@@ -16,7 +16,7 @@ const { themeColor } = useTheme();
   </section>
 </template>
 
-<style>
+<style scoped>
 .sidebar-nav {
   --border-color: var(--surface-darkened);
 
@@ -28,9 +28,11 @@ const { themeColor } = useTheme();
   border-right: 1px solid var(--border-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  .sidebar-nav {
-    --border-color: var(--surface-lightened);
-  }
+[data-theme="light"] .border-color {
+  --border-color: var(--surface-darkened);
+}
+
+[data-theme="dark"] .border-color {
+  --border-color: var(--surface-dark-lightened);
 }
 </style>

@@ -48,7 +48,8 @@ const size = computed(() => {
 
   background-color: var(--surface-default);
 
-  transition: 200ms linear;
+  transition: scale 200ms linear, box-shadow 200ms linear,
+    outline-offset 200ms linear;
 
   &:focus-visible {
     outline-color: var(--surface-shadow-bottom);
