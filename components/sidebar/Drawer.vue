@@ -39,6 +39,12 @@ const filteredSearchResults = computed(() => {
               {{ item }}
             </BaseButton>
           </li>
+          <li class="w-full">
+            <BaseButton size="xs" class="text-base w-full" :disabled="!isOpen">
+              <span class="sr-only">Add</span>
+              <Icon name="mdi:plus" size="24" :color="themeColor" />
+            </BaseButton>
+          </li>
         </transition-group>
       </div>
     </div>
