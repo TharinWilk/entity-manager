@@ -1,10 +1,17 @@
 <script setup lang="ts">
-const { theme, themeColor } = useTheme();
+const { themeColor } = useTheme();
+
+const modal = ref<HTMLDialogElement>();
+const isOpen = ref(false);
+const click = () => {
+  isOpen.value = !isOpen.value;
+  modal.value?.show();
+};
 </script>
 
 <template>
   <section class="sidebar-nav border-color">
-    <BaseButton size="xs">
+    <BaseButton size="xs" @click="click">
       <span class="sr-only">Add</span>
       <Icon name="mdi:plus" size="24" :color="themeColor" />
     </BaseButton>
@@ -14,6 +21,16 @@ const { theme, themeColor } = useTheme();
       <nuxt-link to="/" />
     </BaseButton>
   </section>
+
+  <!-- Create Manager Modal -->
+  <ClientOnly>
+    <Teleport to="#content">
+      <LazyBaseDialog ref="modal">
+        <ModalContentAddManager />
+      </LazyBaseDialog>
+    </Teleport>
+  </ClientOnly>
+  <!-- Create Manager Modal End -->
 </template>
 
 <style scoped>

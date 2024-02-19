@@ -11,13 +11,13 @@
     <aside
       class="relative isolate flex col-span-1 col-start-1 row-start-1 row-span-3"
     >
-      <SidebarNavigation class="w-fit" />
+      <SidebarNavigation />
 
       <SidebarDrawer />
     </aside>
 
     <!-- Main -->
-    <div>
+    <div id="content" class="relative">
       <slot />
     </div>
 

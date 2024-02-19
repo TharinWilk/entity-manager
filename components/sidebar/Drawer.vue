@@ -39,7 +39,7 @@ const filteredSearchResults = computed(() => {
               {{ item }}
             </BaseButton>
           </li>
-          <li class="w-full">
+          <li class="w-full" key="addNewEntity">
             <BaseButton size="xs" class="text-base w-full" :disabled="!isOpen">
               <span class="sr-only">Add</span>
               <Icon name="mdi:plus" size="24" :color="themeColor" />
