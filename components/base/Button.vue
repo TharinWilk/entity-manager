@@ -30,7 +30,7 @@ const size = computed(() => {
 </script>
 
 <template>
-  <button class="base-button" :style="{ '--size': size }">
+  <button type="button" class="base-button" :style="{ '--size': size }">
     <slot />
   </button>
 </template>
