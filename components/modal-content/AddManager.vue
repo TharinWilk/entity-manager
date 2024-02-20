@@ -7,6 +7,21 @@ const closeDialog = () => {
 
   dialog?.close();
 };
+
+const selectedIcon = ref("");
+const iconList = ["star", "folder", "file-cabinet", "pencil", "car", "gamepad"];
+
+const isSelectingIcon = ref(false);
+
+const selectIcon = (icon: string) => {
+  selectedIcon.value = icon;
+  isSelectingIcon.value = false;
+};
+
+onMounted(() => {
+  const randomIndex = Math.floor(Math.random() * iconList.length);
+  selectedIcon.value = iconList[randomIndex];
+});
 </script>
 
 <template>
@@ -26,15 +41,23 @@ const closeDialog = () => {
     </header>
 
     <!-- Form Section -->
-    <form class="grid place-items-center gap-10">
+    <form v-if="!isSelectingIcon" class="grid place-items-center gap-10">
       <div class="grid gap-4 place-items-center">
         <label for="manager-name" class="text-lg">New Manager Name</label>
         <BaseInput
           id="manager-name"
-          placeholder="Folder Name"
+          placeholder="Name"
           v-model="managerName"
           class="w-full !text-xl"
         />
+      </div>
+
+      <div class="grid gap-4 place-items-center">
+        <span>Select Icon</span>
+        <BaseButton @click="isSelectingIcon = true">
+          <span class="sr-only">Close Popup</span>
+          <Icon :name="`mdi:${selectedIcon}`" size="32" :color="themeColor" />
+        </BaseButton>
       </div>
 
       <div class="grid place-items-center w-full gap-4">
@@ -44,6 +67,20 @@ const closeDialog = () => {
         <BaseButton class="w-full">Upload Existing File</BaseButton>
       </div>
     </form>
+
+    <section v-else class="grid place-items-center gap-4 w-full">
+      <p>Select Icon</p>
+      <div class="flex flex-wrap gap-4 items-center justify-center">
+        <BaseButton
+          v-for="icon in iconList"
+          :key="icon"
+          @click="selectIcon(icon)"
+        >
+          <span class="sr-only">Select {{ icon }} icon</span>
+          <Icon :name="`mdi:${icon}`" size="32" :color="themeColor" />
+        </BaseButton>
+      </div>
+    </section>
   </section>
 </template>
 
