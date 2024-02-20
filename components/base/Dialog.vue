@@ -17,9 +17,7 @@ defineExpose({
 
 <template>
   <dialog ref="dialog" @close="visible = false">
-    <div class="dialog-content">
-      <slot />
-    </div>
+    <slot />
   </dialog>
 </template>
 
@@ -30,6 +28,10 @@ dialog {
   display: grid;
   margin: auto;
   padding: 0;
+  border-radius: 8px;
+  background-color: var(--surface-default);
+  box-shadow: 0 0 10px 0 var(--surface-shadow-bottom);
+  width: min(360px, 80%);
 }
 
 dialog:not([open]) {

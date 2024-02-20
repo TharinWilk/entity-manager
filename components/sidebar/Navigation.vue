@@ -15,10 +15,9 @@ const click = () => {
       <span class="sr-only">Add</span>
       <Icon name="mdi:plus" size="24" :color="themeColor" />
     </BaseButton>
-    <BaseButton size="xs">
+    <BaseButton size="xs" @click="navigateTo('/')">
       <span class="sr-only">Add</span>
       <Icon name="mdi:house" size="24" :color="themeColor" />
-      <nuxt-link to="/" />
     </BaseButton>
   </section>
 

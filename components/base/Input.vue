@@ -24,6 +24,7 @@ const emits = defineEmits(["update:modelValue"]);
   --size: 1rem;
   --shadow-color: var(--surface-shadow-top);
 
+  /* width: min(100%, 480px); */
   padding: calc(var(--size) / 4) var(--size);
   border-radius: 0.5rem;
   outline: 3px solid transparent;
