@@ -26,7 +26,15 @@ const filteredSearchResults = computed(() => {
   >
     <div class="overflow-hidden">
       <div class="grid p-4 gap-4">
-        <BaseInput placeholder="Search" :disabled="!isOpen" v-model="search" />
+        <div>
+          <BaseInput
+            id="drawer-search"
+            placeholder="Search"
+            :disabled="!isOpen"
+            v-model="search"
+          />
+          <label for="drawer-search" class="sr-only">Search</label>
+        </div>
 
         <transition-group
           tag="ul"
@@ -39,7 +47,7 @@ const filteredSearchResults = computed(() => {
               {{ item }}
             </BaseButton>
           </li>
-          <li class="w-full">
+          <li class="w-full" key="addNewEntity">
             <BaseButton size="xs" class="text-base w-full" :disabled="!isOpen">
               <span class="sr-only">Add</span>
               <Icon name="mdi:plus" size="24" :color="themeColor" />
