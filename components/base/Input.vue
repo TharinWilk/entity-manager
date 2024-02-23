@@ -26,7 +26,10 @@ const handleInput = (value: string) => {
       :value="modelValue"
       @input="handleInput(($event.target as HTMLInputElement)?.value)"
     />
-    <span v-if="error" class="error-message">{{ error }}</span>
+    <span v-if="error" class="error-message">
+      <Icon name="mdi:information-slab-circle" class="h-[14px] w-[14px]" />
+      {{ error }}
+    </span>
   </div>
 </template>
 
@@ -52,17 +55,21 @@ const handleInput = (value: string) => {
 }
 
 .error {
-  outline-color: red;
+  outline-color: var(--error-color);
 }
 
 .error-message {
-  color: red;
-  font-size: 0.8rem;
-  margin-top: 0.125rem;
+  color: var(--error-color);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
+  line-height: 0;
 }
 
 [data-theme="light"] .base-input {
