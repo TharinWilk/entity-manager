@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { themeColor } = useTheme();
 const managerName = ref("");
+const managerStore = useManagerStore();
 
 const closeDialog = () => {
   const dialog = document.querySelector("dialog");
@@ -23,8 +24,40 @@ onMounted(() => {
   selectedIcon.value = iconList[randomIndex];
 });
 
+const error = ref("");
+
 const handleSubmit = () => {
-  console.log("Submit");
+  const isValid = formValidation(managerName.value);
+
+  if (!isValid) return;
+
+  managerStore.addManager({ name: managerName, icon: selectedIcon });
+  closeDialog();
+};
+
+const removeError = () => {
+  error.value = "";
+};
+
+const formValidation = (input: string) => {
+  let isValid = false;
+  // Required Field Validation
+  if (!input || input === "") {
+    error.value = "This field is required";
+    return isValid;
+  }
+
+  // Existing Name Validation
+  const existingManager = managerStore.managers.find(
+    (manager) => manager.name == managerName.value
+  );
+
+  if (existingManager) {
+    error.value = "Name already exists";
+    return isValid;
+  }
+
+  return (isValid = true);
 };
 </script>
 
@@ -50,15 +83,17 @@ const handleSubmit = () => {
     <transition name="fade" mode="out-in">
       <form
         v-if="!isSelectingIcon"
-        class="grid place-items-center gap-10 overflow-auto pb-8"
+        class="grid place-items-center gap-10 overflow-auto pb-8 px-2"
         @submit.prevent="handleSubmit"
       >
         <div class="grid gap-4 place-items-center">
           <label for="manager-name" class="text-lg">New Manager Name</label>
           <BaseInput
             id="manager-name"
-            placeholder="Name"
             v-model="managerName"
+            placeholder="Name"
+            :error="error"
+            @clearError="removeError"
             class="w-full !text-xl"
           />
         </div>
