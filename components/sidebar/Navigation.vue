@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const { themeColor } = useTheme();
 
+const managerStore = useManagerStore();
+const { managers } = storeToRefs(managerStore);
+
 const modal = ref<HTMLDialogElement>();
 const isOpen = ref(false);
 const click = () => {
@@ -15,9 +18,9 @@ const click = () => {
       <span class="sr-only">Add</span>
       <Icon name="mdi:plus" size="24" :color="themeColor" />
     </BaseButton>
-    <BaseButton size="xs" @click="navigateTo('/')">
-      <span class="sr-only">Add</span>
-      <Icon name="mdi:house" size="24" :color="themeColor" />
+    <BaseButton v-for="manager in managers" size="xs" @click="navigateTo('/')">
+      <span class="sr-only">{{ manager.name }}</span>
+      <Icon :name="`mdi:${manager.icon}`" size="24" :color="themeColor" />
     </BaseButton>
   </section>
 

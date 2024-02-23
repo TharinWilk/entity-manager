@@ -48,6 +48,12 @@
     white
   );
 
+  /* Dark Theme Error */
+  --error-color-dark: hsl(3, 96%, 57%);
+
+  /* Light Theme Error */
+  --error-color-light: hsl(3, 56%, 47%);
+
   /* Base Color Scheme */
   color-scheme: light;
 
@@ -60,6 +66,8 @@
   --surface-lightened: var(--surface-light-lightened);
   --surface-shadow-top: var(--shadow-light-lightened);
   --surface-shadow-bottom: var(--shadow-light-darkened);
+
+  --error-color: var(--error-color-light);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -75,6 +83,8 @@
     --surface-lightened: var(--surface-dark-lightened);
     --surface-shadow-top: var(--shadow-dark-darkened);
     --surface-shadow-bottom: var(--shadow-dark-lightened);
+
+    --error-color: var(--error-color-dark);
   }
 }
 
@@ -90,6 +100,8 @@
   --surface-lightened: var(--surface-light-lightened);
   --surface-shadow-top: var(--shadow-light-lightened);
   --surface-shadow-bottom: var(--shadow-light-darkened);
+
+  --error-color: var(--error-color-light);
 }
 
 :root[data-theme="dark"] {
