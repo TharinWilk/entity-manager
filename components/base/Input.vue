@@ -1,4 +1,9 @@
 <script setup lang="ts">
+defineOptions({
+  // Set attribute inheritance to false to allow input to inherit all attributes
+  inheritAttrs: false,
+});
+
 defineProps({
   modelValue: {
     type: [String, Number, Boolean, Array, Object],
@@ -13,7 +18,7 @@ const emits = defineEmits(["update:modelValue", "clearError"]);
 
 const handleInput = (value: string) => {
   emits("update:modelValue", value);
-  emits("clearError"); // Emit event to clear the error
+  emits("clearError");
 };
 </script>
 
@@ -25,6 +30,7 @@ const handleInput = (value: string) => {
       :class="{ error: error }"
       :value="modelValue"
       @input="handleInput(($event.target as HTMLInputElement)?.value)"
+      v-bind="$attrs"
     />
     <span v-if="error" class="error-message">
       <Icon name="mdi:information-slab-circle" class="h-[14px] w-[14px]" />
@@ -38,7 +44,6 @@ const handleInput = (value: string) => {
   --size: 1rem;
   --shadow-color: var(--surface-shadow-top);
 
-  /* width: min(100%, 480px); */
   padding: calc(var(--size) / 4) var(--size);
   border-radius: 0.5rem;
   outline: 3px solid transparent;
@@ -59,16 +64,18 @@ const handleInput = (value: string) => {
 }
 
 .error-message {
-  color: var(--error-color);
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
-  align-items: center;
+  margin-top: 0.5rem;
+
   display: flex;
+  align-items: center;
   gap: 0.25rem;
+
+  color: var(--error-color);
+  font-size: 0.875rem;
   line-height: 0;
 }
 

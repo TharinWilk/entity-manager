@@ -26,7 +26,7 @@ const click = () => {
 
   <!-- Create Manager Modal -->
   <ClientOnly>
-    <Teleport to="#content">
+    <Teleport to="#layout">
       <LazyBaseDialog ref="modal">
         <ModalContentAddManager />
       </LazyBaseDialog>

@@ -93,6 +93,7 @@ const formValidation = (input: string) => {
             v-model="managerName"
             placeholder="Name"
             :error="error"
+            autofocus
             @clearError="removeError"
             class="w-full !text-xl"
           />
