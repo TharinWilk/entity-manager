@@ -41,27 +41,8 @@ watch(visible, (newValue) => {
 // Click outside dismissal
 async function lightDismiss({ target: dialog }: any) {
   if (dialog.nodeName === "DIALOG") {
-    // Set positioning
-    dialog.style.top = "50%";
-    dialog.style.transform = "translateY(-50%)";
-
-    // Close Dialog and await animations
     dialog.close("dismiss");
-    await animationsComplete(dialog);
-
-    // Reset Styles
-    dialog.style.top = "";
-    dialog.style.transform = "";
   }
-}
-
-// Wait for all dialog animations to complete their promises
-async function animationsComplete(element: Element) {
-  return Promise.allSettled(
-    element.getAnimations().map((animation) => {
-      return animation.finished;
-    })
-  );
 }
 
 // Set autoFocus if attribute found
@@ -85,6 +66,7 @@ function setFocusOnAutofocusElement() {
 <style>
 dialog {
   position: absolute;
+  inset: 0;
   overflow: hidden;
   display: grid;
   margin: auto;
@@ -120,7 +102,6 @@ html:has(dialog[open]) {
 
   dialog[open] {
     animation: slide-in-up forwards 300ms ease;
-    /* border: 2px red solid; */
   }
 }
 
