@@ -2,6 +2,7 @@
 
 <template>
   <div
+    id="layout"
     class="grid grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto] min-h-screen duration-[300ms]"
   >
     <!-- Header -->

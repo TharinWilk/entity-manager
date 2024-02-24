@@ -14,24 +14,23 @@ defineExpose({
   visible,
 });
 
-onMounted(() => {
-  dialog.value?.addEventListener("click", lightDismiss);
-  dialog.value?.addEventListener("close", closeDialog);
-});
+const lightDismiss = async ({ target: dialog }: any) => {
+  if (dialog.nodeName === "DIALOG") {
+    // Set positioning
+    dialog.style.top = "50%";
+    dialog.style.transform = "translateY(-50%)";
 
-const lightDismiss = ({ target: dialog }: any) => {
-  if (dialog.nodeName === "DIALOG") dialog.close("dismiss");
+    // Close Dialog and await animations
+    dialog.close("dismiss");
+    await animationsComplete(dialog);
+
+    // Reset Styles
+    dialog.style.top = "";
+    dialog.style.transform = "";
+  }
 };
 
-const closeDialog = async ({ target: dialog }: any) => {
-  dialog.setAttribute("inert", "");
-  dialog.dispatchEvent(dialogClosingEvent);
-
-  await animationsComplete(dialog);
-
-  dialog.dispatchEvent(dialogClosedEvent);
-};
-
+// wait for all dialog animations to complete their promises
 const animationsComplete = (element: Element) => {
   return Promise.allSettled(
     element.getAnimations().map((animation) => {
@@ -39,6 +38,12 @@ const animationsComplete = (element: Element) => {
     })
   );
 };
+
+onMounted(async () => {
+  if (!dialog.value) return;
+
+  dialog.value?.addEventListener("click", lightDismiss);
+});
 </script>
 
 <template>
@@ -59,7 +64,7 @@ dialog {
   box-shadow: 0 0 10px 0 var(--surface-shadow-bottom);
   width: min(360px, 80%);
 
-  transition: opacity 500ms ease;
+  transition: opacity 300ms ease;
 }
 
 dialog:not([open]) {
@@ -79,12 +84,13 @@ html:has(dialog[open]) {
 
 @media (prefers-reduced-motion: no-preference) {
   dialog {
-    animation: scale-down forwards;
-    animation-timing-function: ease;
+    animation: scale-down forwards 500ms;
+    animation-timing-function: ease-in-out;
   }
 
   dialog[open] {
-    animation: slide-up forwards;
+    animation: slide-in-up forwards 300ms ease;
+    /* border: 2px red solid; */
   }
 }
 
@@ -94,12 +100,9 @@ html:has(dialog[open]) {
   }
 }
 
-@keyframes scale-down {
+@keyframes slide-in-up {
   0% {
-    transform: translateY(100%);
-  }
-  100% {
-    transform: translateY(0);
+    transform: translateY(50%);
   }
 }
 </style>
