@@ -1,4 +1,9 @@
 <script setup lang="ts">
+defineOptions({
+  // Set attribute inheritance to false to allow input to inherit all attributes
+  inheritAttrs: false,
+});
+
 defineProps({
   modelValue: {
     type: [String, Number, Boolean, Array, Object],

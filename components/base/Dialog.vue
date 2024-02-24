@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const dialog = ref<HTMLDialogElement>();
 
+// Dialog Visibility Logic
 const visible = ref(false);
 
 const showModal = () => {
@@ -8,13 +9,37 @@ const showModal = () => {
   visible.value = true;
 };
 
+// Exposed Functions
 defineExpose({
   show: showModal,
   close: (returnVal?: string): void => dialog.value?.close(returnVal),
   visible,
 });
 
-const lightDismiss = async ({ target: dialog }: any) => {
+// Set Active and Inactive Dialog State
+watch(visible, (newValue) => {
+  if (newValue) {
+    // Dialog is opening
+    if (!dialog.value) return;
+
+    // Activate Dialog
+    dialog.value.removeAttribute("inert");
+    dialog.value.addEventListener("click", lightDismiss);
+
+    // Set Focus
+    setFocusOnAutofocusElement();
+  } else {
+    // Dialog is closing
+    if (!dialog.value) return;
+
+    // Inactivate Dialog
+    dialog.value.setAttribute("inert", "");
+    dialog.value.removeEventListener("click", lightDismiss);
+  }
+});
+
+// Click outside dismissal
+async function lightDismiss({ target: dialog }: any) {
   if (dialog.nodeName === "DIALOG") {
     // Set positioning
     dialog.style.top = "50%";
@@ -28,26 +53,31 @@ const lightDismiss = async ({ target: dialog }: any) => {
     dialog.style.top = "";
     dialog.style.transform = "";
   }
-};
+}
 
-// wait for all dialog animations to complete their promises
-const animationsComplete = (element: Element) => {
+// Wait for all dialog animations to complete their promises
+async function animationsComplete(element: Element) {
   return Promise.allSettled(
     element.getAnimations().map((animation) => {
       return animation.finished;
     })
   );
-};
+}
 
-onMounted(async () => {
-  if (!dialog.value) return;
+// Set autoFocus if attribute found
+function setFocusOnAutofocusElement() {
+  const autofocusElement = dialog.value?.querySelector(
+    "[autofocus]"
+  ) as HTMLElement;
 
-  dialog.value?.addEventListener("click", lightDismiss);
-});
+  if (autofocusElement) {
+    autofocusElement.focus();
+  }
+}
 </script>
 
 <template>
-  <dialog ref="dialog" @close="visible = false">
+  <dialog ref="dialog" @close="visible = false" inert>
     <slot />
   </dialog>
 </template>
