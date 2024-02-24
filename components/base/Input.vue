@@ -25,6 +25,7 @@ const handleInput = (value: string) => {
       :class="{ error: error }"
       :value="modelValue"
       @input="handleInput(($event.target as HTMLInputElement)?.value)"
+      v-bind="$attrs"
     />
     <span v-if="error" class="error-message">
       <Icon name="mdi:information-slab-circle" class="h-[14px] w-[14px]" />

@@ -95,6 +95,7 @@ const formValidation = (input: string) => {
             :error="error"
             @clearError="removeError"
             class="w-full !text-xl"
+            autofocus
           />
         </div>
 
