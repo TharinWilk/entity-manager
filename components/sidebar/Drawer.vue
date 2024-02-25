@@ -5,8 +5,6 @@ const { themeColor } = useTheme();
 
 const dataManagerStore = useDataManagerStore();
 
-const items = ref(["Weapons", "Items", "Characters", "Locations", "Spells"]);
-
 const search = ref("");
 
 const filteredSearchResults = computed(() => {
@@ -16,15 +14,11 @@ const filteredSearchResults = computed(() => {
   });
 });
 
-function generateRandomString(): string {
-  const letters = "abcdefghijklmnopqrstuvwxyz";
-  let randomString = "";
-  for (let i = 0; i < 5; i++) {
-    const randomIndex = Math.floor(Math.random() * letters.length);
-    randomString += letters.charAt(randomIndex);
-  }
-  return randomString;
-}
+// Handle Modal
+const modal = ref<HTMLDialogElement>();
+const openModal = () => {
+  modal.value?.show();
+};
 </script>
 
 <template>
@@ -64,7 +58,7 @@ function generateRandomString(): string {
               size="xs"
               class="text-base w-full"
               :disabled="!isOpen"
-              @click="dataManagerStore.addNewKey(generateRandomString())"
+              @click="openModal"
             >
               <span class="sr-only">Add</span>
               <Icon name="mdi:plus" size="24" :color="themeColor" />
@@ -73,20 +67,30 @@ function generateRandomString(): string {
         </transition-group>
       </div>
     </div>
+
+    <BaseButton
+      size="xs"
+      class="absolute w-8 h-8 !rounded-full left-full -translate-x-4 top-1/2 -translate-y-1/2"
+      @click="isOpen = !isOpen"
+    >
+      <Icon
+        name="mdi:chevron-right"
+        :color="themeColor"
+        size="24"
+        :class="{ 'rotate-180': isOpen }"
+      />
+    </BaseButton>
   </section>
 
-  <BaseButton
-    size="xs"
-    class="absolute w-8 h-8 !rounded-full left-full -translate-x-4 top-1/2 -translate-y-1/2"
-    @click="isOpen = !isOpen"
-  >
-    <Icon
-      name="mdi:chevron-right"
-      :color="themeColor"
-      size="24"
-      :class="{ 'rotate-180': isOpen }"
-    />
-  </BaseButton>
+  <!-- Create Manager Modal -->
+  <ClientOnly>
+    <Teleport to="#layout">
+      <LazyBaseDialog ref="modal">
+        <ModalContentAddSection :dialog="modal" />
+      </LazyBaseDialog>
+    </Teleport>
+  </ClientOnly>
+  <!-- Create Manager Modal End -->
 </template>
 
 <style scoped>

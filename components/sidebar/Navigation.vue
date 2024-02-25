@@ -5,9 +5,7 @@ const managerStore = useManagerStore();
 const { managers } = storeToRefs(managerStore);
 
 const modal = ref<HTMLDialogElement>();
-const isOpen = ref(false);
 const click = () => {
-  isOpen.value = !isOpen.value;
   modal.value?.show();
 };
 </script>
@@ -32,7 +30,7 @@ const click = () => {
   <ClientOnly>
     <Teleport to="#layout">
       <LazyBaseDialog ref="modal">
-        <ModalContentAddManager />
+        <ModalContentAddManager :dialog="modal" />
       </LazyBaseDialog>
     </Teleport>
   </ClientOnly>

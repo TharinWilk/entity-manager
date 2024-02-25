@@ -1,12 +1,17 @@
 <script setup lang="ts">
+const props = defineProps({
+  dialog: {
+    type: Object as PropType<HTMLDialogElement>,
+    default: undefined,
+  },
+});
+
 const { themeColor } = useTheme();
 const managerName = ref("");
 const managerStore = useManagerStore();
 
 const closeDialog = () => {
-  const dialog = document.querySelector("dialog");
-
-  dialog?.close();
+  props.dialog?.close();
 };
 
 const selectedIcon = ref("");
