@@ -85,8 +85,8 @@ const openModal = () => {
   <!-- Create Manager Modal -->
   <ClientOnly>
     <Teleport to="#layout">
-      <LazyBaseDialog ref="modal">
-        <ModalContentAddSection :dialog="modal" />
+      <LazyBaseDialog ref="modal" title="Create Data Section">
+        <FormAddSection :dialog="modal" />
       </LazyBaseDialog>
     </Teleport>
   </ClientOnly>

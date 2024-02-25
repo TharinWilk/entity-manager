@@ -1,4 +1,11 @@
 <script lang="ts" setup>
+defineProps({
+  title: {
+    type: String,
+    default: "",
+  },
+});
+
 const dialog = ref<HTMLDialogElement>();
 
 // Dialog Visibility Logic
@@ -55,11 +62,37 @@ function setFocusOnAutofocusElement() {
     autofocusElement.focus();
   }
 }
+
+// Set Icon Color
+const { themeColor } = useTheme();
 </script>
 
 <template>
-  <dialog ref="dialog" @close="visible = false" inert>
-    <slot />
+  <dialog ref="dialog" @close="visible = false" v-bind="$attrs" inert>
+    <section
+      class="px-8 py-4 grid rounded-lg w-full gap-10 max-h-dvh overflow-hidden"
+    >
+      <!-- Header Section -->
+      <header
+        class="flex justify-between items-center border-b-2 border-white pb-4"
+      >
+        <!-- Heading -->
+        <h2 class="text-xl sm:text-2xl">{{ title }}</h2>
+
+        <!-- Close Button -->
+        <LazyBaseButton
+          size="xs"
+          class="!rounded-full"
+          @click="dialog?.close()"
+        >
+          <span class="sr-only">Close Popup</span>
+          <Icon name="mdi:close" size="16" :color="themeColor" />
+        </LazyBaseButton>
+      </header>
+
+      <!-- Slotted Content -->
+      <slot />
+    </section>
   </dialog>
 </template>
 

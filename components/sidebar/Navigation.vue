@@ -29,8 +29,8 @@ const click = () => {
   <!-- Create Manager Modal -->
   <ClientOnly>
     <Teleport to="#layout">
-      <LazyBaseDialog ref="modal">
-        <ModalContentAddManager :dialog="modal" />
+      <LazyBaseDialog ref="modal" title="Create New Manager">
+        <FormAddManager :dialog="modal" />
       </LazyBaseDialog>
     </Teleport>
   </ClientOnly>
