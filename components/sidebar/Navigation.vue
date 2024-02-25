@@ -18,7 +18,11 @@ const click = () => {
       <span class="sr-only">Add</span>
       <Icon name="mdi:plus" size="24" :color="themeColor" />
     </BaseButton>
-    <BaseButton v-for="manager in managers" size="xs" @click="navigateTo('/')">
+    <BaseButton
+      v-for="manager in managers"
+      size="xs"
+      @click="managerStore.setActiveManager(manager.name)"
+    >
       <span class="sr-only">{{ manager.name }}</span>
       <Icon :name="`mdi:${manager.icon}`" size="24" :color="themeColor" />
     </BaseButton>

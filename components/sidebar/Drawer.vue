@@ -3,16 +3,28 @@ const isOpen = ref(true);
 
 const { themeColor } = useTheme();
 
+const dataManagerStore = useDataManagerStore();
+
 const items = ref(["Weapons", "Items", "Characters", "Locations", "Spells"]);
 
 const search = ref("");
 
 const filteredSearchResults = computed(() => {
   const searchTerm = search.value.toLowerCase();
-  return items.value.filter((item) => {
-    return item.toLowerCase().includes(searchTerm);
+  return dataManagerStore.getSections.filter((section) => {
+    return section.toLowerCase().includes(searchTerm);
   });
 });
+
+function generateRandomString(): string {
+  const letters = "abcdefghijklmnopqrstuvwxyz";
+  let randomString = "";
+  for (let i = 0; i < 5; i++) {
+    const randomIndex = Math.floor(Math.random() * letters.length);
+    randomString += letters.charAt(randomIndex);
+  }
+  return randomString;
+}
 </script>
 
 <template>
@@ -48,7 +60,12 @@ const filteredSearchResults = computed(() => {
             </BaseButton>
           </li>
           <li class="w-full" key="addNewEntity">
-            <BaseButton size="xs" class="text-base w-full" :disabled="!isOpen">
+            <BaseButton
+              size="xs"
+              class="text-base w-full"
+              :disabled="!isOpen"
+              @click="dataManagerStore.addNewKey(generateRandomString())"
+            >
               <span class="sr-only">Add</span>
               <Icon name="mdi:plus" size="24" :color="themeColor" />
             </BaseButton>
