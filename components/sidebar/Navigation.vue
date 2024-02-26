@@ -1,24 +1,32 @@
 <script setup lang="ts">
-const { themeColor } = useTheme();
-
+// Manager Store Logic
 const managerStore = useManagerStore();
 const { managers } = storeToRefs(managerStore);
 
+// Handle Dialog Logic
 const modal = ref<HTMLDialogElement>();
-const isOpen = ref(false);
 const click = () => {
-  isOpen.value = !isOpen.value;
   modal.value?.show();
 };
+
+// Icon Color Logic
+const { themeColor } = useTheme();
 </script>
 
 <template>
   <section class="sidebar-nav border-color">
+    <!-- Activate Add Manager Modal Button -->
     <BaseButton size="xs" @click="click">
       <span class="sr-only">Add</span>
       <Icon name="mdi:plus" size="24" :color="themeColor" />
     </BaseButton>
-    <BaseButton v-for="manager in managers" size="xs" @click="navigateTo('/')">
+
+    <!-- Manager Icon Buttons -->
+    <BaseButton
+      v-for="manager in managers"
+      size="xs"
+      @click="managerStore.setActiveManager(manager.name)"
+    >
       <span class="sr-only">{{ manager.name }}</span>
       <Icon :name="`mdi:${manager.icon}`" size="24" :color="themeColor" />
     </BaseButton>
@@ -27,8 +35,8 @@ const click = () => {
   <!-- Create Manager Modal -->
   <ClientOnly>
     <Teleport to="#layout">
-      <LazyBaseDialog ref="modal">
-        <ModalContentAddManager />
+      <LazyBaseDialog ref="modal" title="Create New Manager">
+        <FormAddManager :dialog="modal" />
       </LazyBaseDialog>
     </Teleport>
   </ClientOnly>

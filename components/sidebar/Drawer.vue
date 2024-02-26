@@ -1,21 +1,30 @@
 <script setup lang="ts">
+// Handle Drawer Logic
 const isOpen = ref(true);
 
-const { themeColor } = useTheme();
-
-const items = ref(["Weapons", "Items", "Characters", "Locations", "Spells"]);
-
+// Handle Search Logic
+const dataManagerStore = useDataManagerStore();
 const search = ref("");
 
 const filteredSearchResults = computed(() => {
   const searchTerm = search.value.toLowerCase();
-  return items.value.filter((item) => {
-    return item.toLowerCase().includes(searchTerm);
+  return dataManagerStore.getSections.filter((section) => {
+    return section.toLowerCase().includes(searchTerm);
   });
 });
+
+// Handle Modal
+const modal = ref<HTMLDialogElement>();
+const openModal = () => {
+  modal.value?.show();
+};
+
+// Handle Icon Color
+const { themeColor } = useTheme();
 </script>
 
 <template>
+  <!-- Drawer -->
   <section
     :class="
       isOpen
@@ -26,6 +35,7 @@ const filteredSearchResults = computed(() => {
   >
     <div class="overflow-hidden">
       <div class="grid p-4 gap-4">
+        <!-- Search Input -->
         <div>
           <BaseInput
             id="drawer-search"
@@ -36,19 +46,28 @@ const filteredSearchResults = computed(() => {
           <label for="drawer-search" class="sr-only">Search</label>
         </div>
 
+        <!-- Button List -->
         <transition-group
           tag="ul"
           class="relative grid gap-4 w-full"
           name="fade"
           appear
         >
+          <!-- Data Section Buttons -->
           <li v-for="item in filteredSearchResults" :key="item" class="w-full">
             <BaseButton size="xs" class="text-base w-full" :disabled="!isOpen">
               {{ item }}
             </BaseButton>
           </li>
+
+          <!-- Activate Add Data Section Button -->
           <li class="w-full" key="addNewEntity">
-            <BaseButton size="xs" class="text-base w-full" :disabled="!isOpen">
+            <BaseButton
+              size="xs"
+              class="text-base w-full"
+              :disabled="!isOpen"
+              @click="openModal"
+            >
               <span class="sr-only">Add</span>
               <Icon name="mdi:plus" size="24" :color="themeColor" />
             </BaseButton>
@@ -56,20 +75,31 @@ const filteredSearchResults = computed(() => {
         </transition-group>
       </div>
     </div>
+
+    <!-- Open / Close Drawer Button -->
+    <BaseButton
+      size="xs"
+      class="absolute w-8 h-8 !rounded-full left-full -translate-x-4 top-1/2 -translate-y-1/2"
+      @click="isOpen = !isOpen"
+    >
+      <Icon
+        name="mdi:chevron-right"
+        :color="themeColor"
+        size="24"
+        :class="{ 'rotate-180': isOpen }"
+      />
+    </BaseButton>
   </section>
 
-  <BaseButton
-    size="xs"
-    class="absolute w-8 h-8 !rounded-full left-full -translate-x-4 top-1/2 -translate-y-1/2"
-    @click="isOpen = !isOpen"
-  >
-    <Icon
-      name="mdi:chevron-right"
-      :color="themeColor"
-      size="24"
-      :class="{ 'rotate-180': isOpen }"
-    />
-  </BaseButton>
+  <!-- Create Manager Modal -->
+  <ClientOnly>
+    <Teleport to="#layout">
+      <LazyBaseDialog ref="modal" title="Create Data Section">
+        <FormAddSection :dialog="modal" />
+      </LazyBaseDialog>
+    </Teleport>
+  </ClientOnly>
+  <!-- Create Manager Modal End -->
 </template>
 
 <style scoped>
