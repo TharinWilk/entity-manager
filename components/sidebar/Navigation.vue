@@ -1,21 +1,27 @@
 <script setup lang="ts">
-const { themeColor } = useTheme();
-
+// Manager Store Logic
 const managerStore = useManagerStore();
 const { managers } = storeToRefs(managerStore);
 
+// Handle Dialog Logic
 const modal = ref<HTMLDialogElement>();
 const click = () => {
   modal.value?.show();
 };
+
+// Icon Color Logic
+const { themeColor } = useTheme();
 </script>
 
 <template>
   <section class="sidebar-nav border-color">
+    <!-- Activate Add Manager Modal Button -->
     <BaseButton size="xs" @click="click">
       <span class="sr-only">Add</span>
       <Icon name="mdi:plus" size="24" :color="themeColor" />
     </BaseButton>
+
+    <!-- Manager Icon Buttons -->
     <BaseButton
       v-for="manager in managers"
       size="xs"

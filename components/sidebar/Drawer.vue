@@ -1,10 +1,9 @@
 <script setup lang="ts">
+// Handle Drawer Logic
 const isOpen = ref(true);
 
-const { themeColor } = useTheme();
-
+// Handle Search Logic
 const dataManagerStore = useDataManagerStore();
-
 const search = ref("");
 
 const filteredSearchResults = computed(() => {
@@ -19,9 +18,13 @@ const modal = ref<HTMLDialogElement>();
 const openModal = () => {
   modal.value?.show();
 };
+
+// Handle Icon Color
+const { themeColor } = useTheme();
 </script>
 
 <template>
+  <!-- Drawer -->
   <section
     :class="
       isOpen
@@ -32,6 +35,7 @@ const openModal = () => {
   >
     <div class="overflow-hidden">
       <div class="grid p-4 gap-4">
+        <!-- Search Input -->
         <div>
           <BaseInput
             id="drawer-search"
@@ -42,17 +46,21 @@ const openModal = () => {
           <label for="drawer-search" class="sr-only">Search</label>
         </div>
 
+        <!-- Button List -->
         <transition-group
           tag="ul"
           class="relative grid gap-4 w-full"
           name="fade"
           appear
         >
+          <!-- Data Section Buttons -->
           <li v-for="item in filteredSearchResults" :key="item" class="w-full">
             <BaseButton size="xs" class="text-base w-full" :disabled="!isOpen">
               {{ item }}
             </BaseButton>
           </li>
+
+          <!-- Activate Add Data Section Button -->
           <li class="w-full" key="addNewEntity">
             <BaseButton
               size="xs"
@@ -68,6 +76,7 @@ const openModal = () => {
       </div>
     </div>
 
+    <!-- Open / Close Drawer Button -->
     <BaseButton
       size="xs"
       class="absolute w-8 h-8 !rounded-full left-full -translate-x-4 top-1/2 -translate-y-1/2"
