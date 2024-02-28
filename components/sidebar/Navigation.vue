@@ -14,7 +14,7 @@ const { themeColor } = useTheme();
 </script>
 
 <template>
-  <section class="sidebar-nav border-color">
+  <section id="sidebarNav" class="sidebar-nav border-color">
     <!-- Activate Add Manager Modal Button -->
     <BaseButton size="xs" @click="click">
       <span class="sr-only">Add</span>

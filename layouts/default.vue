@@ -10,11 +10,13 @@
 
     <!-- Aside -->
     <aside
-      class="relative isolate flex col-span-1 col-start-1 row-start-1 row-span-3"
+      class="relative z-10 flex col-span-1 col-start-1 row-start-1 row-span-3"
     >
       <SidebarNavigation />
 
       <SidebarDrawer />
+
+      <div id="aside"></div>
     </aside>
 
     <!-- Main -->
