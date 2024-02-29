@@ -2,6 +2,7 @@
 // Manager Store Logic
 const managerStore = useManagerStore();
 const { managers } = storeToRefs(managerStore);
+const dataManagerStore = useDataManagerStore();
 
 // Handle Dialog Logic
 const modal = ref<HTMLDialogElement>();
@@ -11,6 +12,12 @@ const click = () => {
 
 // Icon Color Logic
 const { themeColor } = useTheme();
+
+// Handle Click Event
+const handleClick = (manager: (typeof managers.value)[number]) => {
+  managerStore.setActiveManager(manager.name);
+  dataManagerStore.setFilter("");
+};
 </script>
 
 <template>
@@ -25,7 +32,7 @@ const { themeColor } = useTheme();
     <BaseButton
       v-for="manager in managers"
       size="xs"
-      @click="managerStore.setActiveManager(manager.name)"
+      @click="handleClick(manager)"
     >
       <span class="sr-only">{{ manager.name }}</span>
       <Icon :name="`mdi:${manager.icon}`" size="24" :color="themeColor" />
