@@ -21,6 +21,18 @@ const openModal = () => {
 
 // Handle Icon Color
 const { themeColor } = useTheme();
+
+// Handle Button Positioning
+const isFixedButtonVisible = ref(false);
+
+watch(isOpen, () => {
+  if (!isOpen.value) {
+    // Wait for animation to complete
+    setTimeout(() => {
+      isFixedButtonVisible.value = true;
+    }, 500);
+  } else isFixedButtonVisible.value = false;
+});
 </script>
 
 <template>
@@ -31,7 +43,7 @@ const { themeColor } = useTheme();
         ? 'md:grid-cols-[1fr] translate-x-0'
         : 'md:grid-cols-[0fr] -translate-x-full md:translate-x-0'
     "
-    class="sidebar-drawer motion-safe:duration-500 flex md:grid -z-10 absolute md:relative left-full md:left-auto bg-[var(--surface-default)]"
+    class="sidebar-drawer motion-safe:duration-500 flex -z-10 md:grid md:z-10 absolute md:relative left-full md:left-auto bg-[var(--surface-default)]"
   >
     <div class="overflow-hidden">
       <div class="grid p-4 gap-4">
@@ -76,8 +88,9 @@ const { themeColor } = useTheme();
       </div>
     </div>
 
-    <!-- Open / Close Drawer Button -->
+    <!-- Open / Close Drawer Button - Follows Drawer -->
     <BaseButton
+      v-if="!isFixedButtonVisible"
       size="xs"
       class="absolute w-8 h-8 !rounded-full left-full -translate-x-4 top-1/2 -translate-y-1/2"
       @click="isOpen = !isOpen"
@@ -90,6 +103,21 @@ const { themeColor } = useTheme();
       />
     </BaseButton>
   </section>
+
+  <!-- Open / Close Drawer Button - Fixed to nav  -->
+  <BaseButton
+    v-if="isFixedButtonVisible"
+    size="xs"
+    class="absolute w-8 h-8 !rounded-full left-full -translate-x-4 top-1/2 -translate-y-1/2 z-10"
+    @click="isOpen = !isOpen"
+  >
+    <Icon
+      name="mdi:chevron-right"
+      :color="themeColor"
+      size="24"
+      :class="{ 'rotate-180': isOpen }"
+    />
+  </BaseButton>
 
   <!-- Create Manager Modal -->
   <ClientOnly>
@@ -122,6 +150,7 @@ const { themeColor } = useTheme();
   --border-color: var(--surface-dark-lightened);
 }
 
+/* Transitions */
 .fade-move,
 .fade-enter-active,
 .fade-leave-active {
