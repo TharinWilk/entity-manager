@@ -30,5 +30,35 @@ export const useDataManagerStore = defineStore("data manager", () => {
     data.value[newKey] = {};
   };
 
-  return { data, getSections, addNewKey };
+  const filter = ref("");
+
+  const setFilter = (input: string) => {
+    filter.value = input;
+  };
+
+  const filteredData = computed(() => {
+    // Guard for no data
+    if (!data.value) {
+      return {};
+    }
+
+    // Return filtered data
+    if (filter.value) {
+      return data.value[filter.value];
+    }
+
+    // Return all data
+    const allObjectsData = {};
+    const allDataKeys = Object.keys(data.value);
+
+    allDataKeys.forEach((key) => {
+      if (!data.value) return;
+
+      Object.assign(allObjectsData, data.value[key]);
+    });
+
+    return allObjectsData;
+  });
+
+  return { data, getSections, addNewKey, setFilter, filteredData };
 });

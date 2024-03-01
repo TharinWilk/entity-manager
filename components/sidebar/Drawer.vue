@@ -67,7 +67,12 @@ watch(isOpen, () => {
         >
           <!-- Data Section Buttons -->
           <li v-for="item in filteredSearchResults" :key="item" class="w-full">
-            <BaseButton size="xs" class="text-base w-full" :disabled="!isOpen">
+            <BaseButton
+              size="xs"
+              class="text-base w-full"
+              :disabled="!isOpen"
+              @click="dataManagerStore.setFilter(item)"
+            >
               {{ item }}
             </BaseButton>
           </li>

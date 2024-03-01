@@ -10,7 +10,7 @@
 
     <!-- Aside -->
     <aside
-      class="relative z-10 flex col-span-1 col-start-1 row-start-1 row-span-3"
+      class="sticky top-0 h-screen z-10 flex col-span-1 col-start-1 row-start-1 row-span-3"
     >
       <SidebarNavigation />
 
