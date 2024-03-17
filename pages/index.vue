@@ -127,6 +127,13 @@ function useData(inputData: any) {
 }
 
 .card-move {
-  transition: transform 0.3s ease;
+  --transition-speed: 0ms;
+  transition: transform var(--transition-speed) ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card-move {
+    --transition-speed: 300ms;
+  }
 }
 </style>
