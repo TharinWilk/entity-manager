@@ -27,7 +27,6 @@ const handleDragEnd = (event: Event) => {
     ref="card"
     class="card bg-[var(--surface-lightened)] p-2 rounded-lg duration-500"
     :class="{ dragging: isDragging }"
-    draggable="true"
     @drag="handleDragEvent"
     @dragend="handleDragEnd"
   >

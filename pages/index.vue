@@ -5,7 +5,7 @@ const dataList = ref<HTMLElement>();
 const isTransitioning = ref(false);
 
 const handleDragSorting = (event: MouseEvent) => {
-  if (!dataList.value) {
+  if (!dataList.value || !managerData.filter) {
     return;
   }
 
@@ -45,14 +45,17 @@ const handleDragSorting = (event: MouseEvent) => {
   }
 };
 
-const { data, updateDataIndexing } = useData(managerData);
+const { data, updateDataIndexing, updateStoredData } = useData(managerData);
 
 function useData(inputData: any) {
   const data = ref(inputData.filteredData);
 
-  watch(inputData, () => {
-    data.value = inputData.filteredData;
-  });
+  watch(
+    () => inputData.filteredData,
+    () => {
+      data.value = inputData.filteredData;
+    }
+  );
 
   const updateDataIndexing = (key: string, newIndexKey: string) => {
     if (!data.value || !(key in data.value) || !(newIndexKey in data.value))
@@ -68,7 +71,7 @@ function useData(inputData: any) {
     newKeys.splice(index, 1);
     newKeys.splice(newIndex, 0, key);
 
-    const reorderedData = {};
+    const reorderedData: { [key: string]: any } = {};
 
     newKeys.forEach((item) => {
       reorderedData[item] = data.value[item];
@@ -77,7 +80,13 @@ function useData(inputData: any) {
     data.value = reorderedData;
   };
 
-  return { data, updateDataIndexing };
+  const updateStoredData = () => {
+    setTimeout(() => {
+      managerData.updateData(data.value);
+    }, 300);
+  };
+
+  return { data, updateDataIndexing, updateStoredData };
 }
 </script>
 
@@ -86,13 +95,18 @@ function useData(inputData: any) {
     <h1 class="text-4xl">Main Content</h1>
 
     <!-- Cards -->
-    <section ref="dataList" @dragover="handleDragSorting">
+    <section
+      ref="dataList"
+      @dragover="handleDragSorting"
+      @dragend="updateStoredData"
+    >
       <transition-group name="card" tag="div" class="grid grid-cols-2 gap-8">
         <BaseCard
           v-for="(value, key) of data"
           :key="key"
           :data="{ value, key }"
           :data-key="key"
+          :draggable="managerData.filter ? true : false"
         />
       </transition-group>
     </section>
@@ -100,7 +114,19 @@ function useData(inputData: any) {
 </template>
 
 <style>
+.card-enter-active,
+.card-leave-active {
+  transition: 0s;
+}
+
+.card-enter-from,
+.card-leave-to {
+  position: absolute;
+  opacity: 0;
+  scale: 0;
+}
+
 .card-move {
-  transition: 0.3s ease;
+  transition: transform 0.3s ease;
 }
 </style>
