@@ -60,5 +60,19 @@ export const useDataManagerStore = defineStore("data manager", () => {
     return allObjectsData;
   });
 
-  return { data, getSections, addNewKey, setFilter, filteredData };
+  const updateData = (newData: any) => {
+    if (!data.value || !filter.value) return;
+
+    data.value[filter.value] = newData;
+  };
+
+  return {
+    data,
+    getSections,
+    addNewKey,
+    filter,
+    setFilter,
+    filteredData,
+    updateData,
+  };
 });
