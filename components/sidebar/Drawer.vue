@@ -100,6 +100,9 @@ watch(isOpen, () => {
       class="absolute w-8 h-8 !rounded-full left-full -translate-x-4 top-1/2 -translate-y-1/2"
       @click="isOpen = !isOpen"
     >
+      <span class="sr-only"
+        >{{ isOpen ? "Close" : "Open" }} Sidebar Drawer</span
+      >
       <Icon
         name="mdi:chevron-right"
         :color="themeColor"
@@ -116,6 +119,7 @@ watch(isOpen, () => {
     class="absolute w-8 h-8 !rounded-full left-full -translate-x-4 top-1/2 -translate-y-1/2 z-10"
     @click="isOpen = !isOpen"
   >
+    <span class="sr-only">{{ isOpen ? "Close" : "Open" }} Sidebar Drawer</span>
     <Icon
       name="mdi:chevron-right"
       :color="themeColor"

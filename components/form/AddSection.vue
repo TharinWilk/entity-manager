@@ -61,9 +61,9 @@ const formValidation = (input: string) => {
     @submit.prevent="handleSubmit"
   >
     <div class="grid gap-4 place-items-center">
-      <label for="manager-name" class="text-lg">New Data Section</label>
+      <label for="data-name" class="text-lg">New Data Section</label>
       <BaseInput
-        id="manager-name"
+        id="data-name"
         v-model="dataName"
         placeholder="Name"
         :error="error"
