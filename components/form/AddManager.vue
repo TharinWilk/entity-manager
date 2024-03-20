@@ -39,7 +39,10 @@ const handleSubmit = () => {
 
   if (!isValid) return;
 
-  managerStore.addManager({ name: managerName, icon: selectedIcon });
+  managerStore.addManager({
+    name: managerName.value,
+    icon: selectedIcon.value,
+  });
   closeDialog();
 };
 
