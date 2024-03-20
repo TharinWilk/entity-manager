@@ -5,6 +5,7 @@ const { toggleTheme, themeColor } = useTheme();
 <template>
   <header class="header text-2xl text-center p-3 border-color flex justify-end">
     <BaseButton size="xs" class="w-8 h-8" @click="toggleTheme">
+      <span class="sr-only">Toggle Color Theme: {{ themeColor }}</span>
       <Icon name="mdi:sun-moon-stars" :color="themeColor" size="24" />
     </BaseButton>
   </header>
