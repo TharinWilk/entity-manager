@@ -19,29 +19,43 @@ const handleDragEnd = (event: Event) => {
 
   isDragging.value = false;
 };
+
+const popover = ref<HTMLDialogElement>();
+
+const togglePopover = () => {
+  !popover.value?.open ? popover.value?.show() : popover.value?.close();
+};
 </script>
 
 <template>
   <div
     v-if="data"
     ref="card"
-    class="card bg-[var(--surface-lightened)] p-2 rounded-lg duration-500"
+    class="card bg-[var(--surface-lightened)] p-2 rounded-lg duration-500 relative"
     :class="{ dragging: isDragging }"
     @drag="handleDragEvent"
     @dragend="handleDragEnd"
   >
     <div
-      class="flex justify-between items-center border-b border-[var(--text-secondary)] pb-2"
+      class="flex justify-between items-center border-b border-[var(--text-secondary)] pb-2 relative"
     >
       <h2 class="text-3xl capitalize">{{ data.key }}</h2>
 
-      <span
-        class="cursor-grab active:cursor-grabbing p-1 grid place-items-center"
+      <BaseButton
+        bg-color="var(--surface-lightened)"
+        class="button-icon cursor-pointer p-1 grid place-items-center border"
+        @click="togglePopover"
       >
-        <Icon name="mdi:drag-vertical" class="h-6 w-6" />
-      </span>
+        <Icon name="mdi:dots-vertical" class="h-6 w-6" />
+      </BaseButton>
     </div>
 
+    <LazyBasePopover ref="popover">
+      <div class="grid gap-3">
+        <BaseButton size="xs" class="text-base">Duplicate</BaseButton>
+        <BaseButton size="xs" class="text-base">Delete</BaseButton>
+      </div>
+    </LazyBasePopover>
     <div class="py-2">
       <div
         v-for="(propertyValue, propertyKey) of data.value"
@@ -55,7 +69,7 @@ const handleDragEnd = (event: Event) => {
   </div>
 </template>
 
-<style>
+<style scoped>
 .dragging {
   opacity: 0;
 }

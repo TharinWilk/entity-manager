@@ -6,6 +6,10 @@ const props = defineProps({
     type: String as PropType<Size>,
     default: "md",
   },
+  bgColor: {
+    type: String,
+    default: "var(--surface-default)",
+  },
 });
 
 const size = computed(() => {
@@ -30,7 +34,11 @@ const size = computed(() => {
 </script>
 
 <template>
-  <button type="button" class="base-button" :style="{ '--size': size }">
+  <button
+    type="button"
+    class="base-button"
+    :style="[{ '--size': size }, { '--bg-color': bgColor }]"
+  >
     <slot />
   </button>
 </template>
@@ -38,6 +46,7 @@ const size = computed(() => {
 <style scoped>
 .base-button {
   --size: 1rem;
+  --bg-color: var(--surface-default);
 
   display: grid;
   place-items: center;
@@ -46,7 +55,7 @@ const size = computed(() => {
   box-shadow: 0px 0px 2px 0px var(--surface-shadow-bottom);
   border-radius: 0.5rem;
 
-  background-color: var(--surface-default);
+  background-color: var(--bg-color);
 
   transition: scale 200ms linear, box-shadow 200ms linear,
     outline-offset 200ms linear;
