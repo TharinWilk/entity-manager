@@ -43,19 +43,23 @@ const togglePopover = () => {
 
       <BaseButton
         bg-color="var(--surface-lightened)"
-        class="button-icon cursor-pointer p-1 grid place-items-center border"
+        class="button-icon cursor-pointer p-1 grid place-items-center border relative"
         @click="togglePopover"
       >
         <Icon name="mdi:dots-vertical" class="h-6 w-6" />
       </BaseButton>
+
+      <!-- Popover Menu -->
+      <LazyBasePopover ref="popover" class="top-0 left-[35%]">
+        <div ref="dialogContent" class="grid gap-3">
+          <BaseButton size="xs" class="text-base" autofocus
+            >Duplicate</BaseButton
+          >
+          <BaseButton size="xs" class="text-base">Delete</BaseButton>
+        </div>
+      </LazyBasePopover>
     </div>
 
-    <LazyBasePopover ref="popover">
-      <div class="grid gap-3">
-        <BaseButton size="xs" class="text-base">Duplicate</BaseButton>
-        <BaseButton size="xs" class="text-base">Delete</BaseButton>
-      </div>
-    </LazyBasePopover>
     <div class="py-2">
       <div
         v-for="(propertyValue, propertyKey) of data.value"

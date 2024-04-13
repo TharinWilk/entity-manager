@@ -81,13 +81,12 @@ dialog {
   position: absolute;
   overflow: hidden;
   display: grid;
-  inset: 0;
   margin: auto;
   padding: 0;
   border-radius: 8px;
   background-color: var(--surface-default);
   box-shadow: 0 0 10px 0 var(--surface-shadow-bottom);
-  width: min(240px, 80%);
+  width: min(fit-content, 80%);
 
   transition: opacity 300ms ease;
 }
@@ -95,16 +94,6 @@ dialog {
 dialog:not([open]) {
   pointer-events: none;
   opacity: 0;
-}
-
-dialog::backdrop {
-  position: fixed;
-  inset: 0;
-  backdrop-filter: blur(6px);
-}
-
-html:has(dialog[open]) {
-  overflow: hidden;
 }
 
 @media (prefers-reduced-motion: no-preference) {
