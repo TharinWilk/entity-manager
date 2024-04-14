@@ -11,14 +11,14 @@ const dialog = ref<HTMLDialogElement>();
 // Dialog Visibility Logic
 const visible = ref(false);
 
-const showModal = () => {
-  dialog.value?.showModal();
+const show = () => {
+  dialog.value?.show();
   visible.value = true;
 };
 
 // Exposed Functions
 defineExpose({
-  show: showModal,
+  show,
   close: (returnVal?: string): void => dialog.value?.close(returnVal),
   visible,
 });
@@ -31,7 +31,9 @@ watch(visible, (newValue) => {
 
     // Activate Dialog
     dialog.value.removeAttribute("inert");
-    dialog.value.addEventListener("click", lightDismiss);
+    setTimeout(() => {
+      window.addEventListener("click", lightDismiss);
+    }, 100);
 
     // Set Focus
     setFocusOnAutofocusElement();
@@ -41,15 +43,15 @@ watch(visible, (newValue) => {
 
     // Inactivate Dialog
     dialog.value.setAttribute("inert", "");
-    dialog.value.removeEventListener("click", lightDismiss);
+    window.removeEventListener("click", lightDismiss);
   }
 });
 
 // Click outside dismissal
-async function lightDismiss({ target: dialog }: any) {
-  if (dialog.nodeName === "DIALOG") {
-    dialog.close("dismiss");
-  }
+async function lightDismiss({ target }: any) {
+  if (target.closest("dialog")) return;
+
+  dialog.value?.close("dismiss");
 }
 
 // Set autoFocus if attribute found
@@ -62,44 +64,21 @@ function setFocusOnAutofocusElement() {
     autofocusElement.focus();
   }
 }
-
-// Set Icon Color
-const { themeColor } = useTheme();
 </script>
 
 <template>
   <dialog ref="dialog" @close="visible = false" v-bind="$attrs" inert>
-    <section
+    <div
       class="px-8 py-4 grid rounded-lg w-full gap-10 max-h-dvh overflow-hidden"
     >
-      <!-- Header Section -->
-      <header
-        class="flex justify-between items-center border-b-2 border-white pb-4"
-      >
-        <!-- Heading -->
-        <h2 class="text-xl sm:text-2xl">{{ title }}</h2>
-
-        <!-- Close Button -->
-        <LazyBaseButton
-          size="xs"
-          class="!rounded-full"
-          @click="dialog?.close()"
-        >
-          <span class="sr-only">Close Popup</span>
-          <Icon name="mdi:close" size="16" :color="themeColor" />
-        </LazyBaseButton>
-      </header>
-
-      <!-- Slotted Content -->
       <slot />
-    </section>
+    </div>
   </dialog>
 </template>
 
 <style scoped>
 dialog {
   position: absolute;
-  inset: 0;
   overflow: hidden;
   display: grid;
   margin: auto;
@@ -107,7 +86,7 @@ dialog {
   border-radius: 8px;
   background-color: var(--surface-default);
   box-shadow: 0 0 10px 0 var(--surface-shadow-bottom);
-  width: min(360px, 80%);
+  width: min(fit-content, 80%);
 
   transition: opacity 300ms ease;
 }
@@ -115,16 +94,6 @@ dialog {
 dialog:not([open]) {
   pointer-events: none;
   opacity: 0;
-}
-
-dialog::backdrop {
-  position: fixed;
-  inset: 0;
-  backdrop-filter: blur(6px);
-}
-
-html:has(dialog[open]) {
-  overflow: hidden;
 }
 
 @media (prefers-reduced-motion: no-preference) {
