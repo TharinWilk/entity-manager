@@ -28,11 +28,10 @@ tool-tip {
   inline-size: max-content;
   z-index: 20;
   padding: 0.25rem 0.5rem;
-
   border-radius: 0.375rem;
 
   background-color: var(--surface-lightened);
-
+  filter: drop-shadow(0 0px 8px var(--shadow-color));
   font-size: 0.875rem;
 
   opacity: 0;
@@ -94,5 +93,13 @@ tool-tip {
   opacity: 1;
   scale: 1;
   transition-delay: 300ms;
+}
+
+[data-theme="light"] tool-tip {
+  --shadow-color: var(--surface-shadow-bottom);
+}
+
+[data-theme="dark"] tool-tip {
+  --shadow-color: var(--surface-shadow-top);
 }
 </style>
