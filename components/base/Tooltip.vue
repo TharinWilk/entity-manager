@@ -53,7 +53,6 @@ tool-tip {
     clip-path: inset(50%);
   }
 
-  /* tooltip shape is a pseudo element so we can cast a shadow */
   &::after {
     content: "";
     background: var(--surface-lightened);
