@@ -36,6 +36,9 @@ const handleClick = (manager: (typeof managers.value)[number]) => {
     >
       <span class="sr-only">{{ manager.name }}</span>
       <Icon :name="`mdi:${manager.icon}`" size="24" :color="themeColor" />
+
+      <!-- Button Tooltip -->
+      <BaseTooltip right>{{ manager.name }}</BaseTooltip>
     </BaseButton>
   </section>
 

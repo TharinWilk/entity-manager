@@ -109,6 +109,11 @@ watch(isOpen, () => {
         size="24"
         :class="{ 'rotate-180': isOpen }"
       />
+
+      <!-- Tooltip -->
+      <BaseTooltip right>
+        {{ isOpen ? "Close" : "Open" }} Sidebar Drawer
+      </BaseTooltip>
     </BaseButton>
   </section>
 
@@ -126,6 +131,10 @@ watch(isOpen, () => {
       size="24"
       :class="{ 'rotate-180': isOpen }"
     />
+
+    <BaseTooltip right>
+      {{ isOpen ? "Close" : "Open" }} Sidebar Drawer
+    </BaseTooltip>
   </BaseButton>
 
   <!-- Create Manager Modal -->
