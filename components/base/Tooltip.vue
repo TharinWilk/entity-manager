@@ -35,7 +35,7 @@ tool-tip {
   font-size: 0.875rem;
 
   opacity: 0;
-  scale: 1;
+  scale: 0;
   transition: scale 200ms ease, opacity 200ms ease, transform 200s ease;
 
   pointer-events: none;
