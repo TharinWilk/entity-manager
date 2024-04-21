@@ -42,6 +42,7 @@ const handleSubmit = () => {
   managerStore.addManager({
     name: managerName.value,
     icon: selectedIcon.value,
+    data: data.value,
   });
   closeDialog();
 };
@@ -76,6 +77,11 @@ const formValidation = (input: string) => {
 
 // Set Icon Color
 const { themeColor } = useTheme();
+
+const data = ref();
+const testing = (event: { file: Object; data: JSON | Object }) => {
+  data.value = event.data;
+};
 </script>
 
 <template>
@@ -111,7 +117,8 @@ const { themeColor } = useTheme();
         <!--  -->
         <BaseButton class="w-full" type="submit">Create New Manager</BaseButton>
         <!-- Upload Existing File  -->
-        <BaseButton class="w-full">Upload Existing File</BaseButton>
+        <!-- <BaseButton class="w-full">Upload Existing File</BaseButton> -->
+        <BaseFileInput accept="application/json" @onUpload="testing" />
       </div>
     </form>
 
