@@ -10,9 +10,9 @@ const { labelDefault } = defineProps({
   },
 });
 
+// Handle File Input
 const emits = defineEmits(["onUpload"]);
 
-const input = ref();
 const file = ref();
 const data = ref();
 const error = ref("");
@@ -50,6 +50,7 @@ const handleChange = async (event: Event) => {
   reader.readAsText(input.files[0]);
 };
 
+// Handle Button Label
 const label = computed(() => {
   return file.value ? file.value.name : labelDefault;
 });
@@ -59,7 +60,6 @@ const label = computed(() => {
   <div class="relative w-full">
     <label>
       <input
-        ref="input"
         type="file"
         :class="{ error: error }"
         @change="handleChange"
