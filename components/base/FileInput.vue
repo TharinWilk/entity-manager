@@ -12,10 +12,16 @@ const { labelDefault } = defineProps({
 
 // Handle File Input
 const emits = defineEmits(["onUpload"]);
+defineExpose({ clear });
 
 const file = ref();
 const data = ref();
 const error = ref("");
+
+// Handle Button Label
+const label = computed(() => {
+  return file.value ? file.value.name : labelDefault;
+});
 
 const handleChange = async (event: Event) => {
   // Guard - No input or files found.
@@ -50,10 +56,11 @@ const handleChange = async (event: Event) => {
   reader.readAsText(input.files[0]);
 };
 
-// Handle Button Label
-const label = computed(() => {
-  return file.value ? file.value.name : labelDefault;
-});
+function clear() {
+  data.value = undefined;
+  file.value = undefined;
+  error.value = "";
+}
 </script>
 
 <template>

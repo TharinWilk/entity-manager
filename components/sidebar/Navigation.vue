@@ -5,7 +5,7 @@ const { managers } = storeToRefs(managerStore);
 const dataManagerStore = useDataManagerStore();
 
 // Handle Dialog Logic
-const modal = ref<HTMLDialogElement>();
+const modal = ref();
 const click = () => {
   modal.value?.show();
 };
@@ -18,6 +18,22 @@ const handleClick = (manager: (typeof managers.value)[number]) => {
   managerStore.setActiveManager(manager.name);
   dataManagerStore.setFilter("");
 };
+
+const form = ref();
+watch(
+  () => modal.value?.visible,
+  (newValue, oldValue) => {
+    if (newValue || !oldValue) return;
+
+    // Revert to add manager form - clear form data.
+    if (form.value.isSelectingIcon) {
+      form.value.updateIsSelectingIcon(false);
+    } else {
+      // Clear Form Data on close
+      form.value.clearForm();
+    }
+  }
+);
 </script>
 
 <template>
@@ -46,7 +62,7 @@ const handleClick = (manager: (typeof managers.value)[number]) => {
   <ClientOnly>
     <Teleport to="#layout">
       <LazyBaseDialog ref="modal" title="Create New Manager">
-        <FormAddManager :dialog="modal" />
+        <FormAddManager ref="form" :dialog="modal" />
       </LazyBaseDialog>
     </Teleport>
   </ClientOnly>

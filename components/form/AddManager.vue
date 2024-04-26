@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps({
+const { dialog } = defineProps({
   dialog: {
     type: Object as PropType<HTMLDialogElement>,
     default: undefined,
@@ -10,7 +10,7 @@ const props = defineProps({
 const closeDialog = () => {
   managerName.value = "";
   removeError();
-  props.dialog?.close();
+  dialog?.close();
 };
 
 // Manager Name Logic
@@ -22,9 +22,13 @@ const iconList = ["star", "folder", "file-cabinet", "pencil", "car", "gamepad"];
 const selectedIcon = ref("");
 const isSelectingIcon = ref(false);
 
+const updateIsSelectingIcon = (value: boolean) => {
+  isSelectingIcon.value = value;
+};
+
 const selectIcon = (icon: string) => {
   selectedIcon.value = icon;
-  isSelectingIcon.value = false;
+  updateIsSelectingIcon(false);
 };
 
 // Set Random Starting Icon
@@ -78,10 +82,20 @@ const formValidation = (input: string) => {
 // Set Icon Color
 const { themeColor } = useTheme();
 
+const fileInput = ref();
 const data = ref();
-const testing = (event: { file: Object; data: JSON | Object }) => {
+const addData = (event: { file: Object; data: JSON | Object }) => {
   data.value = event.data;
 };
+
+function clearForm() {
+  fileInput.value.clear();
+  managerName.value = "";
+  data.value = undefined;
+  removeError();
+}
+
+defineExpose({ clearForm, isSelectingIcon, updateIsSelectingIcon });
 </script>
 
 <template>
@@ -107,18 +121,22 @@ const testing = (event: { file: Object; data: JSON | Object }) => {
 
       <div class="grid gap-4 place-items-center">
         <span>Select Icon</span>
-        <BaseButton @click="isSelectingIcon = true">
+        <BaseButton @click="updateIsSelectingIcon(true)">
           <span class="sr-only">Close Popup</span>
           <Icon :name="`mdi:${selectedIcon}`" size="32" :color="themeColor" />
         </BaseButton>
       </div>
 
       <div class="grid place-items-center w-full gap-4">
-        <!--  -->
-        <BaseButton class="w-full" type="submit">Create New Manager</BaseButton>
         <!-- Upload Existing File  -->
-        <!-- <BaseButton class="w-full">Upload Existing File</BaseButton> -->
-        <BaseFileInput accept="application/json" @onUpload="testing" />
+        <BaseFileInput
+          ref="fileInput"
+          accept="application/json"
+          @onUpload="addData"
+        />
+
+        <!-- Create Manager -->
+        <BaseButton class="w-full" type="submit">Create New Manager</BaseButton>
       </div>
     </form>
 
