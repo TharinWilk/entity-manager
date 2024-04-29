@@ -15,6 +15,14 @@ export const useManagerStore = defineStore(
       managers.value.push(manager);
     };
 
+    const removeManager = (indexToRemove: number) => {
+      managers.value.splice(indexToRemove, 1);
+    };
+
+    const getManagerIndex = (manager: Manager) => {
+      return managers.value.indexOf(manager);
+    };
+
     const setActiveManager = (managerName: string) => {
       activeManagerName.value = managerName;
     };
@@ -25,7 +33,14 @@ export const useManagerStore = defineStore(
       );
     });
 
-    return { managers, addManager, setActiveManager, getActiveManager };
+    return {
+      managers,
+      addManager,
+      removeManager,
+      getManagerIndex,
+      setActiveManager,
+      getActiveManager,
+    };
   },
   {
     persist: {
