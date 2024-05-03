@@ -5,6 +5,18 @@ const managerStore = useManagerStore();
 
 const modal = ref();
 
+function handleConfirmationResponse(response: boolean) {
+  // Response is falsy - close modal
+  if (!response) {
+    modal.value.close();
+    return;
+  }
+
+  // Response is truthy - delete manager - close modal
+  deleteManager();
+  modal.value.close();
+}
+
 function deleteManager() {
   // Guard - No active manager
   if (!managerStore.getActiveManager) {
@@ -28,8 +40,8 @@ function deleteManager() {
     <transition name="fade">
       <ul v-if="managerStore.getActiveManager">
         <li>
-          <BaseButton size="xs" class="w-8 h-8" @click="deleteManager">
-            <span class="sr-only">Toggle Color Theme: {{ themeColor }}</span>
+          <BaseButton size="xs" class="w-8 h-8" @click="modal.show()">
+            <span class="sr-only">Delete Manager</span>
             <Icon name="mdi:trash" :color="themeColor" size="24" />
           </BaseButton>
         </li>
@@ -47,9 +59,9 @@ function deleteManager() {
     </ul>
   </header>
 
-  <!-- <BaseDialog ref="modal">
-    <PromptConfirmation />
-  </BaseDialog> -->
+  <LazyBaseDialog ref="modal" :has-header="false">
+    <LazyPromptConfirmation @submit="handleConfirmationResponse" />
+  </LazyBaseDialog>
 </template>
 
 <style scoped>

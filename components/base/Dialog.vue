@@ -4,6 +4,10 @@ defineProps({
     type: String,
     default: "",
   },
+  hasHeader: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const dialog = ref<HTMLDialogElement>();
@@ -74,6 +78,7 @@ const { themeColor } = useTheme();
     >
       <!-- Header Section -->
       <header
+        v-if="hasHeader"
         class="flex justify-between items-center border-b-2 border-white pb-4"
       >
         <!-- Heading -->
