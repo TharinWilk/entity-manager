@@ -43,6 +43,10 @@ function deleteManager() {
           <BaseButton size="xs" class="w-8 h-8" @click="modal.show()">
             <span class="sr-only">Delete Manager</span>
             <Icon name="mdi:trash" :color="themeColor" size="24" />
+            <BaseTooltip right class="top-full !-left-full"
+              >Delete
+              {{ managerStore.getActiveManager.name }} Manager</BaseTooltip
+            >
           </BaseButton>
         </li>
       </ul>
@@ -60,7 +64,11 @@ function deleteManager() {
   </header>
 
   <LazyBaseDialog ref="modal" :has-header="false">
-    <LazyPromptConfirmation @submit="handleConfirmationResponse" />
+    <LazyPromptConfirmation
+      @submit="handleConfirmationResponse"
+      :prompt="`Are you sure you want to delete ${managerStore.getActiveManager?.name}?`"
+      confirm="Delete"
+    />
   </LazyBaseDialog>
 </template>
 

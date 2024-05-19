@@ -18,12 +18,16 @@ const emits = defineEmits(["submit"]);
 </script>
 
 <template>
-  <form class="grid gap-3">
-    <p>{{ prompt }}</p>
+  <form class="grid gap-8">
+    <p class="text-center">{{ prompt }}</p>
 
     <div class="flex gap-4 justify-center">
-      <BaseButton @click="emits('submit', false)">{{ cancel }}</BaseButton>
-      <BaseButton @click="emits('submit', true)">{{ confirm }}</BaseButton>
+      <BaseButton @click="emits('submit', false)" class="w-full">{{
+        cancel
+      }}</BaseButton>
+      <BaseButton @click="emits('submit', true)" class="w-full">{{
+        confirm
+      }}</BaseButton>
     </div>
   </form>
 </template>
