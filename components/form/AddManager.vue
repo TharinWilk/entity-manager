@@ -48,6 +48,7 @@ const handleSubmit = () => {
     icon: selectedIcon.value,
     data: data.value,
   });
+
   closeDialog();
 };
 
