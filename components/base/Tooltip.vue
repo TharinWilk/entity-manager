@@ -23,6 +23,13 @@ tool-tip {
       #0000 61deg
     )
     right / 50% 100% no-repeat;
+  --point-top: conic-gradient(
+      from 150deg at top,
+      #0000,
+      #000 1deg 60deg,
+      #0000 61deg
+    )
+    top / 100% 50% no-repeat;
 
   position: absolute;
   inline-size: max-content;
@@ -79,6 +86,16 @@ tool-tip {
       --tip-direction: var(--point-right);
       inset-inline-end: calc(var(--point-size) * -1);
       border-inline-start: var(--point-size) solid transparent;
+    }
+  }
+
+  &[bottom] {
+    top: calc(100% + 0.5rem);
+
+    &::after {
+      --tip-direction: var(--point-top);
+      inset-block-start: calc(var(--point-size) * -1);
+      border-block-start: var(--point-size) solid transparent;
     }
   }
 }
