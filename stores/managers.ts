@@ -1,12 +1,8 @@
+import type { Manager } from "~/types/manager";
+
 export const useManagerStore = defineStore(
   "Managers",
   () => {
-    type Manager = {
-      name: string;
-      icon: string;
-      data: any;
-    };
-
     const managers = ref<Manager[]>([]);
 
     const activeManagerName = ref();
