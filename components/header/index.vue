@@ -33,8 +33,6 @@ function deleteManager() {
   );
   managerStore.removeManager(indexOfActiveManager);
 }
-
-const form = ref();
 </script>
 
 <template>
@@ -107,11 +105,7 @@ const form = ref();
 
   <Teleport to="#layout">
     <LazyBaseDialog ref="modal" :has-header="false" class="z-10">
-      <FormEditManager
-        v-if="modalContent == 'edit'"
-        ref="form"
-        :dialog="modal"
-      />
+      <FormEditManager v-if="modalContent == 'edit'" :dialog="modal" />
       <LazyPromptConfirmation
         v-else
         @submit="handleConfirmationResponse"

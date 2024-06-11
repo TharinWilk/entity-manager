@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import type { BaseDialog } from "~/types/components";
+
 const props = defineProps({
   dialog: {
-    type: Object as PropType<HTMLDialogElement>,
-    default: undefined,
+    type: Object as PropType<BaseDialog>,
+    required: true,
   },
 });
 
@@ -31,14 +33,26 @@ const selectIcon = (icon: string) => {
   updateIsSelectingIcon(false);
 };
 
-// Set Random Starting Icon
-// watch(
-//   () => manager.name,
-//   (newValue) => {
-//     console.log(newValue);
-//     // selectedIcon.value = manager.icon;
-//   }
-// );
+// Setup Initial Form Data
+const setFormValues = () => {
+  if (!managerStore.getActiveManager) {
+    console.error("No active manager");
+    return;
+  }
+
+  const { name, icon } = managerStore.getActiveManager;
+  managerName.value = name;
+  selectIcon(icon);
+};
+
+onMounted(() => {
+  setFormValues();
+});
+
+watch(
+  () => props.dialog.visible,
+  () => setFormValues()
+);
 
 // Handle Submit
 const handleSubmit = () => {
@@ -46,11 +60,7 @@ const handleSubmit = () => {
 
   if (!isValid) return;
 
-  managerStore.addManager({
-    name: managerName.value,
-    icon: selectedIcon.value,
-    data: data.value,
-  });
+  managerStore.updateManager(managerName.value, selectedIcon.value);
 
   closeDialog();
 };
@@ -70,32 +80,14 @@ const formValidation = (input: string) => {
     return isValid;
   }
 
-  // Existing Name Validation
-  const existingManager = managerStore.managers.find(
-    (manager) => manager.name == managerName.value
-  );
-
-  if (existingManager) {
-    error.value = "Name already exists";
-    return isValid;
-  }
-
   return (isValid = true);
 };
 
 // Set Icon Color
 const { themeColor } = useTheme();
 
-const fileInput = ref();
-const data = ref();
-const addData = (event: { file: Object; data: JSON | Object }) => {
-  data.value = event.data;
-};
-
 function clearForm() {
-  fileInput.value.clear();
   managerName.value = "";
-  data.value = undefined;
   removeError();
 }
 
@@ -133,13 +125,8 @@ defineExpose({ clearForm, isSelectingIcon, updateIsSelectingIcon, selectIcon });
 
       <div class="grid place-items-center w-full gap-4">
         <!-- Upload Existing File  -->
-        <!-- <BaseFileInput
-          ref="fileInput"
-          accept="application/json"
-          @onUpload="addData"
-        /> -->
 
-        <!-- Create Manager -->
+        <!-- Update Manager -->
         <BaseButton class="w-full" type="submit">Update Manager</BaseButton>
       </div>
     </form>

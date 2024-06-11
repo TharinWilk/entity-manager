@@ -11,6 +11,18 @@ export const useManagerStore = defineStore(
       managers.value.push(manager);
     };
 
+    const updateManager = (name: string, icon: string) => {
+      // Get manager index
+      const managerIndex = getManagerIndex(getActiveManager.value);
+
+      // Set new values
+      managers.value[managerIndex].name = name;
+      managers.value[managerIndex].icon = icon;
+
+      // Update Active Manager - Name Changed
+      setActiveManager(name);
+    };
+
     const removeManager = (indexToRemove: number) => {
       managers.value.splice(indexToRemove, 1);
     };
@@ -26,12 +38,13 @@ export const useManagerStore = defineStore(
     const getActiveManager = computed(() => {
       return managers.value.find(
         (manager) => manager.name === activeManagerName.value
-      );
+      ) as Manager;
     });
 
     return {
       managers,
       addManager,
+      updateManager,
       removeManager,
       getManagerIndex,
       setActiveManager,
