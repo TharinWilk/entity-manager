@@ -151,7 +151,7 @@ html:has(dialog[open]) {
 
 @keyframes slide-in-up {
   0% {
-    transform: translateY(50%);
+    transform: translateY(20%);
   }
 }
 </style>

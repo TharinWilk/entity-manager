@@ -4,6 +4,10 @@ const { toggleTheme, themeColor } = useTheme();
 const managerStore = useManagerStore();
 
 const modal = ref();
+const modalContent = ref<string>();
+function updateModalContent(content: string) {
+  modalContent.value = content;
+}
 
 function handleConfirmationResponse(response: boolean) {
   // Response is falsy - close modal
@@ -38,11 +42,47 @@ function deleteManager() {
   >
     <!-- Manger Buttons -->
     <transition name="fade">
-      <ul v-if="managerStore.getActiveManager">
+      <ul v-if="managerStore.getActiveManager" class="flex gap-2">
         <li>
-          <BaseButton size="xs" class="w-8 h-8" @click="modal.show()">
+          <BaseButton size="xs" class="w-8 h-8" @click="">
+            <span class="sr-only">Download Manager</span>
+            <Icon
+              name="mdi:file-download-outline"
+              :color="themeColor"
+              size="24"
+            />
+            <BaseTooltip bottom
+              >Download
+              {{ managerStore.getActiveManager.name }} Manager</BaseTooltip
+            >
+          </BaseButton>
+        </li>
+        <li>
+          <BaseButton
+            size="xs"
+            class="w-8 h-8"
+            @click="updateModalContent('edit'), modal.show()"
+          >
+            <span class="sr-only">Edit Manager</span>
+            <Icon
+              name="mdi:text-box-edit-outline"
+              :color="themeColor"
+              size="24"
+            />
+            <BaseTooltip bottom
+              >Edit
+              {{ managerStore.getActiveManager.name }} Manager</BaseTooltip
+            >
+          </BaseButton>
+        </li>
+        <li>
+          <BaseButton
+            size="xs"
+            class="w-8 h-8"
+            @click="updateModalContent('delete'), modal.show()"
+          >
             <span class="sr-only">Delete Manager</span>
-            <Icon name="mdi:trash" :color="themeColor" size="24" />
+            <Icon name="mdi:trash-outline" :color="themeColor" size="24" />
             <BaseTooltip bottom
               >Delete
               {{ managerStore.getActiveManager.name }} Manager</BaseTooltip
@@ -63,13 +103,17 @@ function deleteManager() {
     </ul>
   </header>
 
-  <LazyBaseDialog ref="modal" :has-header="false">
-    <LazyPromptConfirmation
-      @submit="handleConfirmationResponse"
-      :prompt="`Are you sure you want to delete ${managerStore.getActiveManager?.name}?`"
-      confirm="Delete"
-    />
-  </LazyBaseDialog>
+  <Teleport to="#layout">
+    <LazyBaseDialog ref="modal" :has-header="false" class="z-10">
+      <FormEditManager v-if="modalContent == 'edit'" :dialog="modal" />
+      <LazyPromptConfirmation
+        v-else
+        @submit="handleConfirmationResponse"
+        :prompt="`Are you sure you want to delete ${managerStore.getActiveManager?.name}?`"
+        confirm="Delete"
+      />
+    </LazyBaseDialog>
+  </Teleport>
 </template>
 
 <style scoped>

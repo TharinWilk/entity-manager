@@ -62,7 +62,7 @@ watch(
   <ClientOnly>
     <Teleport to="#layout">
       <LazyBaseDialog ref="modal" title="Create New Manager">
-        <FormAddManager ref="form" :dialog="modal" />
+        <LazyFormAddManager ref="form" :dialog="modal" />
       </LazyBaseDialog>
     </Teleport>
   </ClientOnly>
