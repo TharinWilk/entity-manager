@@ -1,4 +1,5 @@
 import type { Manager } from "~/types/manager";
+import { downloadCSV } from "~/utils/json-conversions/csv";
 
 export const useManagerStore = defineStore(
   "Managers",
@@ -41,6 +42,17 @@ export const useManagerStore = defineStore(
       ) as Manager;
     });
 
+    const downloadManager = () => {
+      if (!getActiveManager.value) {
+        console.error("No data to download.");
+        return;
+      }
+
+      const { name, data } = getActiveManager.value;
+
+      downloadCSV([data], name);
+    };
+
     return {
       managers,
       addManager,
@@ -49,6 +61,7 @@ export const useManagerStore = defineStore(
       getManagerIndex,
       setActiveManager,
       getActiveManager,
+      downloadManager,
     };
   },
   {
