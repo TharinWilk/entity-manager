@@ -44,7 +44,11 @@ function deleteManager() {
     <transition name="fade">
       <ul v-if="managerStore.getActiveManager" class="flex gap-2">
         <li>
-          <BaseButton size="xs" class="w-8 h-8" @click="">
+          <BaseButton
+            size="xs"
+            class="w-8 h-8"
+            @click="managerStore.downloadManager"
+          >
             <span class="sr-only">Download Manager</span>
             <Icon
               name="mdi:file-download-outline"
