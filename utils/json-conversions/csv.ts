@@ -62,7 +62,7 @@ function ensureRowExists(csvRows: string[][], index: number) {
   }
 }
 
-export function downloadCSV(jsonObject: object[], filename: string): void {
+export function downloadCSV(jsonObject: object, filename: string): void {
   // Convert JSON to CSV
   const csvContent = convertJSONToHierarchicalCSV(jsonObject);
 

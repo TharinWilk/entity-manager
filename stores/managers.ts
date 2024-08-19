@@ -50,7 +50,7 @@ export const useManagerStore = defineStore(
 
       const { name, data } = getActiveManager.value;
 
-      downloadCSV([data], name);
+      downloadCSV(data, name);
     };
 
     return {
