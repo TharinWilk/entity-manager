@@ -28,8 +28,8 @@ function processObject(
       // Recursively process nested objects
       processObject(csvRows, level + 1, subKey, value);
     } else if (Array.isArray(value)) {
-      // Process arrays
-      processArray(csvRows, level + 1, subKey, value);
+      // Process arrays and spread values across the same row
+      processArrayInSameRow(csvRows, level + 1, subKey, value);
     } else {
       ensureRowExists(csvRows, csvRows.length);
       row = csvRows[csvRows.length - 1];
@@ -39,18 +39,19 @@ function processObject(
   });
 }
 
-// Helper function to process arrays
-function processArray(
+// Process arrays by placing items in the same row across different columns
+function processArrayInSameRow(
   csvRows: string[][],
   level: number,
   key: string,
   arr: any[]
 ) {
-  arr.forEach((item) => {
-    ensureRowExists(csvRows, csvRows.length);
-    let row = csvRows[csvRows.length - 1];
-    row[level] = key;
-    row[level + 1] = item;
+  ensureRowExists(csvRows, csvRows.length);
+  let row = csvRows[csvRows.length - 1];
+
+  row[level] = key;
+  arr.forEach((item, index) => {
+    row[level + 1 + index] = item;
   });
 }
 
