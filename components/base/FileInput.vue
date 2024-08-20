@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { convertCSVToJSON } from "~/utils/json-conversions/csv";
-
 defineOptions({
   inheritAttrs: false,
 });
