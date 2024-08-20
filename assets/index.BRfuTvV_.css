@@ -1,0 +1,1 @@
+.dragging[data-v-084de334]{opacity:0}.card-enter-active,.card-leave-active{transition:0s}.card-enter-from,.card-leave-to{opacity:0;position:absolute;scale:0}.card-move{--transition-speed:0ms;transition:transform 0ms ease;transition:transform var(--transition-speed) ease}@media (prefers-reduced-motion:no-preference){.card-move{--transition-speed:.3s}}
