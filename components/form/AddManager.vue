@@ -49,6 +49,7 @@ const handleSubmit = () => {
     data: data.value,
   });
 
+  managerStore.setActiveManager(managerName.value);
   closeDialog();
 };
 
@@ -132,7 +133,7 @@ defineExpose({ clearForm, isSelectingIcon, updateIsSelectingIcon });
         <!-- Upload Existing File  -->
         <BaseFileInput
           ref="fileInput"
-          accept="application/json"
+          accept="application/json, text/csv"
           @onUpload="addData"
         />
 
