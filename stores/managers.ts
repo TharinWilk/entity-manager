@@ -33,7 +33,6 @@ export const useManagerStore = defineStore(
 
     const setActiveManager = (managerName: string) => {
       activeManagerName.value = managerName;
-      console.log(managerName, activeManagerName.value);
     };
 
     const getActiveManager = computed(() => {
