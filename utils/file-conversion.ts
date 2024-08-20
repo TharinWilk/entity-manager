@@ -83,3 +83,40 @@ export function downloadCSV(jsonObject: object, filename: string): void {
   // Clean up the URL object
   URL.revokeObjectURL(url);
 }
+
+export function convertCSVToJSON(csvString: string): any {
+  // Convert CVS into rows of comma separated data
+  const rows = csvString
+    .trim()
+    .split("\n")
+    .map((row) => row.split(","));
+
+  // Initialize json object and track hierarchy of data
+  const jsonObject: any = {};
+  const stack: any[] = [{ obj: jsonObject, key: null }];
+
+  rows.forEach((row) => {
+    // Determine the indentation level by finding the first non-empty cell
+    let level = row.findIndex((cell) => cell.trim() !== "");
+    const key = row[level].trim(); // Get the key at the current level
+    const value = row.slice(level + 1).filter((cell) => cell.trim() !== ""); // Extract values in subsequent columns
+
+    // Adjust the stack to the current level
+    stack.length = level + 1;
+
+    // Handle object creation or value assignment
+    if (value.length === 0) {
+      // Create a new object
+      stack[level].obj[key] = {};
+      stack.push({ obj: stack[level].obj[key], key });
+    } else if (value.length === 1) {
+      // Assign a single value
+      stack[level].obj[key] = value[0];
+    } else {
+      // Assign an array of values
+      stack[level].obj[key] = value;
+    }
+  });
+
+  return jsonObject;
+}

@@ -45,7 +45,11 @@ const handleChange = async (event: Event) => {
     const fileContent = e.target?.result;
     if (typeof fileContent === "string") {
       try {
-        data.value = JSON.parse(fileContent);
+        if (file.value.type == "text/csv") {
+          data.value = convertCSVToJSON(fileContent);
+        } else {
+          data.value = JSON.parse(fileContent);
+        }
         emits("onUpload", { file: file.value, data: data.value });
       } catch (error) {
         console.error("Error parsing JSON:", error);

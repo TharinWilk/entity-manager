@@ -1,5 +1,4 @@
 import type { Manager } from "~/types/manager";
-import { downloadCSV } from "~/utils/json-conversions/csv";
 
 export const useManagerStore = defineStore(
   "Managers",
