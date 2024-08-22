@@ -59,37 +59,43 @@ watch(isOpen, () => {
         </div>
 
         <!-- Button List -->
-        <transition-group
-          tag="ul"
-          class="relative grid gap-4 w-full"
-          name="fade"
-          appear
-        >
-          <!-- Data Section Buttons -->
-          <li v-for="item in filteredSearchResults" :key="item" class="w-full">
-            <BaseButton
-              size="xs"
-              class="text-base w-full"
-              :disabled="!isOpen"
-              @click="dataManagerStore.setFilter(item)"
+        <ClientOnly>
+          <transition-group
+            tag="ul"
+            class="relative grid gap-4 w-full"
+            name="fade"
+            appear
+          >
+            <!-- Data Section Buttons -->
+            <li
+              v-for="item in filteredSearchResults"
+              :key="item"
+              class="w-full"
             >
-              {{ item }}
-            </BaseButton>
-          </li>
+              <BaseButton
+                size="xs"
+                class="text-base w-full"
+                :disabled="!isOpen"
+                @click="dataManagerStore.setFilter(item)"
+              >
+                {{ item }}
+              </BaseButton>
+            </li>
 
-          <!-- Activate Add Data Section Button -->
-          <li class="w-full" key="addNewEntity">
-            <BaseButton
-              size="xs"
-              class="text-base w-full"
-              :disabled="!isOpen"
-              @click="openModal"
-            >
-              <span class="sr-only">Add</span>
-              <Icon name="mdi:plus" size="24" :color="themeColor" />
-            </BaseButton>
-          </li>
-        </transition-group>
+            <!-- Activate Add Data Section Button -->
+            <li class="w-full" key="addNewEntity">
+              <BaseButton
+                size="xs"
+                class="text-base w-full"
+                :disabled="!isOpen"
+                @click="openModal"
+              >
+                <span class="sr-only">Add</span>
+                <Icon name="mdi:plus" size="24" :color="themeColor" />
+              </BaseButton>
+            </li>
+          </transition-group>
+        </ClientOnly>
       </div>
     </div>
 

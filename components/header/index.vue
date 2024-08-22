@@ -107,17 +107,19 @@ function deleteManager() {
     </ul>
   </header>
 
-  <Teleport to="#layout">
-    <LazyBaseDialog ref="modal" :has-header="false" class="z-10">
-      <FormEditManager v-if="modalContent == 'edit'" :dialog="modal" />
-      <LazyPromptConfirmation
-        v-else
-        @submit="handleConfirmationResponse"
-        :prompt="`Are you sure you want to delete ${managerStore.getActiveManager?.name}?`"
-        confirm="Delete"
-      />
-    </LazyBaseDialog>
-  </Teleport>
+  <ClientOnly>
+    <Teleport to="#layout">
+      <LazyBaseDialog ref="modal" :has-header="false" class="z-10">
+        <FormEditManager v-if="modalContent == 'edit'" :dialog="modal" />
+        <LazyPromptConfirmation
+          v-else
+          @submit="handleConfirmationResponse"
+          :prompt="`Are you sure you want to delete ${managerStore.getActiveManager?.name}?`"
+          confirm="Delete"
+        />
+      </LazyBaseDialog>
+    </Teleport>
+  </ClientOnly>
 </template>
 
 <style scoped>
