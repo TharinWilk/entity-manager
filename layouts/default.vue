@@ -20,7 +20,10 @@
     </aside>
 
     <!-- Main -->
-    <div id="content" class="relative">
+    <div
+      id="content"
+      class="relative col-start-2 col-span-1 row-span-1 row-start-2"
+    >
       <slot />
     </div>
 
