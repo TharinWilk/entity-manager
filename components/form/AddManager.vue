@@ -46,7 +46,7 @@ const handleSubmit = () => {
   managerStore.addManager({
     name: managerName.value,
     icon: selectedIcon.value,
-    data: data.value,
+    data: data.value || {},
   });
 
   managerStore.setActiveManager(managerName.value);
