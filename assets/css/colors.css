@@ -10,19 +10,19 @@
   --text-dark-accent: hsl(var(--brand-hue) 95% 40%);
 
   /* Light Text Colors */
-  --text-light-primary: hsl(var(--brand-hue) var(--brand-saturation) 10%);
+  --text-light-primary: hsl(var(--brand-hue) var(--brand-saturation) 7%);
   --text-light-secondary: hsl(var(--brand-hue) 7.5% 30%);
   --text-light-accent: hsl(var(--brand-hue) 95% 20%);
 
   /* Dark Surface Colors */
-  --surface-dark-default: hsl(var(--brand-hue) 10% 10%);
+  --surface-dark-default: hsl(var(--brand-hue) 5% 13%);
   --surface-dark-darkened: hsl(var(--brand-hue) 10% 5%);
   --surface-dark-lightened: hsl(var(--brand-hue) 5% 20%);
 
   /* Light Surface Colors */
-  --surface-light-default: hsl(var(--brand-hue) 2% 93%);
+  --surface-light-default: hsl(var(--brand-hue) 2% 90%);
   --surface-light-darkened: hsl(var(--brand-hue) 4% 85%);
-  --surface-light-lightened: hsl(var(--brand-hue) 2% 96%);
+  --surface-light-lightened: hsl(var(--brand-hue) 2% 95%);
 
   /* Dark Shadows */
   --shadow-dark-darkened: color-mix(
