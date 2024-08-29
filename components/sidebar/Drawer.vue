@@ -4,6 +4,7 @@ const isOpen = ref(true);
 
 // Handle Search Logic
 const dataManagerStore = useDataManagerStore();
+const { filter } = storeToRefs(dataManagerStore);
 const search = ref("");
 
 const filteredSearchResults = computed(() => {
@@ -74,8 +75,14 @@ watch(isOpen, () => {
             >
               <BaseButton
                 size="xs"
-                class="text-base w-full"
                 :disabled="!isOpen"
+                :aria-selected="filter === item"
+                class="text-base w-full"
+                :style="
+                  filter === item
+                    ? 'color: var(--text-accent); --box-shadow-color: var(--text-accent)'
+                    : ''
+                "
                 @click="dataManagerStore.setFilter(item)"
               >
                 {{ item }}

@@ -1,11 +1,13 @@
 <script setup lang="ts">
-const managerData = useDataManagerStore();
+const managerStore = useManagerStore();
+const { getActiveManager } = storeToRefs(managerStore);
+const managerDataStore = useDataManagerStore();
 
 const dataList = ref<HTMLElement>();
 const isTransitioning = ref(false);
 
 const handleDragSorting = (event: MouseEvent) => {
-  if (!dataList.value || !managerData.filter) {
+  if (!dataList.value || !managerDataStore.filter) {
     return;
   }
 
@@ -45,7 +47,8 @@ const handleDragSorting = (event: MouseEvent) => {
   }
 };
 
-const { data, updateDataIndexing, updateStoredData } = useData(managerData);
+const { data, updateDataIndexing, updateStoredData } =
+  useData(managerDataStore);
 
 function useData(inputData: any) {
   const data = ref(inputData.filteredData);
@@ -82,7 +85,7 @@ function useData(inputData: any) {
 
   const updateStoredData = () => {
     setTimeout(() => {
-      managerData.updateData(data.value);
+      managerDataStore.updateData(data.value);
     }, 300);
   };
 
@@ -92,7 +95,7 @@ function useData(inputData: any) {
 
 <template>
   <main class="grid place-items-center p-4 sm:p-8 lg:p-12 gap-8">
-    <h1 class="text-4xl">Main Content</h1>
+    <h1 class="text-4xl">{{ getActiveManager?.name || "Hello" }}</h1>
 
     <!-- Cards -->
     <section
@@ -106,7 +109,7 @@ function useData(inputData: any) {
           :key="key"
           :data="{ value, key }"
           :data-key="key"
-          :draggable="managerData.filter ? true : false"
+          :draggable="managerDataStore.filter ? true : false"
         />
       </transition-group>
     </section>

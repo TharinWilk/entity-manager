@@ -47,12 +47,13 @@ const size = computed(() => {
 .base-button {
   --size: 1rem;
   --bg-color: var(--surface-default);
+  --box-shadow-color: var(--surface-shadow-bottom);
 
   display: grid;
   place-items: center;
   padding: calc(var(--size) / 4);
 
-  box-shadow: 0px 0px 2px 0px var(--surface-shadow-bottom);
+  box-shadow: 0px 0px 2px 0px var(--box-shadow-color);
   border-radius: 0.5rem;
 
   background-color: var(--bg-color);
@@ -62,7 +63,7 @@ const size = computed(() => {
 
   &:focus-visible {
     outline-offset: 2px;
-    outline: 3px solid var(--surface-shadow-bottom);
+    outline: 3px solid var(--box-shadow-color);
   }
 
   &:focus-visible:active {
