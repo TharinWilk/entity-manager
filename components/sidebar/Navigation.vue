@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Manager Store Logic
 const managerStore = useManagerStore();
-const { managers } = storeToRefs(managerStore);
+const { managers, getActiveManager } = storeToRefs(managerStore);
 const dataManagerStore = useDataManagerStore();
 
 // Handle Dialog Logic
@@ -48,10 +48,24 @@ watch(
     <BaseButton
       v-for="manager in managers"
       size="xs"
+      :style="
+        getActiveManager?.name === manager.name
+          ? '--box-shadow-color: var(--text-accent)'
+          : ''
+      "
+      :aria-selected="getActiveManager?.name === manager.name"
       @click="handleClick(manager)"
     >
       <span class="sr-only">{{ manager.name }}</span>
-      <Icon :name="`mdi:${manager.icon}`" size="24" :color="themeColor" />
+      <Icon
+        :name="`mdi:${manager.icon}`"
+        size="24"
+        :color="
+          getActiveManager?.name === manager.name
+            ? 'var(--text-accent)'
+            : themeColor.value
+        "
+      />
 
       <!-- Button Tooltip -->
       <BaseTooltip right>{{ manager.name }}</BaseTooltip>
