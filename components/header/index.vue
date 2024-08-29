@@ -2,6 +2,10 @@
 const { toggleTheme, themeColor } = useTheme();
 
 const managerStore = useManagerStore();
+const { getActiveManager } = storeToRefs(managerStore);
+
+const dataStore = useDataManagerStore();
+const { data, filter } = storeToRefs(dataStore);
 
 const modal = ref();
 const modalContent = ref<string>();
@@ -17,32 +21,51 @@ function handleConfirmationResponse(response: boolean) {
   }
 
   // Response is truthy - delete manager - close modal
-  deleteManager();
+  if (filter.value) {
+    deleteSection();
+  } else {
+    deleteManager();
+  }
+
   modal.value.close();
 }
 
 function deleteManager() {
   // Guard - No active manager
-  if (!managerStore.getActiveManager) {
+  if (!getActiveManager.value) {
     throw Error("Manager could not be deleted. No active manager found");
   }
 
   // Find index of active manager - remove manager
   const indexOfActiveManager = managerStore.getManagerIndex(
-    managerStore.getActiveManager
+    getActiveManager.value
   );
   managerStore.removeManager(indexOfActiveManager);
+}
+
+function deleteSection() {
+  // Guard - No active manager
+  if (!getActiveManager.value) {
+    throw Error("Section could not be deleted. No active manager found");
+  }
+
+  if (!data.value || !data.value[filter.value]) {
+    throw Error("Section could not be deleted. Data not found");
+  }
+
+  delete data.value[filter.value];
+  dataStore.setFilter("");
 }
 </script>
 
 <template>
   <header
     class="header text-2xl text-center p-3 border-color flex"
-    :class="managerStore.getActiveManager ? 'justify-between' : 'justify-end'"
+    :class="getActiveManager ? 'justify-between' : 'justify-end'"
   >
     <!-- Manger Buttons -->
     <transition name="fade">
-      <ul v-if="managerStore.getActiveManager" class="flex gap-2">
+      <ul v-if="getActiveManager" class="flex gap-2">
         <li>
           <BaseButton
             size="xs"
@@ -56,8 +79,7 @@ function deleteManager() {
               size="24"
             />
             <BaseTooltip bottom
-              >Download
-              {{ managerStore.getActiveManager.name }} Manager</BaseTooltip
+              >Download {{ getActiveManager.name }} Manager</BaseTooltip
             >
           </BaseButton>
         </li>
@@ -74,8 +96,7 @@ function deleteManager() {
               size="24"
             />
             <BaseTooltip bottom
-              >Edit
-              {{ managerStore.getActiveManager.name }} Manager</BaseTooltip
+              >Edit {{ getActiveManager.name }} Manager</BaseTooltip
             >
           </BaseButton>
         </li>
@@ -88,8 +109,7 @@ function deleteManager() {
             <span class="sr-only">Delete Manager</span>
             <Icon name="mdi:trash-outline" :color="themeColor" size="24" />
             <BaseTooltip bottom
-              >Delete
-              {{ managerStore.getActiveManager.name }} Manager</BaseTooltip
+              >Delete {{ getActiveManager.name }} Manager</BaseTooltip
             >
           </BaseButton>
         </li>
@@ -114,7 +134,9 @@ function deleteManager() {
         <LazyPromptConfirmation
           v-else
           @submit="handleConfirmationResponse"
-          :prompt="`Are you sure you want to delete ${managerStore.getActiveManager?.name}?`"
+          :prompt="`Are you sure you want to delete ${
+            filter ? filter : getActiveManager?.name
+          }?`"
           confirm="Delete"
         />
       </LazyBaseDialog>
