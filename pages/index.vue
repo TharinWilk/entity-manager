@@ -100,10 +100,15 @@ function useData(inputData: any) {
     <!-- Cards -->
     <section
       ref="dataList"
+      class="w-full"
       @dragover="handleDragSorting"
       @dragend="updateStoredData"
     >
-      <transition-group name="card" tag="div" class="grid grid-cols-2 gap-8">
+      <transition-group
+        name="card"
+        tag="div"
+        class="grid gap-8 grid-cols-1 sm:grid-cols-[repeat(auto-fit,_minmax(400px,_1fr))] justify-center"
+      >
         <BaseCard
           v-for="(value, key) of data"
           :key="key"
