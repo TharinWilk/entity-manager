@@ -70,7 +70,7 @@ function deleteSection() {
           <BaseButton
             size="xs"
             class="w-8 h-8"
-            @click="managerStore.downloadManager"
+            @click="updateModalContent('download'), modal.show()"
           >
             <span class="sr-only">Download Manager</span>
             <Icon
@@ -129,8 +129,33 @@ function deleteSection() {
 
   <ClientOnly>
     <Teleport to="#layout">
-      <LazyBaseDialog ref="modal" :has-header="false" class="z-10">
-        <FormEditManager v-if="modalContent == 'edit'" :dialog="modal" />
+      <LazyBaseDialog ref="modal" :has-header="false" class="z-50">
+        <!-- Download Modal-->
+        <form v-if="modalContent == 'download'" class="grid gap-8">
+          <p class="text-center text-balance">
+            Please select the format that you wish to download.
+          </p>
+
+          <div class="flex flex-col gap-4 justify-center">
+            <!-- PDF Button -->
+            <BaseButton autofocus @click="managerStore.downloadManager('PDF')"
+              >Download as PDF</BaseButton
+            >
+
+            <!-- JSON Button -->
+            <BaseButton @click="managerStore.downloadManager('JSON')"
+              >Download as JSON</BaseButton
+            >
+
+            <!-- Cancel Button -->
+            <BaseButton @click="modal.close()">Cancel</BaseButton>
+          </div>
+        </form>
+
+        <!-- Edit Modal -->
+        <FormEditManager v-else-if="modalContent == 'edit'" :dialog="modal" />
+
+        <!-- Delete Modal -->
         <LazyPromptConfirmation
           v-else
           @submit="handleConfirmationResponse"

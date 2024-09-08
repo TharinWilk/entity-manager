@@ -19,10 +19,10 @@ const emits = defineEmits(["submit"]);
 
 <template>
   <form class="grid gap-8">
-    <p class="text-center">{{ prompt }}</p>
+    <p class="text-center text-balance">{{ prompt }}</p>
 
     <div class="flex gap-4 justify-center">
-      <BaseButton @click="emits('submit', false)" class="w-full">{{
+      <BaseButton autofocus @click="emits('submit', false)" class="w-full">{{
         cancel
       }}</BaseButton>
       <BaseButton @click="emits('submit', true)" class="w-full">{{
