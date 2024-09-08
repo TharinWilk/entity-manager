@@ -30,6 +30,20 @@ tool-tip {
       #0000 61deg
     )
     top / 100% 50% no-repeat;
+  --point-top-left: conic-gradient(
+      from 150deg at 16px top,
+      #0000,
+      #000 1deg 60deg,
+      #0000 61deg
+    )
+    top / 100% 50% no-repeat;
+  --point-top-right: conic-gradient(
+      from 150deg at calc(100% - 16px) top,
+      #0000,
+      #000 1deg 60deg,
+      #0000 61deg
+    )
+    top / 100% 50% no-repeat;
 
   position: absolute;
   inline-size: max-content;
@@ -89,13 +103,31 @@ tool-tip {
     }
   }
 
-  &[bottom] {
+  &[bottom],
+  &[bottom-right],
+  &[bottom-left] {
     top: calc(100% + 0.5rem);
 
     &::after {
       --tip-direction: var(--point-top);
       inset-block-start: calc(var(--point-size) * -1);
       border-block-start: var(--point-size) solid transparent;
+    }
+  }
+
+  &[bottom-right] {
+    left: 0;
+
+    &::after {
+      --tip-direction: var(--point-top-left);
+    }
+  }
+
+  &[bottom-left] {
+    right: 0;
+
+    &::after {
+      --tip-direction: var(--point-top-right);
     }
   }
 }
