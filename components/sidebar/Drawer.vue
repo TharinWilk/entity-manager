@@ -1,6 +1,20 @@
 <script setup lang="ts">
 // Handle Drawer Logic
+const drawer = ref<HTMLElement>();
 const isOpen = ref(true);
+
+onClickOutside(
+  () => drawer.value?.parentElement,
+  () => {
+    const windowRef = toRef(window);
+    const isSmallScreen = windowRef.value.innerWidth < 768;
+    const isDialogOpen = document.querySelector("dialog[open]");
+
+    if (isOpen.value && isSmallScreen && !isDialogOpen) {
+      isOpen.value = false;
+    }
+  }
+);
 
 // Handle Search Logic
 const dataManagerStore = useDataManagerStore();
@@ -39,6 +53,7 @@ watch(isOpen, () => {
 <template>
   <!-- Drawer -->
   <section
+    ref="drawer"
     :class="
       isOpen
         ? 'md:grid-cols-[1fr] translate-x-0'
@@ -111,7 +126,7 @@ watch(isOpen, () => {
       v-if="!isFixedButtonVisible"
       size="xs"
       class="absolute w-8 h-8 !rounded-full left-full -translate-x-4 top-1/2 -translate-y-1/2"
-      @click="isOpen = !isOpen"
+      @click.stop="isOpen = !isOpen"
     >
       <span class="sr-only"
         >{{ isOpen ? "Close" : "Open" }} Sidebar Drawer</span
@@ -135,7 +150,7 @@ watch(isOpen, () => {
     v-if="isFixedButtonVisible"
     size="xs"
     class="absolute w-8 h-8 !rounded-full left-full -translate-x-4 top-1/2 -translate-y-1/2 z-10"
-    @click="isOpen = !isOpen"
+    @click.stop="isOpen = !isOpen"
   >
     <span class="sr-only">{{ isOpen ? "Close" : "Open" }} Sidebar Drawer</span>
     <Icon
