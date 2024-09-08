@@ -78,7 +78,7 @@ function deleteSection() {
               :color="themeColor"
               size="24"
             />
-            <BaseTooltip bottom
+            <BaseTooltip bottom-right
               >Download {{ getActiveManager.name }} Manager</BaseTooltip
             >
           </BaseButton>
@@ -95,7 +95,7 @@ function deleteSection() {
               :color="themeColor"
               size="24"
             />
-            <BaseTooltip bottom
+            <BaseTooltip bottom-right
               >Edit {{ getActiveManager.name }} Manager</BaseTooltip
             >
           </BaseButton>
@@ -122,6 +122,7 @@ function deleteSection() {
         <BaseButton size="xs" class="w-8 h-8" @click="toggleTheme">
           <span class="sr-only">Toggle Color Theme: {{ themeColor }}</span>
           <Icon name="mdi:sun-moon-stars" :color="themeColor" size="24" />
+          <BaseTooltip bottom-left>Toggle light/Dark Mode</BaseTooltip>
         </BaseButton>
       </li>
     </ul>
