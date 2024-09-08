@@ -41,7 +41,7 @@ export const useManagerStore = defineStore(
       ) as Manager;
     });
 
-    const downloadManager = () => {
+    const downloadManager = (format: "JSON" | "PDF" = "PDF") => {
       if (!getActiveManager.value) {
         console.error("No data to download.");
         return;
@@ -49,7 +49,11 @@ export const useManagerStore = defineStore(
 
       const { name, data } = getActiveManager.value;
 
-      downloadCSV(data, name);
+      if (format === "PDF") {
+        downloadFile(data, name, "csv");
+      } else {
+        downloadFile(data, name, "json");
+      }
     };
 
     return {

@@ -62,12 +62,28 @@ function ensureRowExists(csvRows: string[][], index: number) {
   }
 }
 
-export function downloadCSV(jsonObject: object, filename: string): void {
-  // Convert JSON to CSV
-  const csvContent = convertJSONToHierarchicalCSV(jsonObject);
+export function downloadFile(
+  jsonObject: object,
+  filename: string,
+  fileType: "json" | "csv"
+): void {
+  let content: string;
+  let blobType: string;
 
-  // Create a Blob from the CSV string
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  if (fileType === "csv") {
+    // Convert JSON to CSV
+    content = convertJSONToHierarchicalCSV(jsonObject);
+    blobType = "text/csv;charset=utf-8;";
+  } else if (fileType === "json") {
+    // Convert object to JSON string
+    content = JSON.stringify(jsonObject, null, 2);
+    blobType = "application/json;charset=utf-8;";
+  } else {
+    throw new Error("Unsupported file type");
+  }
+
+  // Create a Blob from the content
+  const blob = new Blob([content], { type: blobType });
 
   // Create a URL for the Blob
   const url = URL.createObjectURL(blob);
