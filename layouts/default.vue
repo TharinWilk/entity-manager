@@ -10,13 +10,11 @@
 
     <!-- Aside -->
     <aside
-      class="sticky top-0 h-screen z-10 flex col-span-1 col-start-1 row-start-1 row-span-3"
+      class="sticky top-0 h-screen z-50 flex col-span-1 col-start-1 row-start-1 row-span-3 isolate"
     >
       <SidebarNavigation />
 
       <SidebarDrawer />
-
-      <div id="aside"></div>
     </aside>
 
     <!-- Main -->
