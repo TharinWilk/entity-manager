@@ -66,6 +66,12 @@ export const useDataManagerStore = defineStore("data manager", () => {
     data.value[filter.value] = newData;
   };
 
+  const addNewDataField = (newField: string) => {
+    if (!data.value || !filter.value) return;
+
+    data.value[filter.value][newField] = {};
+  };
+
   return {
     data,
     getSections,
@@ -74,5 +80,6 @@ export const useDataManagerStore = defineStore("data manager", () => {
     setFilter,
     filteredData,
     updateData,
+    addNewDataField,
   };
 });
