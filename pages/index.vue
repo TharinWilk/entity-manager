@@ -99,6 +99,7 @@ function useData(inputData: any) {
 
     <!-- Cards -->
     <section
+      v-if="getActiveManager"
       ref="dataList"
       class="w-full"
       @dragover="handleDragSorting"
@@ -115,6 +116,11 @@ function useData(inputData: any) {
           :data="{ value, key }"
           :data-key="key"
           :draggable="managerDataStore.filter ? true : false"
+        />
+
+        <ButtonAddCard
+          key="add-button"
+          @click="managerDataStore.addNewDataField('')"
         />
       </transition-group>
     </section>

@@ -18,11 +18,13 @@
   --surface-dark-default: hsl(var(--brand-hue) 5% 13%);
   --surface-dark-darkened: hsl(var(--brand-hue) 10% 5%);
   --surface-dark-lightened: hsl(var(--brand-hue) 5% 20%);
+  --surface-dark-lightest: hsl(var(--brand-hue) 5% 25%);
 
   /* Light Surface Colors */
   --surface-light-default: hsl(var(--brand-hue) 2% 90%);
   --surface-light-darkened: hsl(var(--brand-hue) 4% 85%);
   --surface-light-lightened: hsl(var(--brand-hue) 2% 95%);
+  --surface-light-lightest: hsl(var(--brand-hue) 0% 100%);
 
   /* Dark Shadows */
   --shadow-dark-darkened: color-mix(
@@ -64,6 +66,7 @@
   --surface-default: var(--surface-light-default);
   --surface-darkened: var(--surface-light-darkened);
   --surface-lightened: var(--surface-light-lightened);
+  --surface-lightest: var(--surface-light-lightest);
   --surface-shadow-top: var(--shadow-light-lightened);
   --surface-shadow-bottom: var(--shadow-light-darkened);
 
@@ -81,6 +84,7 @@
     --surface-default: var(--surface-dark-default);
     --surface-darkened: var(--surface-dark-darkened);
     --surface-lightened: var(--surface-dark-lightened);
+    --surface-lightest: var(--surface-dark-lightest);
     --surface-shadow-top: var(--shadow-dark-darkened);
     --surface-shadow-bottom: var(--shadow-dark-lightened);
 
@@ -98,6 +102,7 @@
   --surface-default: var(--surface-light-default);
   --surface-darkened: var(--surface-light-darkened);
   --surface-lightened: var(--surface-light-lightened);
+  --surface-lightest: var(--surface-light-lightest);
   --surface-shadow-top: var(--shadow-light-lightened);
   --surface-shadow-bottom: var(--shadow-light-darkened);
 
@@ -114,6 +119,7 @@
   --surface-default: var(--surface-dark-default);
   --surface-darkened: var(--surface-dark-darkened);
   --surface-lightened: var(--surface-dark-lightened);
+  --surface-lightest: var(--surface-dark-lightest);
   --surface-shadow-top: var(--shadow-dark-darkened);
   --surface-shadow-bottom: var(--shadow-dark-lightened);
 }

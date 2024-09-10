@@ -124,7 +124,9 @@ defineExpose({ clearForm, isSelectingIcon, updateIsSelectingIcon });
       <div class="grid gap-4 place-items-center">
         <span>Select Icon</span>
         <BaseButton @click="updateIsSelectingIcon(true)">
-          <span class="sr-only">Close Popup</span>
+          <span class="sr-only"
+            >Select a popup. Current icon: {{ selectedIcon }}</span
+          >
           <Icon :name="`mdi:${selectedIcon}`" size="32" :color="themeColor" />
         </BaseButton>
       </div>
