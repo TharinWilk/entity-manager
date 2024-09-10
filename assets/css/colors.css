@@ -24,7 +24,7 @@
   --surface-light-default: hsl(var(--brand-hue) 2% 90%);
   --surface-light-darkened: hsl(var(--brand-hue) 4% 85%);
   --surface-light-lightened: hsl(var(--brand-hue) 2% 95%);
-  --surface-light-lightened: hsl(var(--brand-hue) 2% 98%);
+  --surface-light-lightest: hsl(var(--brand-hue) 0% 100%);
 
   /* Dark Shadows */
   --shadow-dark-darkened: color-mix(
