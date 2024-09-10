@@ -118,16 +118,10 @@ function useData(inputData: any) {
           :draggable="managerDataStore.filter ? true : false"
         />
 
-        <button
+        <ButtonAddCard
           key="add-button"
-          class="w-full bg-[var(--surface-lightened)] p-2 rounded-lg duration-500 relative hover:bg-[var(--surface-lightest)]"
           @click="managerDataStore.addNewDataField('')"
-        >
-          <span class="sr-only">Add a new card</span>
-          <div class="py-2">
-            <Icon name="mdi:plus-circle" class="h-12 w-12" />
-          </div>
-        </button>
+        />
       </transition-group>
     </section>
   </main>
