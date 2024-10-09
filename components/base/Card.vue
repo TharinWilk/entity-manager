@@ -55,7 +55,12 @@ const togglePopover = () => {
           <BaseButton size="xs" class="text-base" autofocus
             >Duplicate</BaseButton
           >
-          <BaseButton size="xs" class="text-base">Delete</BaseButton>
+          <BaseButton
+            size="xs"
+            class="text-base"
+            @click="$emit('delete', data.key)"
+            >Delete</BaseButton
+          >
         </div>
       </LazyBasePopover>
     </div>

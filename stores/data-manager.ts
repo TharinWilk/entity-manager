@@ -72,6 +72,41 @@ export const useDataManagerStore = defineStore("data manager", () => {
     data.value[filter.value][newField] = {};
   };
 
+  const deleteDataField = (fieldName: string) => {
+    try {
+      // Guard - No data - Handle error
+      if (!data.value) {
+        throw new Error("No data found. Delete failed.");
+      }
+
+      let fieldDeleted = false;
+
+      // Optimized delete when filter is present
+      if (filter.value && data.value[filter.value][fieldName]) {
+        delete data.value[filter.value][fieldName];
+        return;
+      }
+
+      // Search all values when no filter is present
+      Object.keys(data.value).forEach((section: string) => {
+        if (!data.value) return;
+
+        if (data.value[section][fieldName]) {
+          delete data.value[section][fieldName];
+          fieldDeleted = true;
+        }
+      });
+
+      if (!fieldDeleted) {
+        throw new Error(
+          `Field "${fieldName}" could not be found in any section. Delete Failed.`
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     data,
     getSections,
@@ -81,5 +116,6 @@ export const useDataManagerStore = defineStore("data manager", () => {
     filteredData,
     updateData,
     addNewDataField,
+    deleteDataField,
   };
 });
