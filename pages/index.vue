@@ -116,6 +116,7 @@ function useData(inputData: any) {
           :data="{ value, key }"
           :data-key="key"
           :draggable="managerDataStore.filter ? true : false"
+          @duplicate="managerDataStore.duplicateDataField"
           @delete="managerDataStore.deleteDataField"
         />
 
