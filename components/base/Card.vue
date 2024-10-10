@@ -52,7 +52,11 @@ const togglePopover = () => {
       <!-- Popover Menu -->
       <LazyBasePopover ref="popover" class="top-0 left-[35%]">
         <div ref="dialogContent" class="grid gap-3">
-          <BaseButton size="xs" class="text-base" autofocus
+          <BaseButton
+            size="xs"
+            class="text-base"
+            @click="$emit('duplicate', data.key)"
+            autofocus
             >Duplicate</BaseButton
           >
           <BaseButton
