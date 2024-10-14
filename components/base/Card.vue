@@ -11,6 +11,7 @@ defineProps({
 
 const card = ref<HTMLElement>();
 
+// Handle Dragging
 const isDragging = ref(false);
 const handleDragEvent = (event: Event) => {
   event.preventDefault();
@@ -23,6 +24,7 @@ const handleDragEnd = (event: Event) => {
   isDragging.value = false;
 };
 
+// Handle Popover
 const popover = ref();
 
 const togglePopover = () => {
@@ -49,6 +51,61 @@ const toggleEdit = () => {
   editCard(!isEditingCard.value.status, undefined);
   togglePopover();
 };
+
+const isActivelyEditing = (inputName: string | number) => {
+  return (
+    !isEditingCard.value.status ||
+    !(isEditingCard.value.input === inputName || !isEditingCard.value.input)
+  );
+};
+
+const handleFocusout = () => {
+  if (isEditingCard.value.input) {
+    editCard(false, undefined);
+  }
+};
+
+watch(
+  () => isEditingCard.value.status,
+  (newValue) => {
+    if (!newValue) return;
+
+    nextTick(() => {
+      const input = card.value?.querySelector("input");
+
+      if (!input) {
+        console.error("could not find target input");
+        return;
+      }
+
+      input.focus();
+    });
+  }
+);
+
+// Handle data
+const emits = defineEmits([
+  "duplicate",
+  "delete",
+  "update:data-key",
+  "update:property-key",
+  "update:property-value",
+]);
+
+const updatePropertyValue = (
+  event: Event,
+  index: number | undefined,
+  emitName: "update:data-key" | "update:property-key" | "update:property-value"
+) => {
+  const emittedData = computed(() => {
+    return index
+      ? { value: (event.target as HTMLInputElement)?.value, index }
+      : (event.target as HTMLInputElement)?.value;
+  });
+
+  emits(emitName, emittedData.value);
+  handleFocusout();
+};
 </script>
 
 <template>
@@ -64,10 +121,7 @@ const toggleEdit = () => {
       class="flex justify-between items-center border-b border-[var(--text-secondary)] pb-2 relative"
     >
       <h2
-        v-if="
-          !isEditingCard.status ||
-          !(isEditingCard.input === data.key || !isEditingCard.input)
-        "
+        v-if="isActivelyEditing(data.key)"
         class="text-3xl capitalize w-full"
         @dblclick="editCard(true, data.key.toString())"
       >
@@ -77,7 +131,9 @@ const toggleEdit = () => {
         v-else
         class="!text-3xl capitalize"
         :value="data.key"
-        @blur="(event: Event) => $emit('update:data-key', (event.target as HTMLInputElement)?.value)"
+        @blur="(event: Event) => updatePropertyValue(event, undefined, 'update:data-key')"
+        @keypress.enter="(event: Event) => updatePropertyValue(event, undefined, 'update:data-key')"
+        @focusout="handleFocusout"
       />
 
       <BaseButton
@@ -93,7 +149,11 @@ const toggleEdit = () => {
       <!-- Popover Menu -->
       <LazyBasePopover ref="popover" class="top-0 !ml-auto !mr-14 z-10">
         <div ref="dialogContent" class="grid gap-3">
-          <BaseButton size="xs" class="text-base" @click="toggleEdit" autofocus
+          <BaseButton
+            size="xs"
+            class="text-base"
+            @click="toggleEdit"
+            :autofocus="isPopoverOpen"
             >Edit</BaseButton
           >
           <BaseButton
@@ -119,32 +179,21 @@ const toggleEdit = () => {
       >
         <span class="flex gap-1.5">
           <strong
-            v-if="
-              !isEditingCard.status ||
-              !(isEditingCard.input === propertyKey || !isEditingCard.input)
-            "
+            v-if="isActivelyEditing(propertyKey)"
             @dblclick="editCard(true, propertyKey)"
           >
             {{ propertyKey }}:
           </strong>
           <BaseInput
             v-else
-            v-model="Object.keys(data.value)[index]"
-            @blur="(event: Event) => $emit('update:property-key', { value: (event.target as HTMLInputElement)?.value, index})"
-            @focusout="
-              () => {
-                if (isEditingCard.input) {
-                  editCard(false, undefined);
-                }
-              }
-            "
+            :value="Object.keys(data.value)[index]"
+            @blur="(event: Event) => updatePropertyValue(event, index, 'update:property-key')"
+            @keypress.enter="(event: Event) => updatePropertyValue(event, index, 'update:property-key')"
+            @focusout="handleFocusout"
           />
 
           <span
-            v-if="
-              !isEditingCard.status ||
-              !(isEditingCard.input === propertyValue || !isEditingCard.input)
-            "
+            v-if="isActivelyEditing(propertyValue)"
             @dblclick="editCard(true, propertyValue)"
           >
             {{ propertyValue }}
@@ -152,14 +201,9 @@ const toggleEdit = () => {
           <BaseInput
             v-else
             :value="Object.values(data.value)[index]"
-            @blur="(event: Event) => $emit('update:property-value', { value: (event.target as HTMLInputElement)?.value, index})"
-            @focusout="
-              () => {
-                if (isEditingCard.input) {
-                  editCard(false, undefined);
-                }
-              }
-            "
+            @blur="(event: Event) => updatePropertyValue(event, index, 'update:property-value')"
+            @keypress.enter="(event: Event) => updatePropertyValue(event, index, 'update:property-value')"
+            @focusout="handleFocusout"
           />
         </span>
       </div>
