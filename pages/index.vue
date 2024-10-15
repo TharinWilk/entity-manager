@@ -2,6 +2,7 @@
 const managerStore = useManagerStore();
 const { getActiveManager } = storeToRefs(managerStore);
 const managerDataStore = useDataManagerStore();
+const { data: dataStored } = storeToRefs(managerDataStore);
 
 const dataList = ref<HTMLElement>();
 const isTransitioning = ref(false);
@@ -51,7 +52,7 @@ const { data, updateDataIndexing, updateStoredData } =
   useData(managerDataStore);
 
 function useData(inputData: any) {
-  const data = ref(inputData.filteredData);
+  const data = ref<{ [key: string]: any }>(inputData.filteredData);
 
   watch(
     () => inputData.filteredData,
@@ -91,6 +92,53 @@ function useData(inputData: any) {
 
   return { data, updateDataIndexing, updateStoredData };
 }
+
+const updateDataKey = (value: string, key: any, index: number) => {
+  // Guard - Block user from adding the same named key
+  if (value == key) {
+    return;
+  }
+
+  // Create and insert new key name into the data at the current key's index
+  let entries = Object.entries(data.value);
+  entries.splice(index, 0, [value, data.value[key]]);
+
+  // Update the data object and delete the previous key
+  data.value = Object.fromEntries(entries);
+  delete data.value[key];
+
+  updateStoredData();
+};
+
+const updatePropertyKey = (
+  response: { value: string; index: number },
+  key: string
+) => {
+  // Get current entry data
+  let entries = Object.entries(data.value[key]);
+  const currentEntry = entries[response.index];
+
+  // Guard - Block user from adding the same named key
+  if (response.value == currentEntry[0]) {
+    return;
+  }
+
+  // Update the data object and delete the previous key
+  entries.splice(response.index, 0, [response.value, currentEntry[1]]);
+
+  data.value[key] = Object.fromEntries(entries);
+  delete data.value[key][currentEntry[0]];
+
+  updateStoredData();
+};
+
+const updateValue = (
+  response: { value: string; index: number },
+  dataValue: { [key: string]: string }
+) => {
+  const key = Object.keys(dataValue)[response.index];
+  dataValue[key] = response.value;
+};
 </script>
 
 <template>
@@ -111,11 +159,14 @@ function useData(inputData: any) {
         class="grid gap-8 grid-cols-1 sm:grid-cols-[repeat(auto-fit,_minmax(400px,_1fr))] justify-center"
       >
         <BaseCard
-          v-for="(value, key) of data"
+          v-for="(value, key, index) of data"
           :key="key"
           :data="{ value, key }"
           :data-key="key"
           :draggable="managerDataStore.filter ? true : false"
+          @update:data-key="(res) => updateDataKey(res, key, index)"
+          @update:property-key="(res) => updatePropertyKey(res, key.toString())"
+          @update:property-value="(res) => updateValue(res, value)"
           @duplicate="managerDataStore.duplicateDataField"
           @delete="managerDataStore.deleteDataField"
         />

@@ -23,7 +23,7 @@ const handleInput = (value: string) => {
 </script>
 
 <template>
-  <div class="relative w-full">
+  <div class="input-wrapper relative w-full">
     <input
       type="text"
       class="base-input"
