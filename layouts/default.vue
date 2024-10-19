@@ -27,6 +27,8 @@
 
     <!-- Footer -->
     <Footer class="hidden" />
+
+    <BaseToaster />
   </div>
 </template>
 
