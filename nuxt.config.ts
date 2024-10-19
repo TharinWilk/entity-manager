@@ -27,6 +27,8 @@ export default defineNuxtConfig({
     "@pinia-plugin-persistedstate/nuxt",
   ],
 
+  plugins: ["~/plugins/error-handling.ts"],
+
   vue: {
     compilerOptions: {
       isCustomElement: (tag: any) => tag.includes("tool-tip"),
