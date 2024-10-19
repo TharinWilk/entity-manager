@@ -4,7 +4,7 @@ export const useToast = () => {
   const toasts = useState("toast", () => <Toast[]>[]);
 
   const create = (toast: Toast) => {
-    toast.id = "id-" + Math.random().toString(36);
+    toast.id = "id-" + new Date().getTime();
     toasts.value.push(toast);
 
     setTimeout(() => {
