@@ -79,7 +79,12 @@ export function downloadFile(
     content = JSON.stringify(jsonObject, null, 2);
     blobType = "application/json;charset=utf-8;";
   } else {
-    throw new Error("Unsupported file type");
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Internal Error",
+      message: "Failed to upload.",
+      cause: `Unsupported file type: ${fileType}`,
+    });
   }
 
   // Create a Blob from the content
