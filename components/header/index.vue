@@ -32,9 +32,9 @@ function handleConfirmationResponse(response: boolean) {
 
 function deleteManager() {
   // Guard - No active manager
-  if (!getActiveManager.value) {
-    throw Error("Manager could not be deleted. No active manager found");
-  }
+  // if (!getActiveManager.value) {
+  throw Error("Manager could not be deleted. No active manager found");
+  // }
 
   // Find index of active manager - remove manager
   const indexOfActiveManager = managerStore.getManagerIndex(
