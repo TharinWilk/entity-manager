@@ -33,6 +33,8 @@ watch(
   position: fixed;
   width: 100dvw;
   height: 100dvh;
+  padding-block-end: 2vh;
+  padding-inline-end: 2vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

@@ -33,7 +33,13 @@ function handleConfirmationResponse(response: boolean) {
 function deleteManager() {
   // Guard - No active manager
   // if (!getActiveManager.value) {
-  throw Error("Manager could not be deleted. No active manager found");
+  // throw Error("Manager could not be deleted. No active manager found");
+  throw createError({
+    statusCode: 500,
+    statusMessage: "Internal Error",
+    message: "Could not delete manager",
+    cause: "Manager could not be deleted. No active manager found ",
+  });
   // }
 
   // Find index of active manager - remove manager
