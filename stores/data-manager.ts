@@ -25,7 +25,14 @@ export const useDataManagerStore = defineStore("data manager", () => {
   });
 
   const addNewKey = (newKey: string) => {
-    if (!data.value) return;
+    if (!data.value) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Internal Error",
+        message: "Failed to create new section.",
+        cause: `No data.`,
+      });
+    }
 
     data.value[newKey] = {};
   };
@@ -61,13 +68,27 @@ export const useDataManagerStore = defineStore("data manager", () => {
   });
 
   const updateData = (newData: any) => {
-    if (!data.value || !filter.value) return;
+    if (!data.value || !filter.value) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Internal Error",
+        message: "Failed to update.",
+        cause: `No data.`,
+      });
+    }
 
     data.value[filter.value] = newData;
   };
 
   const addNewDataField = (newField: string) => {
-    if (!data.value || !filter.value) return;
+    if (!data.value || !filter.value) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Internal Error",
+        message: "Failed to update.",
+        cause: `No data.`,
+      });
+    }
 
     data.value[filter.value][newField] = {};
   };
