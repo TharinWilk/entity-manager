@@ -33,7 +33,12 @@ function handleConfirmationResponse(response: boolean) {
 function deleteManager() {
   // Guard - No active manager
   if (!getActiveManager.value) {
-    throw Error("Manager could not be deleted. No active manager found");
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Internal Error",
+      message: "Failed to delete manager.",
+      cause: "No active manager found.",
+    });
   }
 
   // Find index of active manager - remove manager
@@ -46,11 +51,21 @@ function deleteManager() {
 function deleteSection() {
   // Guard - No active manager
   if (!getActiveManager.value) {
-    throw Error("Section could not be deleted. No active manager found");
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Internal Error",
+      message: "Failed to delete section.",
+      cause: "No active manager found.",
+    });
   }
 
   if (!data.value || !data.value[filter.value]) {
-    throw Error("Section could not be deleted. Data not found");
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Internal Error",
+      message: "Failed to delete section.",
+      cause: "No data and/or section.",
+    });
   }
 
   delete data.value[filter.value];

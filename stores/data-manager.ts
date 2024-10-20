@@ -25,7 +25,14 @@ export const useDataManagerStore = defineStore("data manager", () => {
   });
 
   const addNewKey = (newKey: string) => {
-    if (!data.value) return;
+    if (!data.value) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Internal Error",
+        message: "Failed to create new section.",
+        cause: `No data.`,
+      });
+    }
 
     data.value[newKey] = {};
   };
@@ -61,64 +68,82 @@ export const useDataManagerStore = defineStore("data manager", () => {
   });
 
   const updateData = (newData: any) => {
-    if (!data.value || !filter.value) return;
+    if (!data.value || !filter.value) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Internal Error",
+        message: "Failed to update.",
+        cause: `No data.`,
+      });
+    }
 
     data.value[filter.value] = newData;
   };
 
   const addNewDataField = (newField: string) => {
-    if (!data.value || !filter.value) return;
+    if (!data.value || !filter.value) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Internal Error",
+        message: "Failed to update.",
+        cause: `No data.`,
+      });
+    }
 
     data.value[filter.value][newField] = {};
   };
 
   const duplicateDataField = (fieldName: string) => {
-    try {
-      // Guard - No data - Handle error
-      if (!data.value) {
-        throw new Error("No data found. Duplicate failed.");
-      }
+    // Guard - No data - Handle error
+    if (!data.value) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Internal Error",
+        message: "Failed to duplicate card.",
+        cause: "No data found.",
+      });
+    }
 
-      let filedCopiedSuccessfully = false;
+    let filedCopiedSuccessfully = false;
 
-      // Optimized delete when filter is present
-      if (filter.value && data.value[filter.value][fieldName]) {
-        const duplicate = { ...data.value[filter.value][fieldName] };
+    // Optimized delete when filter is present
+    if (filter.value && data.value[filter.value][fieldName]) {
+      const duplicate = { ...data.value[filter.value][fieldName] };
+      const newFieldName = generateDuplicateFieldName(
+        data.value,
+        filter.value,
+        fieldName
+      );
+
+      data.value[filter.value][newFieldName] = duplicate;
+      return;
+    }
+
+    // Search all values when no filter is present
+    Object.keys(data.value).forEach((section: string) => {
+      if (!data.value) return;
+
+      if (data.value[section][fieldName]) {
+        const duplicate = { ...data.value[section][fieldName] };
         const newFieldName = generateDuplicateFieldName(
           data.value,
-          filter.value,
+          section,
           fieldName
         );
 
-        data.value[filter.value][newFieldName] = duplicate;
-        return;
+        data.value[section][newFieldName] = duplicate;
+        filedCopiedSuccessfully = true;
       }
+    });
 
-      // Search all values when no filter is present
-      Object.keys(data.value).forEach((section: string) => {
-        if (!data.value) return;
-
-        if (data.value[section][fieldName]) {
-          const duplicate = { ...data.value[section][fieldName] };
-          const newFieldName = generateDuplicateFieldName(
-            data.value,
-            section,
-            fieldName
-          );
-
-          data.value[section][newFieldName] = duplicate;
-          filedCopiedSuccessfully = true;
-        }
+    // Handle no copy being created
+    if (!filedCopiedSuccessfully) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Internal Error",
+        message: "Failed to duplicate card.",
+        cause: `Field "${fieldName}" could not be found in any section.`,
       });
-
-      // Handle no copy being created
-      if (!filedCopiedSuccessfully) {
-        throw new Error(
-          `Field "${fieldName}" could not be found in any section. Duplicate Failed.`
-        );
-      }
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -153,37 +178,41 @@ export const useDataManagerStore = defineStore("data manager", () => {
   };
 
   const deleteDataField = (fieldName: string) => {
-    try {
-      // Guard - No data - Handle error
-      if (!data.value) {
-        throw new Error("No data found. Delete failed.");
-      }
-
-      let fieldDeleted = false;
-
-      // Optimized delete when filter is present
-      if (filter.value && data.value[filter.value][fieldName]) {
-        delete data.value[filter.value][fieldName];
-        return;
-      }
-
-      // Search all values when no filter is present
-      Object.keys(data.value).forEach((section: string) => {
-        if (!data.value) return;
-
-        if (data.value[section][fieldName]) {
-          delete data.value[section][fieldName];
-          fieldDeleted = true;
-        }
+    // Guard - No data - Handle error
+    if (!data.value) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Internal Error",
+        message: "Failed to delete card.",
+        cause: "No data found.",
       });
+    }
 
-      if (!fieldDeleted) {
-        throw new Error(
-          `Field "${fieldName}" could not be found in any section. Delete Failed.`
-        );
+    let fieldDeleted = false;
+
+    // Optimized delete when filter is present
+    if (filter.value && data.value[filter.value][fieldName]) {
+      delete data.value[filter.value][fieldName];
+      return;
+    }
+
+    // Search all values when no filter is present
+    Object.keys(data.value).forEach((section: string) => {
+      if (!data.value) return;
+
+      if (data.value[section][fieldName]) {
+        delete data.value[section][fieldName];
+        fieldDeleted = true;
       }
-    } catch (error) {
-      console.error(error);
+    });
+
+    if (!fieldDeleted) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Internal Error",
+        message: "Failed to delete card.",
+        cause: `Field "${fieldName}" could not be found in any section.`,
+      });
     }
   };
 

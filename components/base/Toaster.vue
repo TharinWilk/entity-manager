@@ -1,14 +1,22 @@
 <script setup lang="ts">
-const toaster = ref<HTMLDialogElement>();
+const toaster = ref<HTMLElement>();
 const { toasts } = useToast();
 
-onMounted(() => {
-  toaster.value?.show();
-});
+watch(
+  toasts,
+  (newValue) => {
+    if (newValue.length > 0) {
+      toaster.value?.showPopover();
+    } else {
+      toaster.value?.hidePopover();
+    }
+  },
+  { deep: true }
+);
 </script>
 
 <template>
-  <dialog ref="toaster" class="toaster" aria-live="assertive">
+  <section ref="toaster" class="toaster" aria-live="assertive" popover>
     <transition-group name="toast-animation">
       <BaseToast
         v-for="toast in toasts"
@@ -17,21 +25,26 @@ onMounted(() => {
         >{{ toast.message }}
       </BaseToast>
     </transition-group>
-  </dialog>
+  </section>
 </template>
 
 <style>
-.toaster[open] {
+.toaster {
   position: fixed;
+  width: 100dvw;
+  height: 100dvh;
   padding-block-end: 2vh;
-  display: grid;
-  margin-left: auto;
-  margin-right: 2vw;
+  padding-inline-end: 2vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
   gap: 1vh;
-  bottom: 0;
+  overflow: hidden;
   pointer-events: none;
-  background-color: transparent;
   outline: none;
+  z-index: 10;
+  background-color: transparent;
 }
 
 .toast-animation-move,

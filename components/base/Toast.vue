@@ -31,6 +31,8 @@ const iconType = computed(() => {
 
 <style scoped>
 output {
+  width: fit-content;
+  height: fit-content;
   padding: 0.5rem;
   display: flex;
   align-items: center;

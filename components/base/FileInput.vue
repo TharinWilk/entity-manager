@@ -34,7 +34,12 @@ const handleChange = async (event: Event) => {
   if (!acceptedFileTypes.includes(input.files[0].type)) {
     file.value = undefined;
     error.value = "File type not supported";
-    throw Error(`File type ${input.files[0].type} is not supported.`);
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Internal Error",
+      message: "Failed to upload.",
+      cause: `Unsupported file type: ${input.files[0].type}`,
+    });
   } else error.value = "";
 
   // Retrieve, read, store, and emit file and data values.
@@ -141,7 +146,6 @@ label {
 }
 
 .error-message {
-  position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
