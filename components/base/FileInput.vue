@@ -146,7 +146,6 @@ label {
 }
 
 .error-message {
-  /* position: absolute; */
   top: 100%;
   left: 0;
   width: 100%;
