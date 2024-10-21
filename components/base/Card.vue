@@ -34,9 +34,14 @@ const togglePopover = () => {
 const isPopoverOpen = computed(() => popover.value?.visible || false);
 
 // Handle Card Editing
-const isEditingCard = ref<{ status: boolean; input: string | undefined }>({
+const isEditingCard = ref<{
+  status: boolean;
+  input: string | undefined;
+  addingNewValue: boolean;
+}>({
   status: false,
   input: undefined,
+  addingNewValue: false,
 });
 
 const editCard = (
@@ -57,6 +62,43 @@ const isActivelyEditing = (inputName: string | number) => {
     !isEditingCard.value.status ||
     !(isEditingCard.value.input === inputName || !isEditingCard.value.input)
   );
+};
+
+const newProperty = ref({ key: "", value: undefined });
+
+const addNewValue = () => {
+  if (newProperty.value.key) {
+    isEditingCard.value.addingNewValue = true;
+  }
+};
+
+const createNewProperty = (value: string) => {
+  if (!value) {
+    return;
+  }
+
+  newProperty.value.value = convertValueType(value);
+  emits("add:new-property", newProperty.value);
+
+  isEditingCard.value.addingNewValue = false;
+  nextTick(() => {
+    newProperty.value.key = "";
+  });
+};
+
+const convertValueType = (value: string) => {
+  switch (true) {
+    case value === "true":
+      return true;
+    case value === "false":
+      return false;
+    case value.startsWith("[") && value.endsWith("]"):
+      return JSON.parse(value);
+    case value.startsWith("{") && value.endsWith("}"):
+      return JSON.parse(value);
+    default:
+      return value;
+  }
 };
 
 const handleFocusout = () => {
@@ -83,6 +125,14 @@ watch(
   }
 );
 
+watch(
+  isEditingCard,
+  () => {
+    console.log(isEditingCard.value);
+  },
+  { deep: true }
+);
+
 // Handle data
 const emits = defineEmits([
   "duplicate",
@@ -90,6 +140,7 @@ const emits = defineEmits([
   "update:data-key",
   "update:property-key",
   "update:property-value",
+  "add:new-property",
 ]);
 
 const updatePropertyValue = (
@@ -206,6 +257,30 @@ const updatePropertyValue = (
             @focusout="handleFocusout"
           />
         </span>
+      </div>
+
+      <!-- Add new property -->
+      <div
+        v-if="isEditingCard.status && !isEditingCard.input"
+        class="flex gap-1.5"
+      >
+        <span>
+          <BaseInput
+            v-if="!isEditingCard.addingNewValue"
+            v-model="newProperty.key"
+            @blur="addNewValue()"
+            @keypress.enter="addNewValue()"
+            @focusout="handleFocusout"
+          />
+          <strong v-else>{{ newProperty.key }}:</strong>
+        </span>
+
+        <BaseInput
+          v-if="isEditingCard.addingNewValue"
+          @blur="(event: Event) => createNewProperty((event.target as HTMLInputElement).value)"
+          @keypress.enter="(event: Event) => createNewProperty((event.target as HTMLInputElement).value)"
+          @focusout="handleFocusout"
+        />
       </div>
     </div>
   </div>
