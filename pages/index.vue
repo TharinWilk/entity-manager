@@ -139,6 +139,13 @@ const updateValue = (
   const key = Object.keys(dataValue)[response.index];
   dataValue[key] = response.value;
 };
+
+const addNewProperty = (
+  dataKey: string,
+  property: { key: string; value: any }
+) => {
+  data.value[dataKey][property.key] = property.value;
+};
 </script>
 
 <template>
@@ -167,6 +174,7 @@ const updateValue = (
           @update:data-key="(res) => updateDataKey(res, key, index)"
           @update:property-key="(res) => updatePropertyKey(res, key.toString())"
           @update:property-value="(res) => updateValue(res, value)"
+          @add:new-property="(property: {key: string, value: any}) => addNewProperty(key, property)"
           @duplicate="managerDataStore.duplicateDataField"
           @delete="managerDataStore.deleteDataField"
         />
