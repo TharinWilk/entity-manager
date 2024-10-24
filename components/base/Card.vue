@@ -125,14 +125,6 @@ watch(
   }
 );
 
-watch(
-  isEditingCard,
-  () => {
-    console.log(isEditingCard.value);
-  },
-  { deep: true }
-);
-
 // Handle data
 const emits = defineEmits([
   "duplicate",
