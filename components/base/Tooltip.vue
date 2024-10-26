@@ -134,7 +134,10 @@ tool-tip {
 
 :has(> tool-tip) {
   position: relative;
-  z-index: 20;
+
+  &:is(:hover, :focus-visible, :active) {
+    z-index: 20;
+  }
 }
 
 :has(> tool-tip):is(:hover, :focus-visible, :active) > tool-tip {
