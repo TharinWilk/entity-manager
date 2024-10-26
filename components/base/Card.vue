@@ -219,6 +219,7 @@ const updatePropertyValue = (
       <div
         v-for="(propertyValue, propertyKey, index) of data.value"
         :key="propertyKey"
+        class="py-[1px]"
       >
         <span class="flex gap-1.5">
           <strong
@@ -248,6 +249,36 @@ const updatePropertyValue = (
             @keypress.enter="(event: Event) => updatePropertyValue(event, index, 'update:property-value')"
             @focusout="handleFocusout"
           />
+
+          <!-- Property buttons -->
+          <ul
+            v-if="isEditingCard.status"
+            class="ml-auto flex gap-1.5 items-center"
+          >
+            <!-- Copy Button -->
+            <li>
+              <BaseButton
+                size="xs"
+                bg-color="var(--surface-lightened)"
+                class="!rounded"
+              >
+                <Icon name="mdi:content-copy" size="16" />
+                <BaseTooltip bottom>Copy {{ propertyKey }}</BaseTooltip>
+              </BaseButton>
+            </li>
+
+            <!-- Drag Button -->
+            <li>
+              <BaseButton
+                size="xs"
+                bg-color="var(--surface-lightened)"
+                class="!rounded"
+              >
+                <Icon name="mdi:cursor-move" size="16" />
+                <BaseTooltip bottom>Move {{ propertyKey }}</BaseTooltip>
+              </BaseButton>
+            </li>
+          </ul>
         </span>
       </div>
 
