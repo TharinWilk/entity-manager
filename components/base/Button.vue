@@ -16,19 +16,14 @@ const size = computed(() => {
   switch (props.size) {
     case "xs":
       return "1rem";
-      break;
     case "sm":
       return "1.5rem";
-      break;
     case "md":
       return "2rem";
-      break;
     case "lg":
       return "4rem";
-      break;
     case "xl":
       return "8rem";
-      break;
   }
 });
 </script>
