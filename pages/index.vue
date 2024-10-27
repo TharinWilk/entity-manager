@@ -146,6 +146,10 @@ const addNewProperty = (
 ) => {
   data.value[dataKey][property.key] = property.value;
 };
+
+const deleteProperty = (dataKey: string, propertyKey: string) => {
+  delete data.value[dataKey][propertyKey];
+};
 </script>
 
 <template>
@@ -176,7 +180,8 @@ const addNewProperty = (
           @update:property-value="(res) => updateValue(res, value)"
           @add:new-property="(property: {key: string, value: any}) => addNewProperty(key, property)"
           @duplicate="managerDataStore.duplicateDataField"
-          @delete="managerDataStore.deleteDataField"
+          @delete:card="managerDataStore.deleteDataField"
+          @delete:property="(propertyKey: string) => deleteProperty(key, propertyKey)"
         />
 
         <ButtonAddCard
