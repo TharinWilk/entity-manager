@@ -128,11 +128,12 @@ watch(
 // Handle data
 const emits = defineEmits([
   "duplicate",
-  "delete",
+  "delete:card",
   "update:data-key",
   "update:property-key",
   "update:property-value",
   "add:new-property",
+  "delete:property",
 ]);
 
 const updatePropertyValue = (
@@ -208,7 +209,7 @@ const updatePropertyValue = (
           <BaseButton
             size="xs"
             class="text-base"
-            @click="$emit('delete', data.key)"
+            @click="$emit('delete:card', data.key)"
             >Delete</BaseButton
           >
         </div>
@@ -276,6 +277,19 @@ const updatePropertyValue = (
               >
                 <Icon name="mdi:cursor-move" size="16" />
                 <BaseTooltip bottom>Move {{ propertyKey }}</BaseTooltip>
+              </BaseButton>
+            </li>
+
+            <!-- Delete Button -->
+            <li>
+              <BaseButton
+                size="xs"
+                bg-color="var(--surface-lightened)"
+                class="!rounded"
+                @click="emits('delete:property', propertyKey)"
+              >
+                <Icon name="mdi:delete" size="16" />
+                <BaseTooltip bottom>Delete {{ propertyKey }}</BaseTooltip>
               </BaseButton>
             </li>
           </ul>
