@@ -209,7 +209,7 @@ const updatePropertyValue = (
           <BaseButton
             size="xs"
             class="text-base"
-            @click="$emit('delete', data.key)"
+            @click="$emit('delete:card', data.key)"
             >Delete</BaseButton
           >
         </div>
