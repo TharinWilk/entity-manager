@@ -134,6 +134,7 @@ const emits = defineEmits([
   "update:property-value",
   "add:new-property",
   "delete:property",
+  "copy:property",
 ]);
 
 const updatePropertyValue = (
@@ -262,6 +263,7 @@ const updatePropertyValue = (
                 size="xs"
                 bg-color="var(--surface-lightened)"
                 class="!rounded"
+                @click="emits('copy:property', propertyKey)"
               >
                 <Icon name="mdi:content-copy" size="16" />
                 <BaseTooltip bottom>Copy {{ propertyKey }}</BaseTooltip>
