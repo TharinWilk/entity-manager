@@ -49,5 +49,9 @@ export const useCopiedDataStore = defineStore("Copied Data", () => {
     return true; // All checks passed, objects are equal
   }
 
-  return { copyProperty };
+  function removeCopiedProperty(index: number) {
+    copiedProperties.value.splice(index, 1);
+  }
+
+  return { copiedProperties, copyProperty, removeCopiedProperty };
 });
