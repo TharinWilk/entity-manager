@@ -31,7 +31,10 @@ export default defineNuxtConfig({
 
   vue: {
     compilerOptions: {
-      isCustomElement: (tag: any) => tag.includes("tool-tip"),
+      isCustomElement: (tag: any) => {
+        const customElements = ["tool-tip", "collapsable-drawer"];
+        return customElements.some((element) => tag.includes(element));
+      },
     },
   },
 });
