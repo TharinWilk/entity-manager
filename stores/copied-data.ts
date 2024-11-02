@@ -19,7 +19,7 @@ export const useCopiedDataStore = defineStore("Copied Data", () => {
 
     // Check if the property is already copied
     const propertyIsAlreadyCopied = copiedProperties.value.some((property) =>
-      isEqual(property, copiedProperty)
+      checkObjectsForEquality(property, copiedProperty)
     );
 
     if (propertyIsAlreadyCopied) {
@@ -30,23 +30,34 @@ export const useCopiedDataStore = defineStore("Copied Data", () => {
     copiedProperties.value.push(copiedProperty);
   };
 
-  function isEqual(objA: any, objB: any): boolean {
-    if (objA === objB) return true; // Check for reference equality
-    if (objA == null || objB == null) return false; // Check for null or undefined
-    if (typeof objA !== "object" || typeof objB !== "object") return false; // Check for non-objects
+  function checkObjectsForEquality(objectA: any, objectB: any): boolean {
+    // Check for reference equality
+    if (objectA === objectB) return true;
 
-    const keysA = Object.keys(objA);
-    const keysB = Object.keys(objB);
+    // Check for null or undefined
+    if (objectA == null || objectB == null) return false;
 
-    if (keysA.length !== keysB.length) return false; // Different number of keys
+    // Check for non-objects
+    if (typeof objectA !== "object" || typeof objectB !== "object")
+      return false;
 
+    const keysA = Object.keys(objectA);
+    const keysB = Object.keys(objectB);
+
+    // Different number of keys
+    if (keysA.length !== keysB.length) return false;
+
+    // Recursive check for deep equality
     for (const key of keysA) {
-      if (!keysB.includes(key) || !isEqual(objA[key], objB[key])) {
-        return false; // Recursive check for deep equality
+      if (
+        !keysB.includes(key) ||
+        !checkObjectsForEquality(objectA[key], objectB[key])
+      ) {
+        return false;
       }
     }
 
-    return true; // All checks passed, objects are equal
+    return true;
   }
 
   function removeCopiedProperty(index: number) {
