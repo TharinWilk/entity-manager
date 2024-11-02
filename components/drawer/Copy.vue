@@ -23,7 +23,8 @@ watch(
     class="absolute right-0 bg-[var(--surface-default)] lg:relative h-full"
   >
     <div class="py-2 px-4 border-[var(--surface-lightened)] border-l h-full">
-      <ul
+      <transition-group
+        name=""
         class="flex flex-col gap-3 w-[min(400px,_30vw)] lg:w-[min(400px,_15vw)] xl:w-[min(400px,_20vw)]"
       >
         <li
@@ -50,7 +51,7 @@ watch(
             >
           </BaseButton>
         </li>
-      </ul>
+      </transition-group>
     </div>
 
     <template #button>
@@ -68,7 +69,7 @@ watch(
     </template>
   </BaseDrawer>
 
-  <transition name="test">
+  <transition name="button-fade">
     <BaseButton
       v-if="!copyDrawer?.isOpen && copiedProperties.length > 0"
       size="sm"
@@ -96,16 +97,16 @@ watch(
   }
 }
 
-.test-enter-active {
+.button-fade-enter-active {
   transition: 250ms ease 500ms;
 }
 
-.test-leave-active {
+.button-fade-leave-active {
   transition: 0ms ease;
 }
 
-.test-enter-from,
-.test-leave-to {
+.button-fade-enter-from,
+.button-fade-leave-to {
   opacity: 0;
 }
 </style>
