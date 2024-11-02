@@ -233,6 +233,7 @@ const updatePropertyValue = (
           <BaseInput
             v-else
             :value="Object.keys(data.value)[index]"
+            class="max-w-80 w-full"
             @blur="(event: Event) => updatePropertyValue(event, index, 'update:property-key')"
             @keypress.enter="(event: Event) => updatePropertyValue(event, index, 'update:property-key')"
             @focusout="handleFocusout"
@@ -247,6 +248,7 @@ const updatePropertyValue = (
           <BaseInput
             v-else
             :value="Object.values(data.value)[index]"
+            class="max-w-80 w-full"
             @blur="(event: Event) => updatePropertyValue(event, index, 'update:property-value')"
             @keypress.enter="(event: Event) => updatePropertyValue(event, index, 'update:property-value')"
             @focusout="handleFocusout"
@@ -255,7 +257,7 @@ const updatePropertyValue = (
           <!-- Property buttons -->
           <ul
             v-if="isEditingCard.status"
-            class="ml-auto flex gap-1.5 items-center"
+            class="ml-auto flex gap-1.5 items-center w-fit"
           >
             <!-- Copy Button -->
             <li>
@@ -265,7 +267,7 @@ const updatePropertyValue = (
                 class="!rounded"
                 @click="emits('copy:property', propertyKey)"
               >
-                <Icon name="mdi:content-copy" size="16" />
+                <Icon name="mdi:content-copy" size="16" class="min-w-4" />
                 <BaseTooltip bottom>Copy {{ propertyKey }}</BaseTooltip>
               </BaseButton>
             </li>
@@ -277,7 +279,7 @@ const updatePropertyValue = (
                 bg-color="var(--surface-lightened)"
                 class="!rounded"
               >
-                <Icon name="mdi:cursor-move" size="16" />
+                <Icon name="mdi:cursor-move" size="16" class="min-w-4" />
                 <BaseTooltip bottom>Move {{ propertyKey }}</BaseTooltip>
               </BaseButton>
             </li>
@@ -290,7 +292,7 @@ const updatePropertyValue = (
                 class="!rounded"
                 @click="emits('delete:property', propertyKey)"
               >
-                <Icon name="mdi:delete" size="16" />
+                <Icon name="mdi:delete" size="16" class="min-w-4" />
                 <BaseTooltip bottom>Delete {{ propertyKey }}</BaseTooltip>
               </BaseButton>
             </li>
