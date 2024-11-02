@@ -22,19 +22,20 @@ watch(
     opening-direction="left"
     class="absolute right-0 bg-[var(--surface-default)] lg:relative h-full"
   >
-    <div class="py-2 px-4 border-[var(--surface-lightened)] border-l h-full">
+    <div class="py-4 px-4 border-[var(--surface-lightened)] border-l h-full">
       <transition-group
-        name=""
-        class="flex flex-col gap-3 w-[min(400px,_30vw)] lg:w-[min(400px,_15vw)] xl:w-[min(400px,_20vw)]"
+        tag="ul"
+        name="list-fade"
+        class="w-[min(400px,_30vw)] lg:w-[min(400px,_15vw)] xl:w-[min(400px,_20vw)]"
       >
         <li
           v-for="(property, index) in copiedProperties"
-          :key="index"
+          :key="JSON.stringify(property)"
           class="copied-property"
           draggable="true"
         >
-          <div>
-            <span>{{ Object.keys(property)[0] }}: </span>
+          <div class="flex gap-2 items-start">
+            <span class="font-bold">{{ Object.keys(property)[0] }}: </span>
             <span>{{ Object.values(property)[0] }}</span>
           </div>
 
@@ -42,7 +43,7 @@ watch(
           <BaseButton
             size="xs"
             bg-color="var(--surface-lightened)"
-            class="!rounded"
+            class="!rounded h-fit"
             @click="copiedDataStore.removeCopiedProperty(index)"
           >
             <Icon name="mdi:close" size="16" />
@@ -82,11 +83,18 @@ watch(
 </template>
 
 <style scoped>
+ul {
+  position: relative;
+}
+
 .copied-property {
-  display: flex;
-  justify-content: space-between;
+  margin-bottom: 0.75rem;
   padding-inline: 0.5rem;
   padding-block: 0.375rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
   background-color: var(--surface-lightened);
   border-radius: 6px;
   width: 100%;
@@ -97,6 +105,7 @@ watch(
   }
 }
 
+/* Transitions */
 .button-fade-enter-active {
   transition: 250ms ease 500ms;
 }
@@ -108,5 +117,23 @@ watch(
 .button-fade-enter-from,
 .button-fade-leave-to {
   opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .list-fade-move,
+  .list-fade-enter-active,
+  .list-fade-leave-active {
+    transition: all 200ms ease;
+  }
+
+  .list-fade-enter-from,
+  .list-fade-leave-to {
+    opacity: 0;
+    transform: translateX(2rem);
+  }
+
+  .list-fade-leave-active {
+    position: absolute;
+  }
 }
 </style>
