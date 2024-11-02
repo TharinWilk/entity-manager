@@ -2,7 +2,7 @@
 const managerStore = useManagerStore();
 const { getActiveManager } = storeToRefs(managerStore);
 const managerDataStore = useDataManagerStore();
-const { data: dataStored } = storeToRefs(managerDataStore);
+const copiedDataStore = useCopiedDataStore();
 
 const dataList = ref<HTMLElement>();
 const isTransitioning = ref(false);
@@ -141,19 +141,19 @@ const updateValue = (
 };
 
 const addNewProperty = (
-  dataKey: string,
+  dataKey: string | number,
   property: { key: string; value: any }
 ) => {
   data.value[dataKey][property.key] = property.value;
 };
 
-const deleteProperty = (dataKey: string, propertyKey: string) => {
+const deleteProperty = (dataKey: string | number, propertyKey: string) => {
   delete data.value[dataKey][propertyKey];
 };
 </script>
 
 <template>
-  <main class="grid place-items-center p-4 sm:p-8 lg:p-12 gap-8">
+  <main class="flex flex-col items-center p-4 sm:p-8 lg:p-12 gap-8">
     <h1 class="text-4xl">{{ getActiveManager?.name || "Hello" }}</h1>
 
     <!-- Cards -->
@@ -175,13 +175,14 @@ const deleteProperty = (dataKey: string, propertyKey: string) => {
           :data="{ value, key }"
           :data-key="key"
           :draggable="managerDataStore.filter ? true : false"
-          @update:data-key="(res) => updateDataKey(res, key, index)"
-          @update:property-key="(res) => updatePropertyKey(res, key.toString())"
-          @update:property-value="(res) => updateValue(res, value)"
+          @update:data-key="(res: string) => updateDataKey(res, key, index)"
+          @update:property-key="(res: { value: string; index: number }) => updatePropertyKey(res, key.toString())"
+          @update:property-value="(res: { value: string; index: number }) => updateValue(res, value)"
           @add:new-property="(property: {key: string, value: any}) => addNewProperty(key, property)"
           @duplicate="managerDataStore.duplicateDataField"
           @delete:card="managerDataStore.deleteDataField"
           @delete:property="(propertyKey: string) => deleteProperty(key, propertyKey)"
+          @copy:property="(propertyKey: string) => copiedDataStore.copyProperty(key, propertyKey)"
         />
 
         <ButtonAddCard
