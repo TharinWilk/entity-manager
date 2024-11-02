@@ -20,13 +20,13 @@ watch(
   <BaseDrawer
     ref="copyDrawer"
     opening-direction="left"
-    class="absolute right-0 bg-[var(--surface-default)] lg:relative h-full"
+    class="absolute right-0 bg-[var(--surface-default)] xl:relative h-full"
   >
     <div class="py-4 px-4 border-[var(--surface-lightened)] border-l h-full">
       <transition-group
         tag="ul"
         name="list-fade"
-        class="w-[min(400px,_30vw)] lg:w-[min(400px,_15vw)] xl:w-[min(400px,_20vw)]"
+        class="w-[min(400px,_65vw)] xl:w-[min(400px,_30vw)]"
       >
         <li
           v-for="(property, index) in copiedProperties"
@@ -46,7 +46,7 @@ watch(
             class="!rounded h-fit"
             @click="copiedDataStore.removeCopiedProperty(index)"
           >
-            <Icon name="mdi:close" size="16" />
+            <Icon name="mdi:close" size="16" class="min-w-4" />
             <BaseTooltip bottom-left
               >Remove {{ Object.keys(property)[0] }}</BaseTooltip
             >
