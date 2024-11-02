@@ -20,10 +20,12 @@ watch(
   <BaseDrawer
     ref="copyDrawer"
     opening-direction="left"
-    :class="{ 'pr-4': copiedProperties.length > 0 }"
+    class="absolute right-0 bg-[var(--surface-default)] lg:relative h-full"
   >
-    <div class="py-2 px-4 border-black border-l h-full">
-      <ul class="flex flex-col gap-3 w-[min(400px,_30vw)]">
+    <div class="py-2 px-4 border-[var(--surface-lightened)] border-l h-full">
+      <ul
+        class="flex flex-col gap-3 w-[min(400px,_30vw)] lg:w-[min(400px,_15vw)] xl:w-[min(400px,_20vw)]"
+      >
         <li
           v-for="(property, index) in copiedProperties"
           :key="index"
