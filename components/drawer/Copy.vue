@@ -4,63 +4,55 @@ import type { BaseDrawer } from "#build/components";
 const copiedDataStore = useCopiedDataStore();
 const { copiedProperties } = storeToRefs(copiedDataStore);
 
-const copyDrawer = ref<InstanceType<typeof BaseDrawer> | null>(null);
+const drawer = ref<InstanceType<typeof BaseDrawer> | null>(null);
 
 watch(
   () => copiedProperties.value.length,
   (newLength) => {
     newLength > 0
-      ? copyDrawer.value?.updateIsOpen(true)
-      : copyDrawer.value?.updateIsOpen(false);
+      ? drawer.value?.updateIsOpen(true)
+      : drawer.value?.updateIsOpen(false);
   }
 );
 </script>
 
 <template>
-  <BaseDrawer
-    ref="copyDrawer"
-    opening-direction="left"
-    class="absolute right-0 bg-[var(--surface-default)] xl:relative h-full"
-  >
-    <div class="py-4 px-4 border-[var(--surface-lightened)] border-l h-full">
-      <transition-group
-        tag="ul"
-        name="list-fade"
-        class="w-[min(400px,_65vw)] xl:w-[min(400px,_30vw)]"
+  <BaseDrawer ref="drawer" opening-direction="left" class="drawer">
+    <!-- <div class=""> -->
+    <transition-group tag="ul" name="list-fade">
+      <li
+        v-for="(property, index) in copiedProperties"
+        :key="JSON.stringify(property)"
+        class="copied-property"
+        draggable="true"
       >
-        <li
-          v-for="(property, index) in copiedProperties"
-          :key="JSON.stringify(property)"
-          class="copied-property"
-          draggable="true"
-        >
-          <div class="flex gap-2 items-start">
-            <span class="font-bold">{{ Object.keys(property)[0] }}: </span>
-            <span>{{ Object.values(property)[0] }}</span>
-          </div>
+        <div class="flex gap-2 items-start">
+          <span class="font-bold">{{ Object.keys(property)[0] }}: </span>
+          <span>{{ Object.values(property)[0] }}</span>
+        </div>
 
-          <!-- Remove Icon Button -->
-          <BaseButton
-            size="xs"
-            bg-color="var(--surface-lightened)"
-            class="!rounded h-fit"
-            @click="copiedDataStore.removeCopiedProperty(index)"
+        <!-- Remove Icon Button -->
+        <BaseButton
+          size="xs"
+          bg-color="var(--surface-lightened)"
+          class="!rounded h-fit"
+          @click="copiedDataStore.removeCopiedProperty(index)"
+        >
+          <Icon name="mdi:close" size="16" class="min-w-4" />
+          <BaseTooltip bottom-left
+            >Remove {{ Object.keys(property)[0] }}</BaseTooltip
           >
-            <Icon name="mdi:close" size="16" class="min-w-4" />
-            <BaseTooltip bottom-left
-              >Remove {{ Object.keys(property)[0] }}</BaseTooltip
-            >
-          </BaseButton>
-        </li>
-      </transition-group>
-    </div>
+        </BaseButton>
+      </li>
+    </transition-group>
+    <!-- </div> -->
 
     <template #button>
       <BaseButton
-        v-if="copiedProperties.length > 0 && copyDrawer?.isOpen"
+        v-if="copiedProperties.length > 0 && drawer?.isOpen"
         size="xs"
         class="absolute w-8 h-8 !rounded-full -translate-x-4 top-10"
-        @click="copyDrawer?.updateIsOpen(false)"
+        @click="drawer?.updateIsOpen(false)"
       >
         <Icon name="mdi:chevron-right" size="24" />
 
@@ -72,10 +64,10 @@ watch(
 
   <transition name="button-fade">
     <BaseButton
-      v-if="!copyDrawer?.isOpen && copiedProperties.length > 0"
+      v-if="!drawer?.isOpen && copiedProperties.length > 0"
       size="sm"
       class="absolute text-base top-4 right-4"
-      @click="copyDrawer?.updateIsOpen(true)"
+      @click="drawer?.updateIsOpen(true)"
     >
       Open Copy Drawer
     </BaseButton>
@@ -83,8 +75,37 @@ watch(
 </template>
 
 <style scoped>
+collapsable-drawer.drawer {
+  position: absolute;
+  right: 0;
+  background-color: var(--surface-default);
+  height: 100%;
+}
+
+@media screen and (min-width: 1280px) {
+  collapsable-drawer.drawer {
+    position: relative;
+  }
+}
+
+@media screen and (width < 1280px) {
+  collapsable-drawer.drawer {
+    transition: grid-template-columns var(--transition-speed) ease,
+      opacity 200ms ease;
+
+    &:has(.copied-property:active) {
+      opacity: 0.25;
+      pointer-events: none;
+    }
+  }
+}
+
 ul {
   position: relative;
+  width: min(27rem, 65vw);
+  height: 100%;
+  padding: 1rem;
+  border-left: 1px solid var(--surface-lightened);
 }
 
 .copied-property {
@@ -102,6 +123,7 @@ ul {
 
   &:active {
     cursor: grabbing;
+    pointer-events: all;
   }
 }
 
