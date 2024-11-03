@@ -16,11 +16,7 @@ defineExpose({ updateIsOpen, isOpen });
 </script>
 
 <template>
-  <collapsable-drawer
-    class="drawer"
-    :direction="openingDirection"
-    :open="isOpen"
-  >
+  <collapsable-drawer :direction="openingDirection" :open="isOpen">
     <div>
       <slot />
     </div>
@@ -30,7 +26,7 @@ defineExpose({ updateIsOpen, isOpen });
 </template>
 
 <style scoped>
-.drawer {
+collapsable-drawer {
   --transition-speed: 0ms;
   display: grid;
 
