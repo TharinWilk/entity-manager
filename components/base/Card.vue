@@ -135,6 +135,7 @@ const emits = defineEmits([
   "add:new-property",
   "delete:property",
   "copy:property",
+  "move:property",
 ]);
 
 const updatePropertyValue = (
@@ -151,6 +152,24 @@ const updatePropertyValue = (
   emits(emitName, emittedData.value);
   handleFocusout();
 };
+
+const propertyActions = [
+  {
+    name: "Copy",
+    function: (emittedData: string) => emits("copy:property", emittedData),
+    iconName: "mdi:content-copy",
+  },
+  {
+    name: "Move",
+    function: (emittedData: string) => emits("move:property", emittedData),
+    iconName: "mdi:cursor-move",
+  },
+  {
+    name: "Delete",
+    function: (emittedData: string) => emits("delete:property", emittedData),
+    iconName: "mdi:delete",
+  },
+];
 </script>
 
 <template>
@@ -258,41 +277,17 @@ const updatePropertyValue = (
         <ul
           class="ml-auto group-hover:visible flex flex-wrap gap-1.5 items-center w-fit invisible h-fit"
         >
-          <!-- Copy Button -->
-          <li>
+          <li v-for="action in propertyActions" :key="action.name">
             <BaseButton
               size="xs"
               bg-color="var(--surface-lightest)"
               class="!rounded"
-              @click="emits('copy:property', propertyKey)"
+              @click="action.function(propertyKey)"
             >
-              <Icon name="mdi:content-copy" size="16" class="min-w-4" />
-              <BaseTooltip bottom>Copy {{ propertyKey }}</BaseTooltip>
-            </BaseButton>
-          </li>
-
-          <!-- Drag Button -->
-          <li>
-            <BaseButton
-              size="xs"
-              bg-color="var(--surface-lightest)"
-              class="!rounded"
-            >
-              <Icon name="mdi:cursor-move" size="16" class="min-w-4" />
-              <BaseTooltip bottom>Move {{ propertyKey }}</BaseTooltip>
-            </BaseButton>
-          </li>
-
-          <!-- Delete Button -->
-          <li>
-            <BaseButton
-              size="xs"
-              bg-color="var(--surface-lightest)"
-              class="!rounded"
-              @click="emits('delete:property', propertyKey)"
-            >
-              <Icon name="mdi:delete" size="16" class="min-w-4" />
-              <BaseTooltip bottom>Delete {{ propertyKey }}</BaseTooltip>
+              <Icon :name="action.iconName" size="16" class="min-w-4" />
+              <BaseTooltip bottom
+                >{{ action.name }} {{ propertyKey }}</BaseTooltip
+              >
             </BaseButton>
           </li>
         </ul>
