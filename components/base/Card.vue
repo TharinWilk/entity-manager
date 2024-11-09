@@ -135,6 +135,7 @@ const emits = defineEmits([
   "add:new-property",
   "delete:property",
   "copy:property",
+  "move:property",
 ]);
 
 const updatePropertyValue = (
@@ -151,6 +152,24 @@ const updatePropertyValue = (
   emits(emitName, emittedData.value);
   handleFocusout();
 };
+
+const propertyActions = [
+  {
+    name: "Copy",
+    function: (emittedData: string) => emits("copy:property", emittedData),
+    iconName: "mdi:content-copy",
+  },
+  {
+    name: "Move",
+    function: (emittedData: string) => emits("move:property", emittedData),
+    iconName: "mdi:cursor-move",
+  },
+  {
+    name: "Delete",
+    function: (emittedData: string) => emits("delete:property", emittedData),
+    iconName: "mdi:delete",
+  },
+];
 </script>
 
 <template>
@@ -218,96 +237,71 @@ const updatePropertyValue = (
     </div>
 
     <div class="py-2">
-      <div
+      <span
         v-for="(propertyValue, propertyKey, index) of data.value"
         :key="propertyKey"
-        class="py-[1px]"
+        class="group hover:bg-[var(--surface-lightest)] flex gap-1.5 items-center py-1 px-2 leading-7 rounded-md"
       >
-        <span class="flex gap-1.5">
-          <strong
-            v-if="isActivelyEditing(propertyKey)"
-            @dblclick="editCard(true, propertyKey)"
-          >
-            {{ propertyKey }}:
-          </strong>
-          <BaseInput
-            v-else
-            :value="Object.keys(data.value)[index]"
-            class="max-w-80 w-full"
-            @blur="(event: Event) => updatePropertyValue(event, index, 'update:property-key')"
-            @keypress.enter="(event: Event) => updatePropertyValue(event, index, 'update:property-key')"
-            @focusout="handleFocusout"
-          />
+        <strong
+          v-if="isActivelyEditing(propertyKey)"
+          @dblclick="editCard(true, propertyKey)"
+          class="self-start"
+        >
+          {{ propertyKey }}:
+        </strong>
+        <BaseInput
+          v-else
+          :value="Object.keys(data.value)[index]"
+          class="max-w-80 w-full !text-lg !py-0"
+          @blur="(event: Event) => updatePropertyValue(event, index, 'update:property-key')"
+          @keypress.enter="(event: Event) => updatePropertyValue(event, index, 'update:property-key')"
+          @focusout="handleFocusout"
+        />
 
-          <span
-            v-if="isActivelyEditing(propertyValue)"
-            @dblclick="editCard(true, propertyValue)"
-          >
-            {{ propertyValue }}
-          </span>
-          <BaseInput
-            v-else
-            :value="Object.values(data.value)[index]"
-            class="max-w-80 w-full"
-            @blur="(event: Event) => updatePropertyValue(event, index, 'update:property-value')"
-            @keypress.enter="(event: Event) => updatePropertyValue(event, index, 'update:property-value')"
-            @focusout="handleFocusout"
-          />
-
-          <!-- Property buttons -->
-          <ul
-            v-if="isEditingCard.status"
-            class="ml-auto flex gap-1.5 items-center w-fit"
-          >
-            <!-- Copy Button -->
-            <li>
-              <BaseButton
-                size="xs"
-                bg-color="var(--surface-lightened)"
-                class="!rounded"
-                @click="emits('copy:property', propertyKey)"
-              >
-                <Icon name="mdi:content-copy" size="16" class="min-w-4" />
-                <BaseTooltip bottom>Copy {{ propertyKey }}</BaseTooltip>
-              </BaseButton>
-            </li>
-
-            <!-- Drag Button -->
-            <li>
-              <BaseButton
-                size="xs"
-                bg-color="var(--surface-lightened)"
-                class="!rounded"
-              >
-                <Icon name="mdi:cursor-move" size="16" class="min-w-4" />
-                <BaseTooltip bottom>Move {{ propertyKey }}</BaseTooltip>
-              </BaseButton>
-            </li>
-
-            <!-- Delete Button -->
-            <li>
-              <BaseButton
-                size="xs"
-                bg-color="var(--surface-lightened)"
-                class="!rounded"
-                @click="emits('delete:property', propertyKey)"
-              >
-                <Icon name="mdi:delete" size="16" class="min-w-4" />
-                <BaseTooltip bottom>Delete {{ propertyKey }}</BaseTooltip>
-              </BaseButton>
-            </li>
-          </ul>
+        <span
+          v-if="isActivelyEditing(propertyValue)"
+          @dblclick="editCard(true, propertyValue)"
+        >
+          {{ propertyValue }}
         </span>
-      </div>
+        <BaseInput
+          v-else
+          :value="Object.values(data.value)[index]"
+          class="max-w-80 w-full !text-lg !py-0"
+          @blur="(event: Event) => updatePropertyValue(event, index, 'update:property-value')"
+          @keypress.enter="(event: Event) => updatePropertyValue(event, index, 'update:property-value')"
+          @focusout="handleFocusout"
+        />
+
+        <!-- Property buttons -->
+        <ul
+          class="ml-auto group-hover:visible flex flex-wrap gap-1.5 items-center w-fit invisible h-fit"
+        >
+          <li v-for="action in propertyActions" :key="action.name">
+            <BaseButton
+              size="xs"
+              bg-color="var(--surface-lightest)"
+              class="!rounded"
+              @click="action.function(propertyKey)"
+            >
+              <Icon :name="action.iconName" size="16" class="min-w-4" />
+              <BaseTooltip bottom
+                >{{ action.name }} {{ propertyKey }}</BaseTooltip
+              >
+            </BaseButton>
+          </li>
+        </ul>
+      </span>
 
       <!-- Add new property -->
       <div
         v-if="isEditingCard.status && !isEditingCard.input"
-        class="flex gap-1.5"
+        class="flex gap-1.5 items-center py-1 px-2 leading-7 rounded-md"
       >
         <span>
           <BaseInput
             v-if="!isEditingCard.addingNewValue"
+            class="max-w-80 w-full !text-lg !py-0"
             v-model="newProperty.key"
             @blur="addNewValue()"
             @keypress.enter="addNewValue()"
@@ -318,6 +312,7 @@ const updatePropertyValue = (
 
         <BaseInput
           v-if="isEditingCard.addingNewValue"
+          class="max-w-80 w-full !text-lg !py-0"
           @blur="(event: Event) => createNewProperty((event.target as HTMLInputElement).value)"
           @keypress.enter="(event: Event) => createNewProperty((event.target as HTMLInputElement).value)"
           @focusout="handleFocusout"

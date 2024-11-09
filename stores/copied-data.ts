@@ -24,6 +24,11 @@ export const useCopiedDataStore = defineStore("Copied Data", () => {
 
     if (propertyIsAlreadyCopied) {
       console.warn("property already exists");
+
+      useToast().create({
+        message: "Property is already copied.",
+        type: "warning",
+      });
       return;
     }
 

@@ -33,13 +33,13 @@ watch(
   position: fixed;
   width: 100dvw;
   height: 100dvh;
-  padding-block-end: 2vh;
-  padding-inline-end: 2vh;
+  padding-block-end: 1rem;
+  padding-inline-end: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
-  gap: 1vh;
+  gap: 0.5rem;
   overflow: hidden;
   pointer-events: none;
   outline: none;
