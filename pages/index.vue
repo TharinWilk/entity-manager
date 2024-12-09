@@ -1,41 +1,44 @@
 <script setup lang="ts">
 const managerStore = useManagerStore();
 const { getActiveManager } = storeToRefs(managerStore);
-const managerDataStore = useDataManagerStore();
-const copiedDataStore = useCopiedDataStore();
+const dataManagerStore = useDataManagerStore();
+const { data, filter, filteredData } = storeToRefs(dataManagerStore);
 
-const dataList = ref<HTMLElement>();
 const isTransitioning = ref(false);
+const cardList = useTemplateRef("card-list");
+const { mousePosition } = useDragArea(cardList);
 
-const handleDragSorting = (event: MouseEvent) => {
-  if (!dataList.value || !managerDataStore.filter) {
-    return;
+function handleDrag() {
+  const draggedElement = document.querySelector(".dragging") as HTMLElement;
+
+  if (draggedElement.classList.contains("card")) {
+    handleCardSorting(draggedElement);
+  } else if (draggedElement.classList.contains(".property")) {
+    console.log("property being dragged");
   }
+}
 
-  const draggedElement = dataList.value.querySelector(
-    ".card.dragging"
-  ) as HTMLElement;
-
+function handleCardSorting(draggedElement: HTMLElement) {
   const siblings = Array.from(
-    dataList.value.querySelectorAll(".card:not(.dragging)")
+    document.querySelectorAll(".card:not(.dragging)")
   ) as HTMLElement[];
 
-  const mouseY = event.clientY;
-  const mouseX = event.clientX;
+  const { x, y } = mousePosition.value;
 
   for (const sibling of siblings) {
     const siblingRect = sibling.getBoundingClientRect();
 
     if (
-      mouseY >= siblingRect.top &&
-      mouseY <= siblingRect.bottom &&
-      mouseX >= siblingRect.left &&
-      mouseX <= siblingRect.right
+      x >= siblingRect.left &&
+      x <= siblingRect.right &&
+      y >= siblingRect.top &&
+      y <= siblingRect.bottom
     ) {
       if (isTransitioning.value) return;
 
       const elementKey = draggedElement.dataset.key;
       const siblingKey = sibling.dataset.key;
+
       if (!elementKey || !siblingKey) return;
 
       updateDataIndexing(elementKey, siblingKey);
@@ -46,110 +49,36 @@ const handleDragSorting = (event: MouseEvent) => {
       }, 300);
     }
   }
-};
-
-const { data, updateDataIndexing, updateStoredData } =
-  useData(managerDataStore);
-
-function useData(inputData: any) {
-  const data = ref<{ [key: string]: any }>(inputData.filteredData);
-
-  watch(
-    () => inputData.filteredData,
-    () => {
-      data.value = inputData.filteredData;
-    }
-  );
-
-  const updateDataIndexing = (key: string, newIndexKey: string) => {
-    if (!data.value || !(key in data.value) || !(newIndexKey in data.value))
-      return;
-
-    const keys = Object.keys(data.value);
-    const index = keys.indexOf(key);
-    const newIndex = keys.indexOf(newIndexKey);
-
-    if (newIndex < 0 || newIndex >= keys.length) return;
-
-    const newKeys = [...keys];
-    newKeys.splice(index, 1);
-    newKeys.splice(newIndex, 0, key);
-
-    const reorderedData: { [key: string]: any } = {};
-
-    newKeys.forEach((item) => {
-      reorderedData[item] = data.value[item];
-    });
-
-    data.value = reorderedData;
-  };
-
-  const updateStoredData = () => {
-    setTimeout(() => {
-      managerDataStore.updateData(data.value);
-    }, 300);
-  };
-
-  return { data, updateDataIndexing, updateStoredData };
 }
 
-const updateDataKey = (value: string, key: any, index: number) => {
-  // Guard - Block user from adding the same named key
-  if (value == key) {
+function updateDataIndexing(key: string, newIndexKey: string) {
+  if (
+    !data.value ||
+    !(key in filteredData.value) ||
+    !(newIndexKey in filteredData.value)
+  )
     return;
-  }
 
-  // Create and insert new key name into the data at the current key's index
-  let entries = Object.entries(data.value);
-  entries.splice(index, 0, [value, data.value[key]]);
+  const keys = Object.keys(filteredData.value);
+  const index = keys.indexOf(key);
+  const newIndex = keys.indexOf(newIndexKey);
 
-  // Update the data object and delete the previous key
-  data.value = Object.fromEntries(entries);
-  delete data.value[key];
+  if (newIndex < 0 || newIndex >= keys.length) return;
 
-  updateStoredData();
-};
+  const newKeys = [...keys];
+  newKeys.splice(index, 1);
+  newKeys.splice(newIndex, 0, key);
 
-const updatePropertyKey = (
-  response: { value: string; index: number },
-  key: string
-) => {
-  // Get current entry data
-  let entries = Object.entries(data.value[key]);
-  const currentEntry = entries[response.index];
+  const reorderedData: { [key: string]: any } = {};
 
-  // Guard - Block user from adding the same named key
-  if (response.value == currentEntry[0]) {
-    return;
-  }
+  newKeys.forEach((item) => {
+    if (filteredData.value) {
+      reorderedData[item] = filteredData.value[item];
+    }
+  });
 
-  // Update the data object and delete the previous key
-  entries.splice(response.index, 0, [response.value, currentEntry[1]]);
-
-  data.value[key] = Object.fromEntries(entries);
-  delete data.value[key][currentEntry[0]];
-
-  updateStoredData();
-};
-
-const updateValue = (
-  response: { value: string; index: number },
-  dataValue: { [key: string]: string }
-) => {
-  const key = Object.keys(dataValue)[response.index];
-  dataValue[key] = response.value;
-};
-
-const addNewProperty = (
-  dataKey: string | number,
-  property: { key: string; value: any }
-) => {
-  data.value[dataKey][property.key] = property.value;
-};
-
-const deleteProperty = (dataKey: string | number, propertyKey: string) => {
-  delete data.value[dataKey][propertyKey];
-};
+  data.value[filter.value] = reorderedData;
+}
 </script>
 
 <template>
@@ -158,36 +87,32 @@ const deleteProperty = (dataKey: string | number, propertyKey: string) => {
 
     <!-- Cards -->
     <section
-      v-if="getActiveManager"
-      ref="dataList"
+      ref="card-list"
       class="w-full"
-      @dragover="handleDragSorting"
-      @dragend="updateStoredData"
+      @dragover="handleDrag"
+      @dragend="console.log('hello')"
     >
       <transition-group
+        v-if="getActiveManager"
         name="card"
         tag="div"
         class="grid gap-8 grid-cols-1 sm:grid-cols-[repeat(auto-fit,_minmax(400px,_1fr))] justify-center"
       >
         <BaseCard
-          v-for="(value, key, index) of data"
+          v-for="(value, key, index) of filteredData"
           :key="key"
           :data="{ value, key }"
           :data-key="key"
-          :draggable="managerDataStore.filter ? true : false"
-          @update:data-key="(res: string) => updateDataKey(res, key, index)"
-          @update:property-key="(res: { value: string; index: number }) => updatePropertyKey(res, key.toString())"
-          @update:property-value="(res: { value: string; index: number }) => updateValue(res, value)"
-          @add:new-property="(property: {key: string, value: any}) => addNewProperty(key, property)"
-          @duplicate="managerDataStore.duplicateDataField"
-          @delete:card="managerDataStore.deleteDataField"
-          @delete:property="(propertyKey: string) => deleteProperty(key, propertyKey)"
-          @copy:property="(propertyKey: string) => copiedDataStore.copyProperty(key, propertyKey)"
-        />
+          :draggable="filter ? true : false"
+        >
+          <template #header> </template>
+
+          <template #content> </template>
+        </BaseCard>
 
         <ButtonAddCard
           key="add-button"
-          @click="managerDataStore.addNewDataField('')"
+          @click="dataManagerStore.addNewDataField('')"
         />
       </transition-group>
     </section>

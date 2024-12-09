@@ -1,12 +1,14 @@
-type MaybeElementRef =
-  | HTMLElement
-  | Ref<HTMLElement | undefined>
-  | null
-  | undefined;
-
-export const useDrag = (element: MaybeElementRef) => {
-  const draggedElement = ref<MaybeElementRef>(null);
+export const useDrag = (element: MaybeRef) => {
+  const draggedElement = ref<MaybeRef>(null);
   const isDragging = ref(false);
+
+  onMounted(() => {
+    draggedElement.value = unref(element);
+  });
+
+  onUnmounted(() => {
+    draggedElement.value = null;
+  });
 
   const startDrag = () => {
     isDragging.value = true;
@@ -17,14 +19,6 @@ export const useDrag = (element: MaybeElementRef) => {
     isDragging.value = false;
     draggedElement.value?.classList.remove("dragging");
   };
-
-  onMounted(() => {
-    draggedElement.value = unref(element);
-  });
-
-  onUnmounted(() => {
-    draggedElement.value = null;
-  });
 
   return {
     isDragging,
