@@ -41,7 +41,7 @@ function handleCardSorting(draggedElement: HTMLElement) {
 
       if (!elementKey || !siblingKey) return;
 
-      updateDataIndexing(elementKey, siblingKey);
+      dataManagerStore.updateDataIndexing(elementKey, siblingKey);
       isTransitioning.value = true;
 
       setTimeout(() => {
@@ -49,35 +49,6 @@ function handleCardSorting(draggedElement: HTMLElement) {
       }, 300);
     }
   }
-}
-
-function updateDataIndexing(key: string, newIndexKey: string) {
-  if (
-    !data.value ||
-    !(key in filteredData.value) ||
-    !(newIndexKey in filteredData.value)
-  )
-    return;
-
-  const keys = Object.keys(filteredData.value);
-  const index = keys.indexOf(key);
-  const newIndex = keys.indexOf(newIndexKey);
-
-  if (newIndex < 0 || newIndex >= keys.length) return;
-
-  const newKeys = [...keys];
-  newKeys.splice(index, 1);
-  newKeys.splice(newIndex, 0, key);
-
-  const reorderedData: { [key: string]: any } = {};
-
-  newKeys.forEach((item) => {
-    if (filteredData.value) {
-      reorderedData[item] = filteredData.value[item];
-    }
-  });
-
-  data.value[filter.value] = reorderedData;
 }
 </script>
 

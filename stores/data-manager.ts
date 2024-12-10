@@ -80,6 +80,36 @@ export const useDataManagerStore = defineStore("data manager", () => {
     data.value[filter.value] = newData;
   };
 
+  function updateDataIndexing(key: string, newIndexKey: string) {
+    if (
+      !data.value ||
+      !(key in filteredData.value) ||
+      !(newIndexKey in filteredData.value) ||
+      !filter.value
+    )
+      return;
+
+    const keys = Object.keys(filteredData.value);
+    const index = keys.indexOf(key);
+    const newIndex = keys.indexOf(newIndexKey);
+
+    if (newIndex < 0 || newIndex >= keys.length) return;
+
+    const newKeys = [...keys];
+    newKeys.splice(index, 1);
+    newKeys.splice(newIndex, 0, key);
+
+    const reorderedData: { [key: string]: any } = {};
+
+    newKeys.forEach((item) => {
+      if (filteredData.value) {
+        reorderedData[item] = filteredData.value[item];
+      }
+    });
+
+    updateData(reorderedData);
+  }
+
   const addNewDataField = (newField: string) => {
     if (!data.value || !filter.value) {
       throw createError({
@@ -224,6 +254,7 @@ export const useDataManagerStore = defineStore("data manager", () => {
     setFilter,
     filteredData,
     updateData,
+    updateDataIndexing,
     addNewDataField,
     duplicateDataField,
     deleteDataField,
