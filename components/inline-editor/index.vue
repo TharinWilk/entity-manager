@@ -28,7 +28,7 @@ defineEmits(["update:text"]);
     v-else
     class="!text-3xl capitalize"
     :value="content"
-    @input="$emit('update:text')"
+    @blur="(event: InputEvent) => $emit('update:text', (event.target as HTMLInputElement)?.value)"
   />
 </template>
 
