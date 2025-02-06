@@ -64,11 +64,11 @@ const updateDataKey = (
   }
 
   // Create and insert new key name into the data at the current key's index
-  let entries = Object.entries(filteredData.value);
-  entries.splice(index, 0, [value, filteredData.value[key]]);
+  const filterValue = sectionFilter || filter.value;
+  let entries = Object.entries(data.value[filterValue]);
+  entries.splice(index, 0, [value, data.value[filterValue][key]]);
 
   // Update the data object and delete the previous key
-  const filterValue = sectionFilter || filter.value;
   data.value[filterValue] = Object.fromEntries(entries);
   delete data.value[filterValue][key];
 };
@@ -79,12 +79,7 @@ const updateDataKey = (
     <h1 class="text-4xl">{{ getActiveManager?.name || "Hello" }}</h1>
 
     <!-- Cards -->
-    <section
-      ref="card-list"
-      class="w-full"
-      @dragover="handleDrag"
-      @dragend="console.log('hello')"
-    >
+    <section ref="card-list" class="w-full" @dragover="handleDrag">
       <transition-group
         v-if="getActiveManager && filter"
         name="card"
