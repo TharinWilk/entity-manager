@@ -104,6 +104,13 @@ const updateDataKey = (
                   :content="k.toString()"
                   @update:text="(input: string) => updateDataKey(input, k, index, key)"
                 />
+
+                <ButtonEditCard
+                  @duplicate:card="
+                    dataManagerStore.duplicateDataField(k.toString())
+                  "
+                  @delete:card="dataManagerStore.deleteDataField(k.toString())"
+                />
               </template>
 
               <template #content> </template>
