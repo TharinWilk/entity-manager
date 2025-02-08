@@ -38,7 +38,7 @@ watch(visible, (newValue) => {
     dialog.value.addEventListener("click", lightDismiss);
 
     // Set Focus
-    setFocusOnAutofocusElement();
+    setFocusOnElement(dialog.value);
   } else {
     // Dialog is closing
     if (!dialog.value) return;
@@ -53,17 +53,6 @@ watch(visible, (newValue) => {
 async function lightDismiss({ target: dialog }: any) {
   if (dialog.nodeName === "DIALOG") {
     dialog.close("dismiss");
-  }
-}
-
-// Set autoFocus if attribute found
-function setFocusOnAutofocusElement() {
-  const autofocusElement = dialog.value?.querySelector(
-    "[autofocus]"
-  ) as HTMLElement;
-
-  if (autofocusElement) {
-    autofocusElement.focus();
   }
 }
 
