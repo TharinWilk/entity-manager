@@ -51,20 +51,15 @@ export const useDataManagerStore = defineStore("data manager", () => {
 
     // Return filtered data
     if (filter.value) {
-      return data.value[filter.value];
+      const dataArray = Object.entries(data.value);
+      const filteredArray = dataArray.filter(
+        ([key, value]) => key === filter.value
+      );
+
+      return Object.fromEntries(filteredArray);
     }
 
-    // Return all data
-    const allObjectsData = {};
-    const allDataKeys = Object.keys(data.value);
-
-    allDataKeys.forEach((key) => {
-      if (!data.value) return;
-
-      Object.assign(allObjectsData, data.value[key]);
-    });
-
-    return allObjectsData;
+    return data.value;
   });
 
   const updateData = (newData: any) => {
@@ -83,13 +78,13 @@ export const useDataManagerStore = defineStore("data manager", () => {
   function updateDataIndexing(key: string, newIndexKey: string) {
     if (
       !data.value ||
-      !(key in filteredData.value) ||
-      !(newIndexKey in filteredData.value) ||
+      !(key in filteredData.value[filter.value]) ||
+      !(newIndexKey in filteredData.value[filter.value]) ||
       !filter.value
     )
       return;
 
-    const keys = Object.keys(filteredData.value);
+    const keys = Object.keys(filteredData.value[filter.value]);
     const index = keys.indexOf(key);
     const newIndex = keys.indexOf(newIndexKey);
 

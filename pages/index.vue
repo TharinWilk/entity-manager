@@ -80,37 +80,11 @@ const updateDataKey = (
 
     <!-- Cards -->
     <section ref="card-list" class="w-full" @dragover="handleDrag">
-      <transition-group
-        v-if="getActiveManager && filter"
-        name="card"
-        tag="div"
-        class="grid gap-8 grid-cols-1 sm:grid-cols-[repeat(auto-fit,_minmax(400px,_1fr))] justify-center"
-      >
-        <BaseCard
-          v-for="(value, key, index) of filteredData"
-          :key="key"
-          :data-key="key"
-          :draggable="filter ? true : false"
+      <div v-if="getActiveManager">
+        <div
+          v-for="(value, key) of filteredData"
+          class="flex flex-col gap-8 mb-8"
         >
-          <template #header>
-            <InlineEditor
-              component="h3"
-              :content="key.toString()"
-              @update:text="(input: string) => updateDataKey(input, key, index)"
-            />
-          </template>
-
-          <template #content> </template>
-        </BaseCard>
-
-        <ButtonAddCard
-          key="add-button"
-          @click="dataManagerStore.addNewDataField('')"
-        />
-      </transition-group>
-
-      <div v-else-if="getActiveManager">
-        <div v-for="(value, key) of data" class="flex flex-col gap-8 mb-8">
           <h2>{{ key }}</h2>
           <transition-group
             :key="key"
