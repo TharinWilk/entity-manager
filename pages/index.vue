@@ -65,7 +65,7 @@ const updateDataKey = (
 
   // Create and insert new key name into the data at the current key's index
   const filterValue = sectionFilter || filter.value;
-  let entries = Object.entries(data.value[filterValue]);
+  const entries = Object.entries(data.value[filterValue]);
   entries.splice(index, 0, [value, data.value[filterValue][key]]);
 
   // Update the data object and delete the previous key

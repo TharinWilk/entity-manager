@@ -110,8 +110,8 @@ defineExpose({ clearForm, isSelectingIcon, updateIsSelectingIcon, selectIcon });
           placeholder="Name"
           :error="error"
           autofocus
-          @clearError="removeError"
           class="w-full !text-xl"
+          @clear-error="removeError"
         />
       </div>
 

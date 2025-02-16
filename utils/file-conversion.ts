@@ -1,5 +1,5 @@
 function convertJSONToHierarchicalCSV(jsonObject: any): string {
-  let csvRows: string[][] = [];
+  const csvRows: string[][] = [];
 
   // Process each item in the root JSON object
   Object.keys(jsonObject).forEach((key) => {
@@ -47,7 +47,7 @@ function processArrayInSameRow(
   arr: any[]
 ) {
   ensureRowExists(csvRows, csvRows.length);
-  let row = csvRows[csvRows.length - 1];
+  const row = csvRows[csvRows.length - 1];
 
   row[level] = key;
   arr.forEach((item, index) => {
@@ -118,7 +118,7 @@ export function convertCSVToJSON(csvString: string): any {
 
   rows.forEach((row) => {
     // Determine the indentation level by finding the first non-empty cell
-    let level = row.findIndex((cell) => cell.trim() !== "");
+    const level = row.findIndex((cell) => cell.trim() !== "");
     const key = row[level].trim(); // Get the key at the current level
     const value = row.slice(level + 1).filter((cell) => cell.trim() !== ""); // Extract values in subsequent columns
 

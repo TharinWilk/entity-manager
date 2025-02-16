@@ -24,6 +24,8 @@ const size = computed(() => {
       return "4rem";
     case "xl":
       return "8rem";
+    default:
+      return "2rem";
   }
 });
 </script>

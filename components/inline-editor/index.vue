@@ -16,8 +16,8 @@ defineEmits(["update:text"]);
 
 <template>
   <component
-    v-if="!editing"
     :is="component"
+    v-if="!editing"
     class="w-fit"
     @dblclick="editing = true"
   >

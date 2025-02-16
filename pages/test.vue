@@ -100,7 +100,7 @@ const updateDataKey = (value: string, key: any, index: number) => {
   }
 
   // Create and insert new key name into the data at the current key's index
-  let entries = Object.entries(data.value);
+  const entries = Object.entries(data.value);
   entries.splice(index, 0, [value, data.value[key]]);
 
   // Update the data object and delete the previous key
@@ -115,7 +115,7 @@ const updatePropertyKey = (
   key: string
 ) => {
   // Get current entry data
-  let entries = Object.entries(data.value[key]);
+  const entries = Object.entries(data.value[key]);
   const currentEntry = entries[response.index];
 
   // Guard - Block user from adding the same named key

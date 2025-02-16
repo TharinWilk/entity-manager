@@ -78,9 +78,9 @@ function clear() {
       <input
         type="file"
         :class="{ error: error }"
-        @change="handleChange"
         v-bind="$attrs"
-      />
+        @change="handleChange"
+      >
       {{ label }}
     </label>
     <span v-if="error" class="error-message">

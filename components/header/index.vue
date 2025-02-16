@@ -174,11 +174,11 @@ function deleteSection() {
         <!-- Delete Modal -->
         <LazyPromptConfirmation
           v-else
-          @submit="handleConfirmationResponse"
           :prompt="`Are you sure you want to delete ${
             filter ? filter : getActiveManager?.name
           }?`"
           confirm="Delete"
+          @submit="handleConfirmationResponse"
         />
       </LazyBaseDialog>
     </Teleport>

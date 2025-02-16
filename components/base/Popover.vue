@@ -56,7 +56,7 @@ async function lightDismiss({ target }: any) {
 </script>
 
 <template>
-  <dialog ref="dialog" @close="visible = false" v-bind="$attrs" inert>
+  <dialog ref="dialog" v-bind="$attrs" inert @close="visible = false">
     <div
       class="px-8 py-4 grid rounded-lg w-full gap-10 max-h-dvh overflow-hidden"
     >

@@ -86,7 +86,7 @@ const { themeColor } = useTheme();
 
 const fileInput = ref();
 const data = ref();
-const addData = (event: { file: Object; data: JSON | Object }) => {
+const addData = (event: { file: object; data: JSON | object }) => {
   data.value = event.data;
 };
 
@@ -116,8 +116,8 @@ defineExpose({ clearForm, isSelectingIcon, updateIsSelectingIcon });
           placeholder="Name"
           :error="error"
           autofocus
-          @clearError="removeError"
           class="w-full !text-xl"
+          @clear-error="removeError"
         />
       </div>
 
@@ -136,7 +136,7 @@ defineExpose({ clearForm, isSelectingIcon, updateIsSelectingIcon });
         <BaseFileInput
           ref="fileInput"
           accept="application/json, text/csv"
-          @onUpload="addData"
+          @on-upload="addData"
         />
 
         <!-- Create Manager -->

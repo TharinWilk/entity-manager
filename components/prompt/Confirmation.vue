@@ -22,10 +22,10 @@ const emits = defineEmits(["submit"]);
     <p class="text-center text-balance">{{ prompt }}</p>
 
     <div class="flex gap-4 justify-center">
-      <BaseButton autofocus @click="emits('submit', false)" class="w-full">{{
+      <BaseButton autofocus class="w-full" @click="emits('submit', false)">{{
         cancel
       }}</BaseButton>
-      <BaseButton @click="emits('submit', true)" class="w-full">{{
+      <BaseButton class="w-full" @click="emits('submit', true)">{{
         confirm
       }}</BaseButton>
     </div>

@@ -67,9 +67,9 @@ watch(isOpen, () => {
         <div>
           <BaseInput
             id="drawer-search"
+            v-model="search"
             placeholder="Search"
             :disabled="!isOpen"
-            v-model="search"
           />
           <label for="drawer-search" class="sr-only">Search</label>
         </div>
@@ -105,7 +105,7 @@ watch(isOpen, () => {
             </li>
 
             <!-- Activate Add Data Section Button -->
-            <li class="w-full" key="addNewEntity">
+            <li key="addNewEntity" class="w-full">
               <BaseButton
                 size="xs"
                 class="text-base w-full"

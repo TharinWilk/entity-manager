@@ -19,14 +19,7 @@ export default defineNuxtConfig({
 
   css: ["@/assets/css/styles.css"],
   devtools: { enabled: true },
-
-  modules: [
-    "nuxt-icon",
-    "@nuxtjs/tailwindcss",
-    "@pinia/nuxt",
-    "@pinia-plugin-persistedstate/nuxt",
-  ],
-
+  modules: ["nuxt-icon", "@nuxtjs/tailwindcss", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt", "@nuxt/eslint"],
   plugins: ["~/plugins/error-handling.ts"],
 
   vue: {
@@ -37,4 +30,6 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  compatibilityDate: "2025-02-16",
 });
