@@ -1,44 +1,47 @@
 <script setup lang="ts">
 const managerStore = useManagerStore();
 const { getActiveManager } = storeToRefs(managerStore);
-const managerDataStore = useDataManagerStore();
-const copiedDataStore = useCopiedDataStore();
+const dataManagerStore = useDataManagerStore();
+const { data, filter, filteredData } = storeToRefs(dataManagerStore);
 
-const dataList = ref<HTMLElement>();
 const isTransitioning = ref(false);
+const cardList = useTemplateRef("card-list");
+const { mousePosition } = useDragArea(cardList);
 
-const handleDragSorting = (event: MouseEvent) => {
-  if (!dataList.value || !managerDataStore.filter) {
-    return;
+function handleDrag() {
+  const draggedElement = document.querySelector(".dragging") as HTMLElement;
+
+  if (draggedElement.classList.contains("card")) {
+    handleCardSorting(draggedElement);
+  } else if (draggedElement.classList.contains(".property")) {
+    console.log("property being dragged");
   }
+}
 
-  const draggedElement = dataList.value.querySelector(
-    ".card.dragging"
-  ) as HTMLElement;
-
+function handleCardSorting(draggedElement: HTMLElement) {
   const siblings = Array.from(
-    dataList.value.querySelectorAll(".card:not(.dragging)")
+    document.querySelectorAll(".card:not(.dragging)")
   ) as HTMLElement[];
 
-  const mouseY = event.clientY;
-  const mouseX = event.clientX;
+  const { x, y } = mousePosition.value;
 
   for (const sibling of siblings) {
     const siblingRect = sibling.getBoundingClientRect();
 
     if (
-      mouseY >= siblingRect.top &&
-      mouseY <= siblingRect.bottom &&
-      mouseX >= siblingRect.left &&
-      mouseX <= siblingRect.right
+      x >= siblingRect.left &&
+      x <= siblingRect.right &&
+      y >= siblingRect.top &&
+      y <= siblingRect.bottom
     ) {
       if (isTransitioning.value) return;
 
       const elementKey = draggedElement.dataset.key;
       const siblingKey = sibling.dataset.key;
+
       if (!elementKey || !siblingKey) return;
 
-      updateDataIndexing(elementKey, siblingKey);
+      dataManagerStore.updateDataIndexing(elementKey, siblingKey);
       isTransitioning.value = true;
 
       setTimeout(() => {
@@ -46,109 +49,28 @@ const handleDragSorting = (event: MouseEvent) => {
       }, 300);
     }
   }
-};
-
-const { data, updateDataIndexing, updateStoredData } =
-  useData(managerDataStore);
-
-function useData(inputData: any) {
-  const data = ref<{ [key: string]: any }>(inputData.filteredData);
-
-  watch(
-    () => inputData.filteredData,
-    () => {
-      data.value = inputData.filteredData;
-    }
-  );
-
-  const updateDataIndexing = (key: string, newIndexKey: string) => {
-    if (!data.value || !(key in data.value) || !(newIndexKey in data.value))
-      return;
-
-    const keys = Object.keys(data.value);
-    const index = keys.indexOf(key);
-    const newIndex = keys.indexOf(newIndexKey);
-
-    if (newIndex < 0 || newIndex >= keys.length) return;
-
-    const newKeys = [...keys];
-    newKeys.splice(index, 1);
-    newKeys.splice(newIndex, 0, key);
-
-    const reorderedData: { [key: string]: any } = {};
-
-    newKeys.forEach((item) => {
-      reorderedData[item] = data.value[item];
-    });
-
-    data.value = reorderedData;
-  };
-
-  const updateStoredData = () => {
-    setTimeout(() => {
-      managerDataStore.updateData(data.value);
-    }, 300);
-  };
-
-  return { data, updateDataIndexing, updateStoredData };
 }
 
-const updateDataKey = (value: string, key: any, index: number) => {
+const updateDataKey = (
+  value: string,
+  key: any,
+  index: number,
+  sectionFilter?: string | number
+) => {
+  if (!data.value) return;
   // Guard - Block user from adding the same named key
   if (value == key) {
     return;
   }
 
   // Create and insert new key name into the data at the current key's index
-  let entries = Object.entries(data.value);
-  entries.splice(index, 0, [value, data.value[key]]);
+  const filterValue = sectionFilter || filter.value;
+  let entries = Object.entries(data.value[filterValue]);
+  entries.splice(index, 0, [value, data.value[filterValue][key]]);
 
   // Update the data object and delete the previous key
-  data.value = Object.fromEntries(entries);
-  delete data.value[key];
-
-  updateStoredData();
-};
-
-const updatePropertyKey = (
-  response: { value: string; index: number },
-  key: string
-) => {
-  // Get current entry data
-  let entries = Object.entries(data.value[key]);
-  const currentEntry = entries[response.index];
-
-  // Guard - Block user from adding the same named key
-  if (response.value == currentEntry[0]) {
-    return;
-  }
-
-  // Update the data object and delete the previous key
-  entries.splice(response.index, 0, [response.value, currentEntry[1]]);
-
-  data.value[key] = Object.fromEntries(entries);
-  delete data.value[key][currentEntry[0]];
-
-  updateStoredData();
-};
-
-const updateValue = (
-  response: { value: string; index: number },
-  dataValue: { [key: string]: string }
-) => {
-  const key = Object.keys(dataValue)[response.index];
-  dataValue[key] = response.value;
-};
-
-const addNewProperty = (
-  dataKey: string | number,
-  property: { key: string; value: any }
-) => {
-  data.value[dataKey][property.key] = property.value;
-};
-
-const deleteProperty = (dataKey: string | number, propertyKey: string) => {
-  delete data.value[dataKey][propertyKey];
+  data.value[filterValue] = Object.fromEntries(entries);
+  delete data.value[filterValue][key];
 };
 </script>
 
@@ -157,39 +79,75 @@ const deleteProperty = (dataKey: string | number, propertyKey: string) => {
     <h1 class="text-4xl">{{ getActiveManager?.name || "Hello" }}</h1>
 
     <!-- Cards -->
-    <section
-      v-if="getActiveManager"
-      ref="dataList"
-      class="w-full"
-      @dragover="handleDragSorting"
-      @dragend="updateStoredData"
-    >
-      <transition-group
-        name="card"
-        tag="div"
-        class="grid gap-8 grid-cols-1 sm:grid-cols-[repeat(auto-fit,_minmax(400px,_1fr))] justify-center"
-      >
-        <BaseCard
-          v-for="(value, key, index) of data"
-          :key="key"
-          :data="{ value, key }"
-          :data-key="key"
-          :draggable="managerDataStore.filter ? true : false"
-          @update:data-key="(res: string) => updateDataKey(res, key, index)"
-          @update:property-key="(res: { value: string; index: number }) => updatePropertyKey(res, key.toString())"
-          @update:property-value="(res: { value: string; index: number }) => updateValue(res, value)"
-          @add:new-property="(property: {key: string, value: any}) => addNewProperty(key, property)"
-          @duplicate="managerDataStore.duplicateDataField"
-          @delete:card="managerDataStore.deleteDataField"
-          @delete:property="(propertyKey: string) => deleteProperty(key, propertyKey)"
-          @copy:property="(propertyKey: string) => copiedDataStore.copyProperty(key, propertyKey)"
-        />
+    <section ref="card-list" class="w-full" @dragover="handleDrag">
+      <div v-if="getActiveManager">
+        <div
+          v-for="(value, key) of filteredData"
+          class="flex flex-col gap-8 mb-8"
+        >
+          <h2>{{ key }}</h2>
+          <transition-group
+            :key="key"
+            name="card"
+            tag="div"
+            class="grid gap-8 grid-cols-1 sm:grid-cols-[repeat(auto-fit,_minmax(400px,_1fr))] justify-center"
+          >
+            <BaseCard
+              v-for="(v, k, index) of value"
+              :key="k"
+              :data-key="k"
+              :draggable="filter ? true : false"
+            >
+              <template #header>
+                <InlineEditor
+                  component="h3"
+                  :content="k.toString()"
+                  class="!text-3xl capitalize"
+                  @update:text="(input: string) => updateDataKey(input, k, index, key)"
+                />
 
-        <ButtonAddCard
-          key="add-button"
-          @click="managerDataStore.addNewDataField('')"
-        />
-      </transition-group>
+                <ButtonEditCard
+                  @duplicate:card="
+                    dataManagerStore.duplicateDataField(k.toString())
+                  "
+                  @delete:card="dataManagerStore.deleteDataField(k.toString())"
+                />
+              </template>
+
+              <template #content>
+                <div
+                  v-for="(propertyValue, propertyKey, index) of v"
+                  :key="propertyKey"
+                  class="py-2"
+                >
+                  <span
+                    class="group hover:bg-[var(--surface-lightest)] flex gap-1.5 items-center py-1 px-2 leading-7 rounded-md"
+                  >
+                    <div class="flex flex-wrap gap-1.5">
+                      <InlineEditor
+                        component="strong"
+                        :content="propertyKey.toString()"
+                      />
+                      <strong>: </strong>
+                      <InlineEditor component="span" :content="propertyValue" />
+                    </div>
+
+                    <ListPropertyButtons
+                      :property-name="propertyKey.toString()"
+                      @click="(value) => console.log(value)"
+                    />
+                  </span>
+                </div>
+              </template>
+            </BaseCard>
+
+            <ButtonAddCard
+              key="add-button"
+              @click="dataManagerStore.addNewDataField('')"
+            />
+          </transition-group>
+        </div>
+      </div>
     </section>
   </main>
 </template>
