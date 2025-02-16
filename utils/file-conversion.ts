@@ -105,7 +105,7 @@ export function downloadFile(
   URL.revokeObjectURL(url);
 }
 
-export function convertCSVToJSON(csvString: string): any {
+export function convertCSVToJSON(csvString: string): unknown {
   // Convert CVS into rows of comma separated data
   const rows = csvString
     .trim()

@@ -19,12 +19,18 @@ export default defineNuxtConfig({
 
   css: ["@/assets/css/styles.css"],
   devtools: { enabled: true },
-  modules: ["nuxt-icon", "@nuxtjs/tailwindcss", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt", "@nuxt/eslint"],
+  modules: [
+    "nuxt-icon",
+    "@nuxtjs/tailwindcss",
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
+    "@nuxt/eslint",
+  ],
   plugins: ["~/plugins/error-handling.ts"],
 
   vue: {
     compilerOptions: {
-      isCustomElement: (tag: any) => {
+      isCustomElement: (tag) => {
         const customElements = ["tool-tip", "collapsable-drawer"];
         return customElements.some((element) => tag.includes(element));
       },

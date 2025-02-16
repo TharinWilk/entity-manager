@@ -47,6 +47,7 @@ watch(
     <!-- Manager Icon Buttons -->
     <BaseButton
       v-for="manager in managers"
+      :key="manager.name"
       size="xs"
       :style="
         getActiveManager?.name === manager.name

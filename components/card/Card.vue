@@ -28,7 +28,11 @@ const handleDragEnd = (event: Event) => {
 const popover = ref();
 
 const togglePopover = () => {
-  !popover.value?.visible ? popover.value?.show() : popover.value?.close();
+  if (!popover.value?.visible) {
+    popover.value?.show();
+  } else {
+    popover.value?.close();
+  }
 };
 
 const isPopoverOpen = computed(() => popover.value?.visible || false);

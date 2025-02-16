@@ -52,9 +52,7 @@ export const useDataManagerStore = defineStore("data manager", () => {
     // Return filtered data
     if (filter.value) {
       const dataArray = Object.entries(data.value);
-      const filteredArray = dataArray.filter(
-        ([key, value]) => key === filter.value
-      );
+      const filteredArray = dataArray.filter(([key]) => key === filter.value);
 
       return Object.fromEntries(filteredArray);
     }
@@ -94,7 +92,7 @@ export const useDataManagerStore = defineStore("data manager", () => {
     newKeys.splice(index, 1);
     newKeys.splice(newIndex, 0, key);
 
-    const reorderedData: { [key: string]: any } = {};
+    const reorderedData: Record<string, unknown> = {};
 
     newKeys.forEach((item) => {
       if (filteredData.value) {

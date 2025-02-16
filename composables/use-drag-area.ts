@@ -25,7 +25,7 @@ export const useDragArea = (element: MaybeRef) => {
     };
   };
 
-  const handleDrop = (event: MouseEvent) => {
+  const handleDrop = () => {
     dropZone.value = null;
     mousePosition.value = {
       x: 0,

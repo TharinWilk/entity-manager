@@ -1,5 +1,5 @@
 export const setFocusOnElement = (
-  parentElement: any,
+  parentElement: HTMLElement,
   elementSelector: string = "[autofocus]"
 ) => {
   const focusElement = parentElement?.querySelector(
