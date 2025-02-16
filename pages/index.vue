@@ -102,6 +102,7 @@ const updateDataKey = (
                 <InlineEditor
                   component="h3"
                   :content="k.toString()"
+                  class="!text-3xl capitalize"
                   @update:text="(input: string) => updateDataKey(input, k, index, key)"
                 />
 
@@ -113,7 +114,31 @@ const updateDataKey = (
                 />
               </template>
 
-              <template #content> </template>
+              <template #content>
+                <div
+                  v-for="(propertyValue, propertyKey, index) of v"
+                  :key="propertyKey"
+                  class="py-2"
+                >
+                  <span
+                    class="group hover:bg-[var(--surface-lightest)] flex gap-1.5 items-center py-1 px-2 leading-7 rounded-md"
+                  >
+                    <div class="flex flex-wrap gap-1.5">
+                      <InlineEditor
+                        component="strong"
+                        :content="propertyKey.toString()"
+                      />
+                      <strong>: </strong>
+                      <InlineEditor component="span" :content="propertyValue" />
+                    </div>
+
+                    <ListPropertyButtons
+                      :property-name="propertyKey.toString()"
+                      @click="(value) => console.log(value)"
+                    />
+                  </span>
+                </div>
+              </template>
             </BaseCard>
 
             <ButtonAddCard

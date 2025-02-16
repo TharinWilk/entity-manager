@@ -18,7 +18,7 @@ defineEmits(["update:text"]);
   <component
     v-if="!editing"
     :is="component"
-    class="text-3xl capitalize w-full"
+    class="w-fit"
     @dblclick="editing = true"
   >
     {{ content }}
@@ -26,7 +26,7 @@ defineEmits(["update:text"]);
 
   <BaseInput
     v-else
-    class="!text-3xl capitalize"
+    class=""
     :value="content"
     @blur="(event: InputEvent) => $emit('update:text', (event.target as HTMLInputElement)?.value)"
   />
