@@ -17,12 +17,12 @@ const { isDragging, startDrag, endDrag } = useDrag(card);
     <div
       class="flex justify-between items-center border-b border-[var(--text-secondary)] pb-2 relative"
     >
-      <slot name="header"></slot>
+      <slot name="header" />
     </div>
 
     <!-- Content -->
     <div class="py-2">
-      <slot name="content"></slot>
+      <slot name="content" />
     </div>
   </div>
 </template>

@@ -7,7 +7,7 @@ export const useManagerStore = defineStore(
 
     const activeManagerName = ref();
 
-    const addManager = (manager: any) => {
+    const addManager = (manager: Manager) => {
       managers.value.push(manager);
     };
 

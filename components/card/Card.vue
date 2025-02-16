@@ -28,7 +28,11 @@ const handleDragEnd = (event: Event) => {
 const popover = ref();
 
 const togglePopover = () => {
-  !popover.value?.visible ? popover.value?.show() : popover.value?.close();
+  if (!popover.value?.visible) {
+    popover.value?.show();
+  } else {
+    popover.value?.close();
+  }
 };
 
 const isPopoverOpen = computed(() => popover.value?.visible || false);
@@ -216,8 +220,8 @@ const propertyActions = [
           <BaseButton
             size="xs"
             class="text-base"
-            @click="toggleEdit"
             :autofocus="isPopoverOpen"
+            @click="toggleEdit"
             >Edit</BaseButton
           >
           <BaseButton
@@ -244,8 +248,8 @@ const propertyActions = [
       >
         <strong
           v-if="isActivelyEditing(propertyKey)"
-          @dblclick="editCard(true, propertyKey)"
           class="self-start"
+          @dblclick="editCard(true, propertyKey)"
         >
           {{ propertyKey }}:
         </strong>
@@ -301,8 +305,8 @@ const propertyActions = [
         <span>
           <BaseInput
             v-if="!isEditingCard.addingNewValue"
-            class="max-w-80 w-full !text-lg !py-0"
             v-model="newProperty.key"
+            class="max-w-80 w-full !text-lg !py-0"
             @blur="addNewValue()"
             @keypress.enter="addNewValue()"
             @focusout="handleFocusout"

@@ -7,6 +7,7 @@ defineOptions({
 defineProps({
   modelValue: {
     type: [String, Number, Boolean, Array, Object],
+    required: true,
   },
   error: {
     type: String,
@@ -29,8 +30,8 @@ const handleInput = (value: string) => {
       class="base-input"
       :class="{ error: error }"
       :value="modelValue"
-      @input="handleInput(($event.target as HTMLInputElement)?.value)"
       v-bind="$attrs"
+      @input="handleInput(($event.target as HTMLInputElement)?.value)"
     />
     <span v-if="error" class="error-message">
       <Icon name="mdi:information-slab-circle" class="h-[14px] w-[14px]" />

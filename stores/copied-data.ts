@@ -2,7 +2,7 @@ export const useCopiedDataStore = defineStore("Copied Data", () => {
   const dataStore = useDataManagerStore();
   const { filteredData: data } = storeToRefs(dataStore);
 
-  const copiedProperties = ref<{ [key: string]: any }[]>([]);
+  const copiedProperties = ref<Record<string, unknown>[]>([]);
 
   const copyProperty = (dataKey: string | number, propertyKey: string) => {
     // Guard - no data

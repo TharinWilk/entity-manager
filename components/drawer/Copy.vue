@@ -9,9 +9,11 @@ const drawer = ref<InstanceType<typeof BaseDrawer> | null>(null);
 watch(
   () => copiedProperties.value.length,
   (newLength) => {
-    newLength > 0
-      ? drawer.value?.updateIsOpen(true)
-      : drawer.value?.updateIsOpen(false);
+    if (newLength > 0) {
+      drawer.value?.updateIsOpen(true);
+    } else {
+      drawer.value?.updateIsOpen(false);
+    }
   }
 );
 </script>

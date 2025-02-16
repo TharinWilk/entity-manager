@@ -12,7 +12,7 @@ const props = defineProps({
   },
 });
 
-const size = computed(() => {
+const computedSize = computed(() => {
   switch (props.size) {
     case "xs":
       return "1rem";
@@ -24,6 +24,8 @@ const size = computed(() => {
       return "4rem";
     case "xl":
       return "8rem";
+    default:
+      return "2rem";
   }
 });
 </script>
@@ -32,7 +34,7 @@ const size = computed(() => {
   <button
     type="button"
     class="base-button"
-    :style="[{ '--size': size }, { '--bg-color': bgColor }]"
+    :style="[{ '--size': computedSize }, { '--bg-color': props.bgColor }]"
   >
     <slot />
   </button>

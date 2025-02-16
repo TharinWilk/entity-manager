@@ -6,6 +6,7 @@ defineProps({
   },
   component: {
     type: String as PropType<keyof HTMLElementTagNameMap>,
+    default: "span",
   },
 });
 
@@ -16,8 +17,8 @@ defineEmits(["update:text"]);
 
 <template>
   <component
-    v-if="!editing"
     :is="component"
+    v-if="!editing"
     class="w-fit"
     @dblclick="editing = true"
   >
@@ -26,7 +27,6 @@ defineEmits(["update:text"]);
 
   <BaseInput
     v-else
-    class=""
     :value="content"
     @blur="(event: InputEvent) => $emit('update:text', (event.target as HTMLInputElement)?.value)"
   />

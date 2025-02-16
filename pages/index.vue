@@ -53,7 +53,7 @@ function handleCardSorting(draggedElement: HTMLElement) {
 
 const updateDataKey = (
   value: string,
-  key: any,
+  key: string,
   index: number,
   sectionFilter?: string | number
 ) => {
@@ -65,7 +65,7 @@ const updateDataKey = (
 
   // Create and insert new key name into the data at the current key's index
   const filterValue = sectionFilter || filter.value;
-  let entries = Object.entries(data.value[filterValue]);
+  const entries = Object.entries(data.value[filterValue]);
   entries.splice(index, 0, [value, data.value[filterValue][key]]);
 
   // Update the data object and delete the previous key
@@ -83,6 +83,7 @@ const updateDataKey = (
       <div v-if="getActiveManager">
         <div
           v-for="(value, key) of filteredData"
+          :key="key"
           class="flex flex-col gap-8 mb-8"
         >
           <h2>{{ key }}</h2>
@@ -93,7 +94,7 @@ const updateDataKey = (
             class="grid gap-8 grid-cols-1 sm:grid-cols-[repeat(auto-fit,_minmax(400px,_1fr))] justify-center"
           >
             <BaseCard
-              v-for="(v, k, index) of value"
+              v-for="(v, k, index) in (value as Object)"
               :key="k"
               :data-key="k"
               :draggable="filter ? true : false"
@@ -103,7 +104,7 @@ const updateDataKey = (
                   component="h3"
                   :content="k.toString()"
                   class="!text-3xl capitalize"
-                  @update:text="(input: string) => updateDataKey(input, k, index, key)"
+                  @update:text="(input: string) => updateDataKey(input, k.toString(), index, key)"
                 />
 
                 <ButtonEditCard
@@ -116,7 +117,7 @@ const updateDataKey = (
 
               <template #content>
                 <div
-                  v-for="(propertyValue, propertyKey, index) of v"
+                  v-for="(propertyValue, propertyKey) of v"
                   :key="propertyKey"
                   class="py-2"
                 >
@@ -124,16 +125,13 @@ const updateDataKey = (
                     class="group hover:bg-[var(--surface-lightest)] flex gap-1.5 items-center py-1 px-2 leading-7 rounded-md"
                   >
                     <div class="flex flex-wrap gap-1.5">
-                      <InlineEditor
-                        component="strong"
-                        :content="propertyKey.toString()"
-                      />
+                      <InlineEditor component="strong" :content="propertyKey" />
                       <strong>: </strong>
                       <InlineEditor component="span" :content="propertyValue" />
                     </div>
 
                     <ListPropertyButtons
-                      :property-name="propertyKey.toString()"
+                      :property-name="propertyKey"
                       @click="(value) => console.log(value)"
                     />
                   </span>
